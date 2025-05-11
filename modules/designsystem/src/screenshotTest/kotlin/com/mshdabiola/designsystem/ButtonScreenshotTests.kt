@@ -8,8 +8,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.mshdabiola.designsystem.component.HyaButton
-import com.mshdabiola.designsystem.icon.HyaIcons
+import com.mshdabiola.designsystem.component.WcsButton
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.testing.util.CaptureMultiTheme
 
 class ButtonScreenshotTests {
@@ -18,7 +18,7 @@ class ButtonScreenshotTests {
     @Composable
     fun Button() {
         CaptureMultiTheme {
-            HyaButton(onClick = {}, text = { Text(" Button") })
+            WcsButton(onClick = {}, text = { Text(" Button") })
         }
     }
 
@@ -26,10 +26,10 @@ class ButtonScreenshotTests {
     @Composable
     fun ButtonWithLeadIcon() {
         CaptureMultiTheme {
-            HyaButton(
+            WcsButton(
                 onClick = {},
                 text = { Text("Icon Button") },
-                leadingIcon = { Icon(imageVector = HyaIcons.Add, contentDescription = null) },
+                leadingIcon = { Icon(imageVector = WcsIcons.Add, contentDescription = null) },
             )
         }
     }

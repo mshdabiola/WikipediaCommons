@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.component.HyaBackground
-import com.mshdabiola.designsystem.component.HyaGradientBackground
+import com.mshdabiola.designsystem.component.WcsBackground
+import com.mshdabiola.designsystem.component.WcsGradientBackground
 import com.mshdabiola.testing.util.Capture
 
 class BackgroundScreenshotTests {
@@ -20,7 +20,7 @@ class BackgroundScreenshotTests {
     @Composable
     fun Background() {
         Capture {
-            HyaGradientBackground(Modifier.size(100.dp)) {
+            WcsGradientBackground(Modifier.size(100.dp)) {
                 Text("background")
             }
         }
@@ -30,7 +30,7 @@ class BackgroundScreenshotTests {
     @Composable
     fun GradientBackground() {
         Capture {
-            HyaBackground(Modifier.size(100.dp)) {
+            WcsBackground(Modifier.size(100.dp)) {
                 Text("Gradient background")
             }
         }

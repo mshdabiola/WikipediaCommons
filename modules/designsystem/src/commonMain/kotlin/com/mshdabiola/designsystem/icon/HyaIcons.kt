@@ -43,7 +43,7 @@ import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material.icons.rounded.ViewDay
 import androidx.compose.material.icons.rounded.Wallpaper
 
-object HyaIcons {
+object WcsIcons {
     val Stairs = Icons.Rounded.Stairs
     val LocalLibrary = Icons.Rounded.LocalLibrary
     val Add = Icons.Rounded.Add
