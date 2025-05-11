@@ -19,11 +19,11 @@ import co.touchlab.kermit.koin.KermitKoinLogger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.designsystem.drawable.defaultAppIcon
+import com.mshdabiola.ui.SplashScreen
 import com.mshdabiola.wikipediacommons.app.generated.resources.Res
 import com.mshdabiola.wikipediacommons.app.generated.resources.app_name
 import com.mshdabiola.wikipediacommons.di.appModule
 import com.mshdabiola.wikipediacommons.ui.WikipediaCommonsApp
-import com.mshdabiola.ui.SplashScreen
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.stringResource
 import org.koin.core.context.GlobalContext.startKoin

@@ -30,11 +30,11 @@ import com.mshdabiola.designsystem.component.WcsNavigationBarItem
 import com.mshdabiola.designsystem.component.WcsNavigationRail
 import com.mshdabiola.designsystem.component.WcsNavigationRailItem
 import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.ui.ProfileCard
 import com.mshdabiola.wikipediacommons.app.generated.resources.Res
 import com.mshdabiola.wikipediacommons.app.generated.resources.app_name
 import com.mshdabiola.wikipediacommons.app.generated.resources.main_navigator
 import com.mshdabiola.wikipediacommons.app.generated.resources.setting_navigator
-import com.mshdabiola.ui.ProfileCard
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
 
