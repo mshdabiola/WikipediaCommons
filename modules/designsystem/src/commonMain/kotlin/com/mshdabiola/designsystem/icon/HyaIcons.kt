@@ -15,20 +15,33 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material.icons.rounded.Bookmark
 import androidx.compose.material.icons.rounded.BookmarkBorder
 import androidx.compose.material.icons.rounded.Bookmarks
+import androidx.compose.material.icons.rounded.Camera
 import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Check
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Cloud
+import androidx.compose.material.icons.rounded.CloudUpload
+import androidx.compose.material.icons.rounded.ContentCopy
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Domain
+import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.Grid3x3
 import androidx.compose.material.icons.rounded.Info
+import androidx.compose.material.icons.rounded.Leaderboard
 import androidx.compose.material.icons.rounded.LocalLibrary
+import androidx.compose.material.icons.rounded.LocationOn
+import androidx.compose.material.icons.rounded.Mail
+import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material.icons.rounded.Pages
 import androidx.compose.material.icons.rounded.Person
+import androidx.compose.material.icons.rounded.Photo
+import androidx.compose.material.icons.rounded.Reviews
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material.icons.rounded.Stairs
 import androidx.compose.material.icons.rounded.Upcoming
 import androidx.compose.material.icons.rounded.ViewDay
+import androidx.compose.material.icons.rounded.Wallpaper
 
 object HyaIcons {
     val Stairs = Icons.Rounded.Stairs
@@ -55,4 +68,23 @@ object HyaIcons {
     val Cancel = Icons.Rounded.Cancel
     val Domain = Icons.Rounded.Domain
     val Info = Icons.Rounded.Info
+
+
+
+    val Camera = Icons.Rounded.Camera
+    val Cloud = Icons.Rounded.Cloud
+    val CloudUpload = Icons.Rounded.CloudUpload
+    val Copy = Icons.Rounded.ContentCopy
+    val Explore = Icons.Rounded.Explore
+    val Gallery = Icons.Rounded.Photo
+    val Info = Icons.Rounded.Info
+    val Leaderboard = Icons.Rounded.Leaderboard
+    val Licence = com.mshdabiola.designsystem.icon.Licence
+    val Location = Icons.Rounded.LocationOn
+    val Mail = Icons.Rounded.Mail
+    val Map = Icons.Rounded.Map
+    val Logout = Icons.AutoMirrored.Rounded.Logout
+    val Pagination = Icons.Rounded.Pages
+    val Review = Icons.Rounded.Reviews
+    val Wallpaper = Icons.Rounded.Wallpaper
 }
