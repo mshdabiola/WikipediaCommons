@@ -42,12 +42,12 @@ jobs:
           sed -i -e '/alias(libs.plugins.firebase./d' build.gradle.kts
 
       - name: Build release variant apk
-        run: ./gradlew assembleFossReliantRelease
+        run: ./gradlew assembleProdFossReliantRelease
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1.0.4
         with:
-          releaseDirectory: app/build/outputs/apk/fossReliant/release
+          releaseDirectory: app/build/outputs/apk/prod/fossReliant/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY2 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}

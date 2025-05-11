@@ -36,12 +36,12 @@ jobs:
           build-scan-terms-of-use-agree: "yes"
 
       - name: Build release variant apk
-        run: ./gradlew assembleGooglePlayRelease
+        run: ./gradlew assembleProdGooglePlayRelease
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1.0.4
         with:
-          releaseDirectory: app/build/outputs/apk/googlePlay/release
+          releaseDirectory: app/build/outputs/apk/prod/googlePlay/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY2 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
