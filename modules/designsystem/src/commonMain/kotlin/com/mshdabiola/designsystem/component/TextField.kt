@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun HyaTextField(
+fun WcsTextField(
     modifier: Modifier = Modifier,
     state: TextFieldState,
     placeholder: String? = null,

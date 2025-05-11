@@ -13,8 +13,8 @@ import androidx.compose.ui.window.WindowPlacement
 import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.mshdabiola.hydraulicapp.di.appModule
-import com.mshdabiola.hydraulicapp.ui.HydraulicApp
+import com.mshdabiola.wikipediacommons.di.appModule
+import com.mshdabiola.wikipediacommons.ui.WikipediaCommons
 import org.koin.core.context.GlobalContext.startKoin
 import java.util.prefs.Preferences
 
@@ -57,7 +57,7 @@ fun mainApp(appArgs: AppArgs) {
 //                    }
 //                }
 //            }
-            HydraulicApp()
+            WikipediaCommons()
         }
     }
 }

@@ -18,13 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import com.mshdabiola.designsystem.icon.HyaIcons
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HyaTopAppBar(
+fun WcsTopAppBar(
     titleRes: String,
     navigationIcon: ImageVector,
     navigationIconContentDescription: String,
@@ -56,20 +56,20 @@ fun HyaTopAppBar(
             }
         },
         colors = colors,
-        modifier = modifier.testTag("HyaTopAppBar"),
+        modifier = modifier.testTag("WcsTopAppBar"),
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun HyaTopAppBarPreview() {
-    HyaTheme {
-        HyaTopAppBar(
+private fun WcsTopAppBarPreview() {
+    WcsTheme {
+        WcsTopAppBar(
             titleRes = "Preview",
-            navigationIcon = HyaIcons.Search,
+            navigationIcon = WcsIcons.Search,
             navigationIconContentDescription = "Navigation icon",
-            actionIcon = HyaIcons.MoreVert,
+            actionIcon = WcsIcons.MoreVert,
             actionIconContentDescription = "Action icon",
         )
     }

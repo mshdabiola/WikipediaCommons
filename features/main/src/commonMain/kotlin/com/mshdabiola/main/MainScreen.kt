@@ -40,25 +40,25 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.data.model.Result
-import com.mshdabiola.designsystem.component.HyaLoadingWheel
+import com.mshdabiola.designsystem.component.WcsLoadingWheel
 import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
-import com.mshdabiola.designsystem.theme.HyaTheme
 import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.model.Note
 import com.mshdabiola.ui.SharedContentPreview
 import com.mshdabiola.ui.noteItems
-import hydraulicapp.features.main.generated.resources.Res
-import hydraulicapp.features.main.generated.resources.features_main_empty_description
-import hydraulicapp.features.main.generated.resources.features_main_empty_error
-import hydraulicapp.features.main.generated.resources.features_main_img_empty_bookmarks
-import hydraulicapp.features.main.generated.resources.features_main_loading
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import wikipediacommons.features.main.generated.resources.Res
+import wikipediacommons.features.main.generated.resources.features_main_empty_description
+import wikipediacommons.features.main.generated.resources.features_main_empty_error
+import wikipediacommons.features.main.generated.resources.features_main_img_empty_bookmarks
+import wikipediacommons.features.main.generated.resources.features_main_loading
 
 // import org.koin.androidx.compose.koinViewModel
 
@@ -175,7 +175,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
         modifier = modifier.fillMaxSize().testTag("main:loading"),
         contentAlignment = Alignment.Center,
     ) {
-        HyaLoadingWheel(
+        WcsLoadingWheel(
             contentDesc = stringResource(Res.string.features_main_loading),
         )
     }
@@ -232,7 +232,7 @@ private fun noteUiStateItemsSize(topicUiState: Result<List<Note>>) =
 @Preview
 @Composable
 fun MainLight() {
-    HyaTheme(darkTheme = false) {
+    WcsTheme(darkTheme = false) {
         Surface {
             SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                 MainScreen(

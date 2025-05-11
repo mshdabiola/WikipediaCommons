@@ -2,7 +2,7 @@
  *abiola 2024
  */
 
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 // import androidx.work.Worker
 // import androidx.work.WorkerParameters

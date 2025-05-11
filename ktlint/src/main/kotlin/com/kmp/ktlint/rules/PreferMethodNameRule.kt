@@ -6,37 +6,37 @@ import org.jetbrains.kotlin.com.intellij.lang.ASTNode
 import org.jetbrains.kotlin.psi.KtCallExpression
 
 class PreferMethodNameRule : Rule(
-    RuleId("hydraulicapp:prefer-method-name"),
+    RuleId("wikipediacommons:prefer-method-name"),
     about =
         Rule.About(
             maintainer = "Your Name",
-            repositoryUrl = "https://github.com/mshdabiola/hydraulicapp",
-            issueTrackerUrl = "https://github.com/mshdabiola/hydraulicapp",
+            repositoryUrl = "https://github.com/mshdabiola/wikipediacommons",
+            issueTrackerUrl = "https://github.com/mshdabiola/wikipediacommons",
         ),
 ) {
     // Define the mapping of deprecated method names to preferred method names
     private val methodNameReplacements =
         mapOf(
-            "MaterialTheme" to "HyaTheme",
-            "Button" to "HyaButton",
-            "OutlinedButton" to "HyaOutlinedButton",
-            "TextButton" to "HyaTextButton",
-            "FilterChip" to "HyaFilterChip",
-            "ElevatedFilterChip" to "HyaFilterChip",
-            "NavigationBar" to "HyaNavigationBar",
-            "NavigationBarItem" to "HyaNavigationBarItem",
-            "NavigationRail" to "HyaNavigationRail",
-            "NavigationRailItem" to "HyaNavigationRailItem",
-            "TabRow" to "HyaTabRow",
-            "Tab" to "HyaTab",
-            "IconToggleButton" to "HyaIconToggleButton",
-            "FilledIconToggleButton" to "HyaIconToggleButton",
-            "FilledTonalIconToggleButton" to "HyaIconToggleButton",
-            "OutlinedIconToggleButton" to "HyaIconToggleButton",
-            "CenterAlignedTopAppBar" to "HyaTopAppBar",
-            "SmallTopAppBar" to "HyaTopAppBar",
-            "MediumTopAppBar" to "HyaTopAppBar",
-            "LargeTopAppBar" to "HyaTopAppBar",
+            "MaterialTheme" to "WcsTheme",
+            "Button" to "WcsButton",
+            "OutlinedButton" to "WcsOutlinedButton",
+            "TextButton" to "WcsTextButton",
+            "FilterChip" to "WcsFilterChip",
+            "ElevatedFilterChip" to "WcsFilterChip",
+            "NavigationBar" to "WcsNavigationBar",
+            "NavigationBarItem" to "WcsNavigationBarItem",
+            "NavigationRail" to "WcsNavigationRail",
+            "NavigationRailItem" to "WcsNavigationRailItem",
+            "TabRow" to "WcsTabRow",
+            "Tab" to "WcsTab",
+            "IconToggleButton" to "WcsIconToggleButton",
+            "FilledIconToggleButton" to "WcsIconToggleButton",
+            "FilledTonalIconToggleButton" to "WcsIconToggleButton",
+            "OutlinedIconToggleButton" to "WcsIconToggleButton",
+            "CenterAlignedTopAppBar" to "WcsTopAppBar",
+            "SmallTopAppBar" to "WcsTopAppBar",
+            "MediumTopAppBar" to "WcsTopAppBar",
+            "LargeTopAppBar" to "WcsTopAppBar",
         )
 
     override fun beforeVisitChildNodes(

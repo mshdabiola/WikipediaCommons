@@ -1,15 +1,15 @@
 package com.mshdabiola.designsystem.string
 
 import androidx.compose.runtime.Composable
-import hydraulicapp.modules.designsystem.generated.resources.Res
-import hydraulicapp.modules.designsystem.generated.resources.app_name
-import hydraulicapp.modules.designsystem.generated.resources.modules_ui_cbt_exam_part
-import hydraulicapp.modules.designsystem.generated.resources.modules_ui_cbt_sections
-import hydraulicapp.modules.designsystem.generated.resources.modules_ui_cbt_subject
-import hydraulicapp.modules.designsystem.generated.resources.modules_ui_cbt_type
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource
+import wikipediacommons.modules.designsystem.generated.resources.Res
+import wikipediacommons.modules.designsystem.generated.resources.app_name
+import wikipediacommons.modules.designsystem.generated.resources.modules_ui_cbt_exam_part
+import wikipediacommons.modules.designsystem.generated.resources.modules_ui_cbt_sections
+import wikipediacommons.modules.designsystem.generated.resources.modules_ui_cbt_subject
+import wikipediacommons.modules.designsystem.generated.resources.modules_ui_cbt_type
 
 val appName2
     @Composable

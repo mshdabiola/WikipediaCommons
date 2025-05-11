@@ -21,9 +21,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.HyaTheme
 import com.mshdabiola.designsystem.theme.LocalBackgroundTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import kotlin.math.tan
 
@@ -35,7 +35,7 @@ import kotlin.math.tan
  * @param content The background content.
  */
 @Composable
-fun HyaBackground(
+fun WcsBackground(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
@@ -61,7 +61,7 @@ fun HyaBackground(
  * @param content The background content.
  */
 @Composable
-fun HyaGradientBackground(
+fun WcsGradientBackground(
     modifier: Modifier = Modifier,
     gradientColors: GradientColors = LocalGradientColors.current,
     content: @Composable () -> Unit,
@@ -137,47 +137,47 @@ expect fun radiansToDegrees(radians: Double): Double
 @Preview
 @Composable
 fun BackgroundDefault() {
-    HyaTheme(disableDynamicTheming = true) {
-        HyaBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(disableDynamicTheming = true) {
+        WcsBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun BackgroundDynamic() {
-    HyaTheme(disableDynamicTheming = false) {
-        HyaBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(disableDynamicTheming = false) {
+        WcsBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun BackgroundAndroid() {
-    HyaTheme(androidTheme = true) {
-        HyaBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(androidTheme = true) {
+        WcsBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundDefault() {
-    HyaTheme(disableDynamicTheming = true) {
-        HyaGradientBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(disableDynamicTheming = true) {
+        WcsGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundDynamic() {
-    HyaTheme(disableDynamicTheming = false) {
-        HyaGradientBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(disableDynamicTheming = false) {
+        WcsGradientBackground(Modifier.size(100.dp), content = {})
     }
 }
 
 @Preview
 @Composable
 fun GradientBackgroundAndroid() {
-    HyaTheme(androidTheme = true) {
-        HyaGradientBackground(Modifier.size(100.dp), content = {})
+    WcsTheme(androidTheme = true) {
+        WcsGradientBackground(Modifier.size(100.dp), content = {})
     }
 }

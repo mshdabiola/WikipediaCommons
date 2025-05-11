@@ -14,7 +14,7 @@ plugins {
 
 }
 
-group = "com.mshdabiola.hydraulicapp"
+group = "com.mshdabiola.wikipediacommons"
 version = libs.versions.versionName.get()
 
 dependencies {
@@ -163,10 +163,10 @@ android {
     sourceSets["main"].res.srcDirs("src/androidMain/res")
     sourceSets["main"].resources.srcDirs("src/commonMain/composeResources")
 
-    namespace = "com.mshdabiola.hydraulicapp"
+    namespace = "com.mshdabiola.wikipediacommons"
 
     defaultConfig {
-        applicationId = "com.mshdabiola.hydraulicapp"
+        applicationId = "com.mshdabiola.wikipediacommons"
         versionCode = libs.versions.versionCode.get().toIntOrNull()
         versionName = System.getenv("VERSION_NAME") ?: libs.versions.versionName.get()
 
@@ -224,7 +224,7 @@ android {
 
 compose.desktop {
     application {
-        mainClass = "com.mshdabiola.hydraulicapp.MainAppKt"
+        mainClass = "com.mshdabiola.wikipediacommons.MainAppKt"
 
 
         buildTypes.release.proguard {
