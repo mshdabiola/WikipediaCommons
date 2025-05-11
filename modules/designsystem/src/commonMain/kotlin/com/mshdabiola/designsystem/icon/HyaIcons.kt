@@ -46,7 +46,6 @@ import androidx.compose.material.icons.rounded.Wallpaper
 object HyaIcons {
     val Stairs = Icons.Rounded.Stairs
     val LocalLibrary = Icons.Rounded.LocalLibrary
-    val Logout = Icons.AutoMirrored.Rounded.Logout
     val Add = Icons.Rounded.Add
     val ArrowBack = Icons.AutoMirrored.Rounded.ArrowBack
     val Bookmark = Icons.Rounded.Bookmark
@@ -67,7 +66,6 @@ object HyaIcons {
     val Delete = Icons.Rounded.Delete
     val Cancel = Icons.Rounded.Cancel
     val Domain = Icons.Rounded.Domain
-    val Info = Icons.Rounded.Info
 
 
 
