@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
@@ -7,7 +7,6 @@ import androidx.compose.ui.test.onNodeWithText
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
-import com.mshdabiola.wikipediacommons.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder

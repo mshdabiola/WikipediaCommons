@@ -7,8 +7,8 @@ package com.mshdabiola.wikipediacommons
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mshdabiola.data.repository.UserDataRepository
-import com.mshdabiola.hydraulicapp.MainActivityUiState.Loading
-import com.mshdabiola.hydraulicapp.MainActivityUiState.Success
+import com.mshdabiola.wikipediacommons.MainActivityUiState.Loading
+import com.mshdabiola.wikipediacommons.MainActivityUiState.Success
 import com.mshdabiola.model.UserData
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

@@ -50,9 +50,9 @@ import com.mshdabiola.designsystem.theme.HyaTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
-import com.mshdabiola.hydraulicapp.MainActivityUiState
-import com.mshdabiola.hydraulicapp.MainAppViewModel
-import com.mshdabiola.hydraulicapp.navigation.HydraulicAppNavHost
+import com.mshdabiola.wikipediacommons.MainActivityUiState
+import com.mshdabiola.wikipediacommons.MainAppViewModel
+import com.mshdabiola.wikipediacommons.navigation.HydraulicAppNavHost
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.setting.navigation.navigateToSetting
@@ -66,7 +66,7 @@ import org.koin.core.annotation.KoinExperimentalAPI
     ExperimentalMaterial3Api::class,
 )
 @Composable
-fun HydraulicApp() {
+fun WikipediaCommons() {
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
 
     val appState =

@@ -14,8 +14,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.mshdabiola.hydraulicapp.ui.HydraulicApp
-import com.mshdabiola.hydraulicapp.ui.shouldUseDarkTheme
+import com.mshdabiola.wikipediacommons.ui.WikipediaCommons
+import com.mshdabiola.wikipediacommons.ui.shouldUseDarkTheme
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                 onDispose {}
             }
 
-            HydraulicApp()
+            WikipediaCommons()
         }
     }
 }

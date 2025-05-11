@@ -30,10 +30,10 @@ import com.mshdabiola.designsystem.component.HyaNavigationBarItem
 import com.mshdabiola.designsystem.component.HyaNavigationRail
 import com.mshdabiola.designsystem.component.HyaNavigationRailItem
 import com.mshdabiola.designsystem.icon.HyaIcons
-import com.mshdabiola.hydraulicapp.app.generated.resources.Res
-import com.mshdabiola.hydraulicapp.app.generated.resources.app_name
-import com.mshdabiola.hydraulicapp.app.generated.resources.main_navigator
-import com.mshdabiola.hydraulicapp.app.generated.resources.setting_navigator
+import com.mshdabiola.wikipediacommons.app.generated.resources.Res
+import com.mshdabiola.wikipediacommons.app.generated.resources.app_name
+import com.mshdabiola.wikipediacommons.app.generated.resources.main_navigator
+import com.mshdabiola.wikipediacommons.app.generated.resources.setting_navigator
 import com.mshdabiola.ui.ProfileCard
 import org.jetbrains.compose.resources.stringArrayResource
 import org.jetbrains.compose.resources.stringResource

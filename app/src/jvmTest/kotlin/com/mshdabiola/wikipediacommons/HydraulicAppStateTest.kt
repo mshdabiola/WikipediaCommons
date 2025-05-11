@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.hydraulicapp.ui.HydraulicAppState
+import com.mshdabiola.wikipediacommons.ui.HydraulicAppState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
