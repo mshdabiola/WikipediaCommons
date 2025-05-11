@@ -9,7 +9,7 @@ import org.gradle.api.Project
 
 @Suppress("EnumEntryName")
 enum class FlavorDimension {
-    //    contentType,
+    contentType,
     store
 }
 
@@ -22,9 +22,9 @@ enum class Flavor(
     val applicationIdSuffix: String? = null,
     val versionNameSuffix: String? = null,
 ) {
-    //    demo(FlavorDimension.contentType, applicationIdSuffix = ".demo", "-demo"),
-//    prod(FlavorDimension.contentType),
-    fossReliant(FlavorDimension.store,applicationIdSuffix=".foss"),
+    demo(FlavorDimension.contentType, applicationIdSuffix = ".demo", "-demo"),
+    prod(FlavorDimension.contentType),
+    fossReliant(FlavorDimension.store, applicationIdSuffix = ".foss"),
     googlePlay(FlavorDimension.store, applicationIdSuffix = ".play", versionNameSuffix = "-play")
 }
 
@@ -33,7 +33,7 @@ fun Project.configureFlavors(
     flavorConfigurationBlock: ProductFlavor.(flavor: Flavor) -> Unit = {},
 ) {
     commonExtension.apply {
-//        flavorDimensions += FlavorDimension.contentType.name
+        flavorDimensions += FlavorDimension.contentType.name
         flavorDimensions += FlavorDimension.store.name
 
         productFlavors {
@@ -48,7 +48,7 @@ fun Project.configureFlavors(
                         if (it.versionNameSuffix != null) {
                             this.versionNameSuffix = it.versionNameSuffix
                         }
-                        if(it ==Flavor.googlePlay){
+                        if (it == Flavor.googlePlay) {
                             with(pluginManager) {
                                 apply("mshdabiola.android.application.firebase")
                             }
