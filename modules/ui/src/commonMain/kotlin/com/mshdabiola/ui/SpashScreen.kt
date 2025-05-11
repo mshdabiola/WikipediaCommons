@@ -21,7 +21,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Composable
 fun SplashScreen(
     modifier: Modifier = Modifier,
-    appName: String = "HydraulicApp",
+    appName: String = "WikipediaCommons",
 ) {
     Surface(
         modifier = modifier,
