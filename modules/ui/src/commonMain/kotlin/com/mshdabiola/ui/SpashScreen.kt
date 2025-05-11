@@ -25,7 +25,7 @@ fun SplashScreen(
 ) {
     Surface(
         modifier = modifier,
-        color = MyColors.Default.primaryLight,
+        color = MyColors.Default.secondaryContainerLight,
     ) {
         Column(
             modifier =
@@ -44,7 +44,7 @@ fun SplashScreen(
             Text(
                 text = appName,
                 style = MaterialTheme.typography.headlineSmall,
-                color = MyColors.Default.onPrimaryLight,
+                color = MyColors.Default.onSecondaryContainerLight,
             )
         }
     }
