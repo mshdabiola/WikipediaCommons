@@ -19,7 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.theme.WcsTheme
 
 /**
  * Takes six screenshots combining light/dark and default/Android themes and whether dynamic color
@@ -87,7 +87,7 @@ fun Capture(
     description: String = "",
     content: @Composable () -> Unit,
 ) {
-    HyaTheme(
+    WcsTheme(
         androidTheme = androidTheme,
         darkTheme = darkMode,
         disableDynamicTheming = !dynamicTheming,
