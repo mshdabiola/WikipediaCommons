@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import hydraulicapp.features.setting.generated.resources.Res
-import hydraulicapp.features.setting.generated.resources.theme
+import wikipediacommons.features.setting.generated.resources.Res
+import wikipediacommons.features.setting.generated.resources.theme
 import org.jetbrains.compose.resources.stringArrayResource
 
 @Preview
