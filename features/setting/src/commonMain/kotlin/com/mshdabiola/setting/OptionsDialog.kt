@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastForEachIndexed
-import com.mshdabiola.designsystem.component.HyaTextButton
+import com.mshdabiola.designsystem.component.WcsTextButton
 
 @Composable
 fun OptionsDialog(
@@ -25,7 +25,7 @@ fun OptionsDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            HyaTextButton(onClick = onDismiss) {
+            WcsTextButton(onClick = onDismiss) {
                 Text("Close")
             }
         },

@@ -32,7 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mshdabiola.designsystem.icon.HyaIcons
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.ui.Waiting
@@ -114,7 +114,7 @@ internal fun MainContent(
             IconButton(
                 onClick = onBack,
             ) {
-                Icon(imageVector = HyaIcons.Cancel, "cancel")
+                Icon(imageVector = WcsIcons.Cancel, "cancel")
             }
         }
 

@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.mshdabiola.designsystem.component.HyaTextField
-import com.mshdabiola.designsystem.component.HyaTopAppBar
-import com.mshdabiola.designsystem.icon.HyaIcons
+import com.mshdabiola.designsystem.component.WcsTextField
+import com.mshdabiola.designsystem.component.WcsTopAppBar
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.ui.TrackScreenViewEvent
 import com.mshdabiola.ui.Waiting
 import kotlinx.coroutines.launch
@@ -113,16 +113,16 @@ internal fun MainContent(
                 animatedVisibilityScope = animatedContentScope,
             ),
         ) {
-            HyaTopAppBar(
+            WcsTopAppBar(
                 titleRes = "Note",
-                navigationIcon = HyaIcons.ArrowBack,
+                navigationIcon = WcsIcons.ArrowBack,
                 navigationIconContentDescription = "",
-                actionIcon = HyaIcons.Delete,
+                actionIcon = WcsIcons.Delete,
                 actionIconContentDescription = "delete",
                 onActionClick = { onDelete() },
                 onNavigationClick = { onBack() },
             )
-            HyaTextField(
+            WcsTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
@@ -132,7 +132,7 @@ internal fun MainContent(
                 maxNum = TextFieldLineLimits.SingleLine,
                 imeAction = ImeAction.Next,
             )
-            HyaTextField(
+            WcsTextField(
                 modifier =
                     Modifier
                         .fillMaxWidth()
