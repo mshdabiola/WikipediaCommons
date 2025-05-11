@@ -17,7 +17,7 @@ class PreferReceiverNameRule : Rule(
     // Define the mapping of deprecated receiver names to preferred receiver names
     private val stringStringMap =
         mapOf(
-            "Icons" to "HyaIcons",
+            "Icons" to "WcsIcons",
         )
 
     override fun beforeVisitChildNodes(
