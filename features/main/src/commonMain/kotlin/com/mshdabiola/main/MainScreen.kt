@@ -44,21 +44,21 @@ import com.mshdabiola.designsystem.component.WcsLoadingWheel
 import com.mshdabiola.designsystem.component.scrollbar.DraggableScrollbar
 import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
-import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.designsystem.theme.LocalTintTheme
+import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.model.Note
 import com.mshdabiola.ui.SharedContentPreview
 import com.mshdabiola.ui.noteItems
-import wikipediacommons.features.main.generated.resources.Res
-import wikipediacommons.features.main.generated.resources.features_main_empty_description
-import wikipediacommons.features.main.generated.resources.features_main_empty_error
-import wikipediacommons.features.main.generated.resources.features_main_img_empty_bookmarks
-import wikipediacommons.features.main.generated.resources.features_main_loading
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
+import wikipediacommons.features.main.generated.resources.Res
+import wikipediacommons.features.main.generated.resources.features_main_empty_description
+import wikipediacommons.features.main.generated.resources.features_main_empty_error
+import wikipediacommons.features.main.generated.resources.features_main_img_empty_bookmarks
+import wikipediacommons.features.main.generated.resources.features_main_loading
 
 // import org.koin.androidx.compose.koinViewModel
 
