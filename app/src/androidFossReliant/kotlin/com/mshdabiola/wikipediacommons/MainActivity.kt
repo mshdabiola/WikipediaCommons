@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import android.graphics.Color
 import android.os.Bundle

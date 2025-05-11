@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.hydraulicapp.navigation
+package com.mshdabiola.wikipediacommons.navigation
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionLayout

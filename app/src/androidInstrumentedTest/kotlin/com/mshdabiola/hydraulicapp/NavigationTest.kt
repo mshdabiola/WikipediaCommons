@@ -7,6 +7,7 @@ import androidx.compose.ui.test.onNodeWithText
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
+import com.mshdabiola.wikipediacommons.MainActivity
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder

@@ -2,7 +2,7 @@
  *abiola 2024
  */
 
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import android.app.Application
 import co.touchlab.kermit.Logger

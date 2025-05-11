@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember

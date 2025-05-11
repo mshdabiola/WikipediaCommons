@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp.di
+package com.mshdabiola.wikipediacommons.di
 
 import com.mshdabiola.data.di.dataModule
 import com.mshdabiola.detail.detailModule

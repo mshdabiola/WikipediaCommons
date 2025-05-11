@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

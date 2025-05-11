@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp.ui
+package com.mshdabiola.wikipediacommons.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp.ui
+package com.mshdabiola.wikipediacommons.ui
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.mshdabiola.designsystem.icon.HyaIcons

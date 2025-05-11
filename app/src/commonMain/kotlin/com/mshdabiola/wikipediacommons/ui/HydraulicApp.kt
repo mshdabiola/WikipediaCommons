@@ -2,7 +2,7 @@
  *abiola 2022
  */
 
-package com.mshdabiola.hydraulicapp.ui
+package com.mshdabiola.wikipediacommons.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column

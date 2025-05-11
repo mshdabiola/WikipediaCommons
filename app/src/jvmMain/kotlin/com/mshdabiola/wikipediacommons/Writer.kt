@@ -1,4 +1,4 @@
-package com.mshdabiola.hydraulicapp
+package com.mshdabiola.wikipediacommons
 
 import co.touchlab.kermit.DefaultFormatter
 import co.touchlab.kermit.LogWriter
