@@ -25,11 +25,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navOptions
-import com.mshdabiola.designsystem.component.HyaNavigationBar
-import com.mshdabiola.designsystem.component.HyaNavigationBarItem
-import com.mshdabiola.designsystem.component.HyaNavigationRail
-import com.mshdabiola.designsystem.component.HyaNavigationRailItem
-import com.mshdabiola.designsystem.icon.HyaIcons
+import com.mshdabiola.designsystem.component.WcsNavigationBar
+import com.mshdabiola.designsystem.component.WcsNavigationBarItem
+import com.mshdabiola.designsystem.component.WcsNavigationRail
+import com.mshdabiola.designsystem.component.WcsNavigationRailItem
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.wikipediacommons.app.generated.resources.Res
 import com.mshdabiola.wikipediacommons.app.generated.resources.app_name
 import com.mshdabiola.wikipediacommons.app.generated.resources.main_navigator
@@ -77,7 +77,7 @@ fun CommonNavigation(
                     .verticalScroll(state = rememberScrollState()),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(HyaIcons.LocalLibrary, "Logo")
+                Icon(WcsIcons.LocalLibrary, "Logo")
                 Text(
                     stringResource(Res.string.app_name),
                     style = MaterialTheme.typography.headlineSmall,
@@ -178,7 +178,7 @@ fun CommonRail(
             )
         }
     print("main string ${mainArray.joinToString()}")
-    HyaNavigationRail(modifier) {
+    WcsNavigationRail(modifier) {
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -187,7 +187,7 @@ fun CommonRail(
                     .padding(8.dp)
                     .verticalScroll(state = rememberScrollState()),
         ) {
-            Icon(HyaIcons.LocalLibrary, "Logo")
+            Icon(WcsIcons.LocalLibrary, "Logo")
 
             Spacer(Modifier.height(32.dp))
 
@@ -198,7 +198,7 @@ fun CommonRail(
                 Text("Main")
                 TOP_LEVEL_ROUTES
                     .forEachIndexed { index, navigator ->
-                        HyaNavigationRailItem(
+                        WcsNavigationRailItem(
                             selected =
                                 navController
                                     .currentBackStackEntryAsState()
@@ -226,7 +226,7 @@ fun CommonRail(
             ) {
                 SETTING_LEVEL_ROUTES
                     .forEachIndexed { index, navigator ->
-                        HyaNavigationRailItem(
+                        WcsNavigationRailItem(
                             selected =
                                 navController
                                     .currentBackStackEntryAsState()
@@ -285,10 +285,10 @@ fun CommonBar(
             )
         }
     print("main string ${mainArray.joinToString()}")
-    HyaNavigationBar(modifier) {
+    WcsNavigationBar(modifier) {
         TOP_LEVEL_ROUTES
             .forEachIndexed { index, navigator ->
-                HyaNavigationBarItem(
+                WcsNavigationBarItem(
                     selected =
                         navController
                             .currentBackStackEntryAsState()

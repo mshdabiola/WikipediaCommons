@@ -41,12 +41,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
-import com.mshdabiola.designsystem.component.HyaBackground
-import com.mshdabiola.designsystem.component.HyaGradientBackground
-import com.mshdabiola.designsystem.component.HyaTopAppBar
-import com.mshdabiola.designsystem.icon.HyaIcons
+import com.mshdabiola.designsystem.component.WcsBackground
+import com.mshdabiola.designsystem.component.WcsGradientBackground
+import com.mshdabiola.designsystem.component.WcsTopAppBar
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.designsystem.theme.GradientColors
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.navigateToDetail
@@ -81,13 +81,13 @@ fun WikipediaCommonsApp() {
     val darkTheme = shouldUseDarkTheme(uiState)
 
     CompositionLocalProvider(LocalAnalyticsHelper provides analyticsHelper) {
-        HyaTheme(
+        WcsTheme(
             androidTheme = shouldUseAndroidTheme(uiState),
             darkTheme = darkTheme,
             disableDynamicTheming = shouldDisableDynamicTheming(uiState),
         ) {
-            HyaBackground {
-                HyaGradientBackground(
+            WcsBackground {
+                WcsGradientBackground(
                     gradientColors =
                         if (shouldShowGradientBackground) {
                             LocalGradientColors.current
@@ -121,11 +121,11 @@ fun WikipediaCommonsApp() {
                                 topBar = {
                                     if (appState.shouldShowTopBar) {
                                         if (appState.isMain) {
-                                            HyaTopAppBar(
+                                            WcsTopAppBar(
                                                 titleRes = "Note",
-                                                navigationIcon = HyaIcons.Person,
+                                                navigationIcon = WcsIcons.Person,
                                                 navigationIconContentDescription = "",
-                                                actionIcon = HyaIcons.Settings,
+                                                actionIcon = WcsIcons.Settings,
                                                 actionIconContentDescription = "se",
                                                 onActionClick = { appState.navController.navigateToSetting() },
                                             )
@@ -134,7 +134,7 @@ fun WikipediaCommonsApp() {
                                                 title = { Text("Setting") },
                                                 navigationIcon = {
                                                     IconButton(onClick = { appState.navController.popBackStack() }) {
-                                                        Icon(HyaIcons.ArrowBack, "back")
+                                                        Icon(WcsIcons.ArrowBack, "back")
                                                     }
                                                 },
                                             )
@@ -148,7 +148,7 @@ fun WikipediaCommonsApp() {
                                             text = { Text("Add Note") },
                                             icon = {
                                                 Icon(
-                                                    HyaIcons.Add,
+                                                    WcsIcons.Add,
                                                     contentDescription = "add",
                                                 )
                                             },
