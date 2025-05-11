@@ -38,7 +38,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.wikipediacommons.foss.debug"
+          "package_name": "com.mshdabiola.wikipediacommons.demo.foss.debug"
         }
       },
       "oauth_client": [
@@ -96,7 +96,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.wikipediacommons.foss"
+          "package_name": "com.mshdabiola.wikipediacommons.demo.foss"
         }
       },
       "oauth_client": [
@@ -154,7 +154,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:801461677522:android:63a1c6467747f0a2a3ac0b",
         "android_client_info": {
-          "package_name": "com.mshdabiola.wikipediacommons.foss.benchmark"
+          "package_name": "com.mshdabiola.wikipediacommons.demo.foss.benchmark"
         }
       },
       "oauth_client": [
