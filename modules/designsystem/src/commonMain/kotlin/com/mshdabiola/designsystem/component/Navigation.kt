@@ -23,8 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.icon.HyaIcons
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -43,7 +43,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * only be shown when this item is selected.
  */
 @Composable
-fun RowScope.HyaNavigationBarItem(
+fun RowScope.WcsNavigationBarItem(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -63,11 +63,11 @@ fun RowScope.HyaNavigationBarItem(
         alwaysShowLabel = alwaysShowLabel,
         colors =
             NavigationBarItemDefaults.colors(
-                selectedIconColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                unselectedIconColor = HyaNavigationDefaults.navigationContentColor(),
-                selectedTextColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                unselectedTextColor = HyaNavigationDefaults.navigationContentColor(),
-                indicatorColor = HyaNavigationDefaults.navigationIndicatorColor(),
+                selectedIconColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                unselectedIconColor = WcsNavigationDefaults.navigationContentColor(),
+                selectedTextColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                unselectedTextColor = WcsNavigationDefaults.navigationContentColor(),
+                indicatorColor = WcsNavigationDefaults.navigationIndicatorColor(),
             ),
     )
 }
@@ -80,13 +80,13 @@ fun RowScope.HyaNavigationBarItem(
  * [NavigationBarItem]s.
  */
 @Composable
-fun HyaNavigationBar(
+fun WcsNavigationBar(
     modifier: Modifier = Modifier,
     content: @Composable RowScope.() -> Unit,
 ) {
     NavigationBar(
         modifier = modifier,
-        contentColor = HyaNavigationDefaults.navigationContentColor(),
+        contentColor = WcsNavigationDefaults.navigationContentColor(),
         tonalElevation = 0.dp,
         content = content,
     )
@@ -108,7 +108,7 @@ fun HyaNavigationBar(
  * only be shown when this item is selected.
  */
 @Composable
-fun HyaNavigationRailItem(
+fun WcsNavigationRailItem(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -128,11 +128,11 @@ fun HyaNavigationRailItem(
         alwaysShowLabel = alwaysShowLabel,
         colors =
             NavigationRailItemDefaults.colors(
-                selectedIconColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                unselectedIconColor = HyaNavigationDefaults.navigationContentColor(),
-                selectedTextColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                unselectedTextColor = HyaNavigationDefaults.navigationContentColor(),
-                indicatorColor = HyaNavigationDefaults.navigationIndicatorColor(),
+                selectedIconColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                unselectedIconColor = WcsNavigationDefaults.navigationContentColor(),
+                selectedTextColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                unselectedTextColor = WcsNavigationDefaults.navigationContentColor(),
+                indicatorColor = WcsNavigationDefaults.navigationIndicatorColor(),
             ),
     )
 }
@@ -146,7 +146,7 @@ fun HyaNavigationRailItem(
  * [NavigationRailItem]s.
  */
 @Composable
-fun HyaNavigationRail(
+fun WcsNavigationRail(
     modifier: Modifier = Modifier,
     header: @Composable (ColumnScope.() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
@@ -154,7 +154,7 @@ fun HyaNavigationRail(
     NavigationRail(
         modifier = modifier,
         containerColor = Color.Transparent,
-        contentColor = HyaNavigationDefaults.navigationContentColor(),
+        contentColor = WcsNavigationDefaults.navigationContentColor(),
         header = header,
         content = content,
     )
@@ -165,13 +165,13 @@ fun HyaNavigationRail(
  * Wraps Material 3 [NavigationSuiteScaffold].
  *
  * @param modifier Modifier to be applied to the navigation suite scaffold.
- * @param navigationSuiteItems A slot to display multiple items via [HyaNavigationSuiteScope].
+ * @param navigationSuiteItems A slot to display multiple items via [WcsNavigationSuiteScope].
  * @param windowAdaptiveInfo The window adaptive info.
  * @param content The app content inside the scaffold.
  */
 @Composable
-fun HyaNavigationSuiteScaffold(
-    navigationSuiteItems: HyaNavigationSuiteScope.() -> Unit,
+fun WcsNavigationSuiteScaffold(
+    navigationSuiteItems: WcsNavigationSuiteScope.() -> Unit,
     modifier: Modifier = Modifier,
     layoutType: NavigationSuiteType,
     content: @Composable () -> Unit,
@@ -180,32 +180,32 @@ fun HyaNavigationSuiteScaffold(
         NavigationSuiteItemColors(
             navigationBarItemColors =
                 NavigationBarItemDefaults.colors(
-                    selectedIconColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedIconColor = HyaNavigationDefaults.navigationContentColor(),
-                    selectedTextColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedTextColor = HyaNavigationDefaults.navigationContentColor(),
-                    indicatorColor = HyaNavigationDefaults.navigationIndicatorColor(),
+                    selectedIconColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedIconColor = WcsNavigationDefaults.navigationContentColor(),
+                    selectedTextColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedTextColor = WcsNavigationDefaults.navigationContentColor(),
+                    indicatorColor = WcsNavigationDefaults.navigationIndicatorColor(),
                 ),
             navigationRailItemColors =
                 NavigationRailItemDefaults.colors(
-                    selectedIconColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedIconColor = HyaNavigationDefaults.navigationContentColor(),
-                    selectedTextColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedTextColor = HyaNavigationDefaults.navigationContentColor(),
-                    indicatorColor = HyaNavigationDefaults.navigationIndicatorColor(),
+                    selectedIconColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedIconColor = WcsNavigationDefaults.navigationContentColor(),
+                    selectedTextColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedTextColor = WcsNavigationDefaults.navigationContentColor(),
+                    indicatorColor = WcsNavigationDefaults.navigationIndicatorColor(),
                 ),
             navigationDrawerItemColors =
                 NavigationDrawerItemDefaults.colors(
-                    selectedIconColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedIconColor = HyaNavigationDefaults.navigationContentColor(),
-                    selectedTextColor = HyaNavigationDefaults.navigationSelectedItemColor(),
-                    unselectedTextColor = HyaNavigationDefaults.navigationContentColor(),
+                    selectedIconColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedIconColor = WcsNavigationDefaults.navigationContentColor(),
+                    selectedTextColor = WcsNavigationDefaults.navigationSelectedItemColor(),
+                    unselectedTextColor = WcsNavigationDefaults.navigationContentColor(),
                 ),
         )
 
     NavigationSuiteScaffold(
         navigationSuiteItems = {
-            HyaNavigationSuiteScope(
+            WcsNavigationSuiteScope(
                 navigationSuiteScope = this,
                 navigationSuiteItemColors = navigationSuiteItemColors,
             ).run(navigationSuiteItems)
@@ -214,7 +214,7 @@ fun HyaNavigationSuiteScaffold(
         containerColor = Color.Transparent,
         navigationSuiteColors =
             NavigationSuiteDefaults.colors(
-                navigationBarContentColor = HyaNavigationDefaults.navigationContentColor(),
+                navigationBarContentColor = WcsNavigationDefaults.navigationContentColor(),
                 navigationRailContainerColor = Color.Transparent,
             ),
         modifier = modifier,
@@ -226,7 +226,7 @@ fun HyaNavigationSuiteScaffold(
 /**
  * A wrapper around [NavigationSuiteScope] to declare navigation items.
  */
-class HyaNavigationSuiteScope internal constructor(
+class WcsNavigationSuiteScope internal constructor(
     private val navigationSuiteScope: NavigationSuiteScope,
     private val navigationSuiteItemColors: NavigationSuiteItemColors,
 ) {
@@ -255,25 +255,25 @@ class HyaNavigationSuiteScope internal constructor(
 
 @Preview
 @Composable
-fun HyaNavigationBarPreview() {
+fun WcsNavigationBarPreview() {
     val items = listOf("For you", "Saved", "Interests")
     val icons =
         listOf(
-            HyaIcons.UpcomingBorder,
-            HyaIcons.BookmarksBorder,
-            HyaIcons.Grid3x3,
+            WcsIcons.UpcomingBorder,
+            WcsIcons.BookmarksBorder,
+            WcsIcons.Grid3x3,
         )
     val selectedIcons =
         listOf(
-            HyaIcons.Upcoming,
-            HyaIcons.Bookmarks,
-            HyaIcons.Grid3x3,
+            WcsIcons.Upcoming,
+            WcsIcons.Bookmarks,
+            WcsIcons.Grid3x3,
         )
 
-    HyaTheme {
-        HyaNavigationBar {
+    WcsTheme {
+        WcsNavigationBar {
             items.forEachIndexed { index, item ->
-                HyaNavigationBarItem(
+                WcsNavigationBarItem(
                     icon = {
                         Icon(
                             imageVector = icons[index],
@@ -297,25 +297,25 @@ fun HyaNavigationBarPreview() {
 
 @Preview
 @Composable
-fun HyaNavigationRailPreview() {
+fun WcsNavigationRailPreview() {
     val items = listOf("For you", "Saved", "Interests")
     val icons =
         listOf(
-            HyaIcons.UpcomingBorder,
-            HyaIcons.BookmarksBorder,
-            HyaIcons.Grid3x3,
+            WcsIcons.UpcomingBorder,
+            WcsIcons.BookmarksBorder,
+            WcsIcons.Grid3x3,
         )
     val selectedIcons =
         listOf(
-            HyaIcons.Upcoming,
-            HyaIcons.Bookmarks,
-            HyaIcons.Grid3x3,
+            WcsIcons.Upcoming,
+            WcsIcons.Bookmarks,
+            WcsIcons.Grid3x3,
         )
 
-    HyaTheme {
-        HyaNavigationRail {
+    WcsTheme {
+        WcsNavigationRail {
             items.forEachIndexed { index, item ->
-                HyaNavigationRailItem(
+                WcsNavigationRailItem(
                     icon = {
                         Icon(
                             imageVector = icons[index],
@@ -340,7 +340,7 @@ fun HyaNavigationRailPreview() {
 /**
  * Now in Android navigation default values.
  */
-object HyaNavigationDefaults {
+object WcsNavigationDefaults {
     @Composable
     fun navigationContentColor() = MaterialTheme.colorScheme.onSurfaceVariant
 

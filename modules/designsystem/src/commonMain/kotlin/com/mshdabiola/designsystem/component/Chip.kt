@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.icon.HyaIcons
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -31,7 +31,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param label The text label content.
  */
 @Composable
-fun HyaFilterChip(
+fun WcsFilterChip(
     selected: Boolean,
     onSelectedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -52,7 +52,7 @@ fun HyaFilterChip(
             if (selected) {
                 {
                     Icon(
-                        imageVector = HyaIcons.Check,
+                        imageVector = WcsIcons.Check,
                         contentDescription = null,
                     )
                 }
@@ -68,13 +68,13 @@ fun HyaFilterChip(
                 selectedBorderColor = MaterialTheme.colorScheme.onBackground,
                 disabledBorderColor =
                     MaterialTheme.colorScheme.onBackground.copy(
-                        alpha = HyaChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
+                        alpha = WcsChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
                     ),
                 disabledSelectedBorderColor =
                     MaterialTheme.colorScheme.onBackground.copy(
-                        alpha = HyaChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
+                        alpha = WcsChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
                     ),
-                selectedBorderWidth = HyaChipDefaults.ChipBorderWidth,
+                selectedBorderWidth = WcsChipDefaults.ChipBorderWidth,
             ),
         colors =
             FilterChipDefaults.filterChipColors(
@@ -83,18 +83,18 @@ fun HyaFilterChip(
                 disabledContainerColor =
                     if (selected) {
                         MaterialTheme.colorScheme.onBackground.copy(
-                            alpha = HyaChipDefaults.DISABLED_CHIP_CONTAINER_ALPHA,
+                            alpha = WcsChipDefaults.DISABLED_CHIP_CONTAINER_ALPHA,
                         )
                     } else {
                         Color.Transparent
                     },
                 disabledLabelColor =
                     MaterialTheme.colorScheme.onBackground.copy(
-                        alpha = HyaChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
+                        alpha = WcsChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
                     ),
                 disabledLeadingIconColor =
                     MaterialTheme.colorScheme.onBackground.copy(
-                        alpha = HyaChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
+                        alpha = WcsChipDefaults.DISABLED_CHIP_CONTENT_ALPHA,
                     ),
                 selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 selectedLabelColor = MaterialTheme.colorScheme.onBackground,
@@ -106,9 +106,9 @@ fun HyaFilterChip(
 @Preview
 @Composable
 fun ChipPreview() {
-    HyaTheme {
-        HyaBackground(modifier = Modifier.size(80.dp, 20.dp)) {
-            HyaFilterChip(selected = true, onSelectedChange = {}) {
+    WcsTheme {
+        WcsBackground(modifier = Modifier.size(80.dp, 20.dp)) {
+            WcsFilterChip(selected = true, onSelectedChange = {}) {
                 Text("Chip")
             }
         }
@@ -118,7 +118,7 @@ fun ChipPreview() {
 /**
  * Now in Android chip default values.
  */
-object HyaChipDefaults {
+object WcsChipDefaults {
     // TODO: File bug
     // FilterChip default values aren't exposed via FilterChipDefaults
     const val DISABLED_CHIP_CONTAINER_ALPHA = 0.12f

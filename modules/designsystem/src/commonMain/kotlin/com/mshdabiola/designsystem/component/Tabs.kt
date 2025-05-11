@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -32,7 +32,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param text The text label content.
  */
 @Composable
-fun HyaTab(
+fun WcsTab(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -49,7 +49,7 @@ fun HyaTab(
             ProvideTextStyle(
                 value = style,
                 content = {
-                    Box(modifier = Modifier.padding(top = HyaTabDefaults.TabTopPadding)) {
+                    Box(modifier = Modifier.padding(top = WcsTabDefaults.TabTopPadding)) {
                         text()
                     }
                 },
@@ -63,11 +63,11 @@ fun HyaTab(
  *
  * @param selectedTabIndex The index of the currently selected tab.
  * @param modifier Modifier to be applied to the tab row.
- * @param tabs The tabs inside this tab row. Typically this will be multiple [HyaTab]s. Each element
+ * @param tabs The tabs inside this tab row. Typically this will be multiple [WcsTab]s. Each element
  * inside this lambda will be measured and placed evenly across the row, each taking up equal space.
  */
 @Composable
-fun HyaTabRow(
+fun WcsTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     tabs: @Composable () -> Unit,
@@ -91,11 +91,11 @@ fun HyaTabRow(
 @Preview
 @Composable
 fun TabsPreview() {
-    HyaTheme {
+    WcsTheme {
         val titles = listOf("Topics", "People")
-        HyaTabRow(selectedTabIndex = 0) {
+        WcsTabRow(selectedTabIndex = 0) {
             titles.forEachIndexed { index, title ->
-                HyaTab(
+                WcsTab(
                     selected = index == 0,
                     onClick = { },
                     text = { Text(text = title) },
@@ -105,6 +105,6 @@ fun TabsPreview() {
     }
 }
 
-object HyaTabDefaults {
+object WcsTabDefaults {
     val TabTopPadding = 7.dp
 }

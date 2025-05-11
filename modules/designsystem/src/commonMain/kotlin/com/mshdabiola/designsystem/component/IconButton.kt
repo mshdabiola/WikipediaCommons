@@ -12,8 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.mshdabiola.designsystem.icon.HyaIcons
-import com.mshdabiola.designsystem.theme.HyaTheme
+import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.designsystem.theme.WcsTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -29,7 +29,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param checkedIcon The icon content to show when checked.
  */
 @Composable
-fun HyaIconToggleButton(
+fun WcsIconToggleButton(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -51,7 +51,7 @@ fun HyaIconToggleButton(
                 disabledContainerColor =
                     if (checked) {
                         MaterialTheme.colorScheme.onBackground.copy(
-                            alpha = HyaIconButtonDefaults.DISABLED_ICON_BUTTON_CONTAINER_ALPHA,
+                            alpha = WcsIconButtonDefaults.DISABLED_ICON_BUTTON_CONTAINER_ALPHA,
                         )
                     } else {
                         Color.Transparent
@@ -65,19 +65,19 @@ fun HyaIconToggleButton(
 @Preview
 @Composable
 fun IconButtonPreview() {
-    HyaTheme {
-        HyaIconToggleButton(
+    WcsTheme {
+        WcsIconToggleButton(
             checked = true,
             onCheckedChange = { },
             icon = {
                 Icon(
-                    imageVector = HyaIcons.BookmarkBorder,
+                    imageVector = WcsIcons.BookmarkBorder,
                     contentDescription = null,
                 )
             },
             checkedIcon = {
                 Icon(
-                    imageVector = HyaIcons.Bookmark,
+                    imageVector = WcsIcons.Bookmark,
                     contentDescription = null,
                 )
             },
@@ -88,19 +88,19 @@ fun IconButtonPreview() {
 @Preview
 @Composable
 fun IconButtonPreviewUnchecked() {
-    HyaTheme {
-        HyaIconToggleButton(
+    WcsTheme {
+        WcsIconToggleButton(
             checked = false,
             onCheckedChange = { },
             icon = {
                 Icon(
-                    imageVector = HyaIcons.BookmarkBorder,
+                    imageVector = WcsIcons.BookmarkBorder,
                     contentDescription = null,
                 )
             },
             checkedIcon = {
                 Icon(
-                    imageVector = HyaIcons.Bookmark,
+                    imageVector = WcsIcons.Bookmark,
                     contentDescription = null,
                 )
             },
@@ -111,7 +111,7 @@ fun IconButtonPreviewUnchecked() {
 /**
  * Now in Android icon button default values.
  */
-object HyaIconButtonDefaults {
+object WcsIconButtonDefaults {
     // TODO: File bug
     // IconToggleButton disabled container alpha not exposed by IconButtonDefaults
     const val DISABLED_ICON_BUTTON_CONTAINER_ALPHA = 0.12f
