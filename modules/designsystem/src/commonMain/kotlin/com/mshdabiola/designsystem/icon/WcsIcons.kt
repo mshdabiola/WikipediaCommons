@@ -67,8 +67,6 @@ object WcsIcons {
     val Cancel = Icons.Rounded.Cancel
     val Domain = Icons.Rounded.Domain
 
-
-
     val Camera = Icons.Rounded.Camera
     val Cloud = Icons.Rounded.Cloud
     val CloudUpload = Icons.Rounded.CloudUpload
