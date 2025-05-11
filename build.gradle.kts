@@ -34,7 +34,7 @@ plugins {
 }
 
 moduleGraphConfig {
-    heading = "###  HydraulicApp Module Graph"
+    heading = "###  WikipediaCommons Module Graph"
     readmePath = "${rootDir}/FULLGRAPH.md"
     showFullPath = false
     setStyleByModuleType.set(true)

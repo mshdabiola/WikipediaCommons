@@ -1,4 +1,4 @@
-###  HydraulicApp Module Graph
+###  WikipediaCommons Module Graph
 
 ```mermaid
 %%{
