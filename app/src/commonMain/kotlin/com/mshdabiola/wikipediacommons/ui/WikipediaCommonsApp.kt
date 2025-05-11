@@ -66,11 +66,11 @@ import org.koin.core.annotation.KoinExperimentalAPI
     ExperimentalMaterial3Api::class,
 )
 @Composable
-fun WikipediaCommons() {
+fun WikipediaCommonsApp() {
     val windowAdaptiveInfo = currentWindowAdaptiveInfo()
 
     val appState =
-        rememberHydraulicAppState(
+        rememberWikipediaCommonsAppState(
             windowSizeClass = windowAdaptiveInfo.windowSizeClass,
         )
     val shouldShowGradientBackground = false

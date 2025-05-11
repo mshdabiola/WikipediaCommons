@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.createGraph
 import androidx.window.core.layout.WindowSizeClass
-import com.mshdabiola.wikipediacommons.ui.HydraulicAppState
+import com.mshdabiola.wikipediacommons.ui.WikipediaCommonsAppState
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
@@ -17,7 +17,7 @@ class HydraulicAppStateTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var state: HydraulicAppState
+    private lateinit var state: WikipediaCommonsAppState
 
     @Test
     fun currentDestination() =
@@ -36,7 +36,7 @@ class HydraulicAppStateTest {
                     }
                 state =
                     remember(navController) {
-                        HydraulicAppState(
+                        WikipediaCommonsAppState(
                             navController = navController,
                             coroutineScope = backgroundScope,
                             WindowSizeClass.compute(456f, 456f),

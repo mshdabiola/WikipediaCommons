@@ -14,7 +14,7 @@ import co.touchlab.kermit.platformLogWriter
 import com.mshdabiola.wikipediacommons.app.generated.resources.Res
 import com.mshdabiola.wikipediacommons.app.generated.resources.app_name
 import com.mshdabiola.wikipediacommons.di.appModule
-import com.mshdabiola.wikipediacommons.ui.WikipediaCommons
+import com.mshdabiola.wikipediacommons.ui.WikipediaCommonsApp
 import com.mshdabiola.ui.SplashScreen
 import kotlinx.browser.document
 import kotlinx.coroutines.delay
@@ -33,7 +33,7 @@ fun mainApp() {
             show.value = false
         }
         Box(Modifier.fillMaxSize()) {
-            WikipediaCommons()
+            WikipediaCommonsApp()
             if (show.value) {
                 SplashScreen(
                     appName = stringResource(Res.string.app_name),

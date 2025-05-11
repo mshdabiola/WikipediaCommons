@@ -20,17 +20,17 @@ import com.mshdabiola.main.navigation.Main
 import kotlinx.coroutines.CoroutineScope
 
 @Composable
-fun rememberHydraulicAppState(
+fun rememberWikipediaCommonsAppState(
     windowSizeClass: WindowSizeClass,
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavHostController = rememberNavController(),
-): HydraulicAppState {
+): WikipediaCommonsAppState {
     return remember(
         navController,
         coroutineScope,
         windowSizeClass,
     ) {
-        HydraulicAppState(
+        WikipediaCommonsAppState(
             navController,
             coroutineScope,
             windowSizeClass,
@@ -39,7 +39,7 @@ fun rememberHydraulicAppState(
 }
 
 @Stable
-class HydraulicAppState(
+class WikipediaCommonsAppState(
     val navController: NavHostController,
     val coroutineScope: CoroutineScope,
     val windowSizeClass: WindowSizeClass,
