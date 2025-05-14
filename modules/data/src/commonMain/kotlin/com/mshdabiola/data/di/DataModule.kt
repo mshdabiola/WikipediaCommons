@@ -12,16 +12,15 @@ import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 
- val dataModule=
-     module {
-         includes(databaseModule,datastoreModule, networkModule, analyticsModule)
-         singleOf(::RealINetworkRepository) bind INetworkRepository::class
-         singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
-         single { Dispatchers.IO } bind CoroutineDispatcher::class
-         singleOf(::RealModelRepository) bind NoteRepository::class
-     }
+val dataModule =
+    module {
+        includes(databaseModule, datastoreModule, networkModule, analyticsModule)
+        singleOf(::RealINetworkRepository) bind INetworkRepository::class
+        singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
+        single { Dispatchers.IO } bind CoroutineDispatcher::class
+        singleOf(::RealModelRepository) bind NoteRepository::class
+    }

@@ -132,7 +132,6 @@ fun WcsGradientBackground(
     }
 }
 
-
 @Preview
 @Composable
 fun BackgroundDefault() {
