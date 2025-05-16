@@ -86,7 +86,7 @@ fun WcsGradientBackground(
                     val offset =
                         size.height *
                             tan(
-                                Math.toRadians(11.06)
+                                radiansToDegrees(11.06)
                                     .toFloat(),
                             )
 
@@ -131,6 +131,8 @@ fun WcsGradientBackground(
         }
     }
 }
+
+expect fun radiansToDegrees(radians: Double): Double
 
 @Preview
 @Composable

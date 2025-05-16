@@ -73,35 +73,35 @@ kotlin {
     androidTarget()
     jvm()
 
-//    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-//    wasmJs {
-//        moduleName = "composeApp"
-//        browser {
-//            val rootDirPath = project.rootDir.path
-//            val projectDirPath = project.projectDir.path
-//            commonWebpackConfig {
-//                outputFileName = "composeApp.js"
-//                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
-//                    static = (static ?: mutableListOf()).apply {
-//                        // Serve sources to debug inside browser
-//                        add(rootDirPath)
-//                        add(projectDirPath)
-//                    }
-//                }
-//            }
-//        }
-//        binaries.executable()
-//    }
-//    @OptIn(ExperimentalKotlinGradlePluginApi::class)
-//    applyDefaultHierarchyTemplate {
-//        common {
-//            group("nonJs") {
-//                withAndroidTarget()
-//                // withIos()
-//                withJvm()
-//            }
-//        }
-//    }
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "composeApp"
+        browser {
+            val rootDirPath = project.rootDir.path
+            val projectDirPath = project.projectDir.path
+            commonWebpackConfig {
+                outputFileName = "composeApp.js"
+                devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                    static = (static ?: mutableListOf()).apply {
+                        // Serve sources to debug inside browser
+                        add(rootDirPath)
+                        add(projectDirPath)
+                    }
+                }
+            }
+        }
+        binaries.executable()
+    }
+    @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    applyDefaultHierarchyTemplate {
+        common {
+            group("nonJs") {
+                withAndroidTarget()
+                // withIos()
+                withJvm()
+            }
+        }
+    }
 
     sourceSets {
         val jvmMain by getting
@@ -134,15 +134,15 @@ kotlin {
             implementation(libs.androidx.compose.material3.adaptive.layout)
             implementation(libs.androidx.compose.material3.adaptive.navigation)
             implementation(compose.components.resources)
-            implementation(libs.kermit.koin)
+
 
         }
-//        val nonJsMain by getting{
-//            dependencies {
-//                implementation(libs.kermit.koin)
-//
-//            }
-//        }
+        val nonJsMain by getting{
+            dependencies {
+                implementation(libs.kermit.koin)
+
+            }
+        }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
