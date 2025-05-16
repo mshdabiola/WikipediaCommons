@@ -55,43 +55,36 @@ class AndroidRoomConventionPlugin : Plugin<Project> {
                 androidTarget()
                 jvm()
                 jvmToolchain(21)
-//                applyDefaultHierarchyTemplate {
-//                    common {
-//                        group("nonJs") {
-//                            withAndroidTarget()
-//                            // withIos()
-//                            withJvm()
-//                        }
-//                    }
-//                }
+                applyDefaultHierarchyTemplate {
+                    common {
+                        group("nonJs") {
+                            withAndroidTarget()
+                            // withIos()
+                            withJvm()
+                        }
+                    }
+                }
 
                 with(sourceSets) {
 
                     commonMain.dependencies {
                         implementation(project(":modules:model"))
 //                        implementation(libs.findLibrary("kotlinx.coroutines.core").get())
-                        implementation(libs.findLibrary("room.runtime").get())
-                        implementation(libs.findLibrary("room.ktx").get())
-                        implementation(libs.findLibrary("room.paging").get())
-//                            implementation(libs.findLibrary("paging.common").get())
-
-
-                        api(libs.findLibrary("sqlite.bundled").get())//sqlite-bundled
 
 
                     }
-//                    getByName("nonJsMain") {
-//                        this.dependencies {
-//                            implementation(libs.findLibrary("room.runtime").get())
-//                            implementation(libs.findLibrary("room.ktx").get())
-//                            implementation(libs.findLibrary("room.paging").get())
-////                            implementation(libs.findLibrary("paging.common").get())
-//
-//
-//                            api(libs.findLibrary("sqlite.bundled").get())//sqlite-bundled
-//                        }
-//
-//                    }
+                    getByName("nonJsMain") {
+                        this.dependencies {
+                            implementation(libs.findLibrary("room.runtime").get())
+                            implementation(libs.findLibrary("room.ktx").get())
+                            implementation(libs.findLibrary("room.paging").get())
+//                            implementation(libs.findLibrary("paging.common").get())
+
+
+                            api(libs.findLibrary("sqlite.bundled").get())//sqlite-bundled
+                        }
+
+                    }
                     jvmTest.dependencies {
                         implementation(project(":modules:testing"))
                     }
