@@ -1,14 +1,15 @@
 package com.mshdabiola.network.model
 
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Response(
+data class AllImageReponse(
     @SerialName("batchcomplete")
-    val batchcomplete: Boolean? = null,
+    val batchcomplete: Boolean,
     @SerialName("continue")
-    val continueX: Continue? = null,
+    val continueX: Continue,
     @SerialName("query")
-    val query: Query? = null,
+    val query: Query
 )

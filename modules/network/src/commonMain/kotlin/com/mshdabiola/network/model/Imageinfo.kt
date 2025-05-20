@@ -1,26 +1,21 @@
 package com.mshdabiola.network.model
 
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class Imageinfo(
+    @SerialName("canonicaltitle")
+    val canonicaltitle: String,
     @SerialName("descriptionshorturl")
-    val descriptionshorturl: String? = null,
+    val descriptionshorturl: String,
     @SerialName("descriptionurl")
-    val descriptionurl: String? = null,
-    @SerialName("mediatype")
-    val mediatype: String? = null,
+    val descriptionurl: String,
     @SerialName("mime")
-    val mime: String? = null,
-    @SerialName("timestamp")
-    val timestamp: String? = null,
+    val mime: String,
     @SerialName("url")
-    val url: String? = null,
+    val url: String,
     @SerialName("user")
-    val user: String? = null,
-    @SerialName("userid")
-    val userid: Int? = null,
-    @SerialName("sha1")
-    val id: String? = null,
+    val user: String
 )
