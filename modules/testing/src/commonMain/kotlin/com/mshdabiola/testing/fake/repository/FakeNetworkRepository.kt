@@ -1,12 +1,15 @@
 package com.mshdabiola.testing.fake.repository
 
-import com.mshdabiola.data.repository.INetworkRepository
+import com.mshdabiola.data.repository.IMediaRepository
+import com.mshdabiola.model.MainImage
+import com.mshdabiola.network.INetworkDataSource
 
-class FakeNetworkRepository : INetworkRepository {
-    override suspend fun get() {
-    }
+class FakeNetworkRepository : IMediaRepository {
 
-    override suspend fun gotoGoogle(): String {
-        return "got to google"
+    override suspend fun getAllMedia(
+        page: Int,
+        limit: Int,
+    ): List<MainImage> {
+        TODO("Not yet implemented")
     }
 }
