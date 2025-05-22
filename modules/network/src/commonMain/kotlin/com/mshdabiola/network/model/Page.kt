@@ -6,14 +6,22 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Page(
-    @SerialName("imageinfo")
-    val imageinfo: List<Imageinfo>,
-    @SerialName("imagerepository")
-    val imagerepository: String,
+    @SerialName("description")
+    val description: String? = null,
+    @SerialName("descriptionsource")
+    val descriptionsource: String? = null,
+    @SerialName("index")
+    val index: Int? = null,
     @SerialName("ns")
-    val ns: Int,
+    val ns: Int? = null,
     @SerialName("pageid")
-    val pageid: Int,
+    val pageid: Int? = null,
+    @SerialName("thumbnail")
+    val thumbnail: Thumbnail? = null,
     @SerialName("title")
-    val title: String
+    val title: String? = null,
+    @SerialName("imageinfo")
+    val imageinfo: List<Imageinfo?>? = null,
+    @SerialName("imagerepository")
+    val imagerepository: String? = null,
 )

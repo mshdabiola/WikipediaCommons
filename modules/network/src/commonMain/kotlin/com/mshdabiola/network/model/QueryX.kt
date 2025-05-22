@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Query(
+data class QueryX(
     @SerialName("pages")
-    val pages: List<Page?>? = null
+    val pages: List<PageX>?
 )
