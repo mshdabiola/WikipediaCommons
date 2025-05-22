@@ -1,17 +1,14 @@
 package com.mshdabiola.network
 
-import com.mshdabiola.network.model.Response
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.URLBuilder
 import io.ktor.http.URLProtocol
-import io.ktor.http.Url
 import io.ktor.http.parametersOf
 import kotlinx.serialization.json.Json
-import kotlin.random.Random
-import kotlin.random.nextULong
+import com.mshdabiola.network.model.AllImageResponse as Response
 
 internal class NetworkDataSource constructor(
     private val wikiClient: HttpClient,

@@ -1,6 +1,6 @@
 package com.mshdabiola.network
 
-import com.mshdabiola.network.model.Response
+import com.mshdabiola.network.model.AllImageResponse as Response
 
 interface INetworkDataSource {
     suspend fun getRecommendation(): List<String>

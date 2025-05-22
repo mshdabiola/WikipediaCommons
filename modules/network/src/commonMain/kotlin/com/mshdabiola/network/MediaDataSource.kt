@@ -1,6 +1,6 @@
 package com.mshdabiola.network
 
-import com.mshdabiola.network.model.AllImageReponse
+import com.mshdabiola.network.model.AllImageResponse
 import com.mshdabiola.network.model.Page
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -11,7 +11,7 @@ import io.ktor.http.parametersOf
 internal class MediaDataSource(
     private val client: HttpClient,
 ) : IMediaDataSource {
-    override suspend fun getAllImages(limit: Int, continuation: String): List<Page?> {
+    override suspend fun getAllImages(limit: Int, continuation: String): List<Page> {
 
 
         try {
@@ -22,7 +22,7 @@ internal class MediaDataSource(
                     "formatversion" to listOf("2"),
                     "generator" to listOf("random"),
                     "prop" to listOf("imageinfo"),
-                    "iiprop" to listOf("mediatype|mime|user|userid|url|timestamp|sha1"),
+                    "iiprop" to listOf("user|url|mime|canonicaltitle"),
                     "iilimit" to listOf("6"),
                     "grnlimit" to listOf(limit.toString()),
                     "grncontinue" to
@@ -36,7 +36,7 @@ internal class MediaDataSource(
 
             // Check the response status and parse the body
             if (response.status.isSuccess()) {
-                return response.body<AllImageReponse>().query.pages ?: emptyList()
+                return response.body<AllImageResponse>().query.pages
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body() // Get the error message body

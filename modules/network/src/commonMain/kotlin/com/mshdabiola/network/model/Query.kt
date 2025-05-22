@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Query(
     @SerialName("pages")
-    val pages: List<Page?>? = null
+    var pages: List<Page> = listOf()
 )

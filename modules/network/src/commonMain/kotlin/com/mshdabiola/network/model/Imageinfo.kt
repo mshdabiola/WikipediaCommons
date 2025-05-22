@@ -6,22 +6,16 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Imageinfo(
+    @SerialName("canonicaltitle")
+    var canonicaltitle: String = "",
     @SerialName("descriptionshorturl")
-    val descriptionshorturl: String? = null,
+    var descriptionshorturl: String = "",
     @SerialName("descriptionurl")
-    val descriptionurl: String? = null,
-    @SerialName("mediatype")
-    val mediatype: String? = null,
+    var descriptionurl: String = "",
     @SerialName("mime")
-    val mime: String? = null,
-    @SerialName("timestamp")
-    val timestamp: String? = null,
+    var mime: String = "",
     @SerialName("url")
-    val url: String? = null,
+    var url: String = "",
     @SerialName("user")
-    val user: String? = null,
-    @SerialName("userid")
-    val userid: Int? = null,
-    @SerialName("sha1")
-    val id :String?=null
+    var user: String = ""
 )
