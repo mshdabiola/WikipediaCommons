@@ -84,6 +84,7 @@ conveyor = "1.12"
 kermit = "2.0.5"
 slf4jSimple = "2.0.17"
 
+lazy-pagination-compose = "1.7.0"
 androidx-paging = "3.3.6"
 sqlite = "2.5.1"
 kotlinxCollectionImmutable = "0.3.8"
@@ -172,6 +173,7 @@ room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+lazyPaginationCompose = { module = "io.github.ahmad-hamwi:lazy-pagination-compose", version.ref = "lazy-pagination-compose" }
 
 
 
