@@ -25,6 +25,8 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -46,9 +48,13 @@ import com.mshdabiola.designsystem.component.scrollbar.rememberDraggableScroller
 import com.mshdabiola.designsystem.component.scrollbar.scrollbarState
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.designsystem.theme.WcsTheme
+import com.mshdabiola.model.MainImage
 import com.mshdabiola.model.Note
+import com.mshdabiola.ui.NoteCard
 import com.mshdabiola.ui.SharedContentPreview
 import com.mshdabiola.ui.noteItems
+import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
+import io.github.ahmad_hamwi.compose.pagination.PaginationState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -76,14 +82,15 @@ internal fun MainRoute(
 
     val feedNote = viewModel.notes.collectAsStateWithLifecycle()
 
-    MainScreen(
-        sharedTransitionScope = sharedTransitionScope,
-        animatedContentScope = animatedContentScope,
-        modifier = modifier,
-        mainState = feedNote.value,
-        navigateToDetail = navigateToDetail,
-        //   items = timeline,
-    )
+    Content(viewModel.paginationState)
+//    MainScreen(
+//        sharedTransitionScope = sharedTransitionScope,
+//        animatedContentScope = animatedContentScope,
+//        modifier = modifier,
+//        mainState = feedNote.value,
+//        navigateToDetail = navigateToDetail,
+//        //   items = timeline,
+//    )
 }
 
 @OptIn(
@@ -245,6 +252,39 @@ fun MainLight() {
                     animatedContentScope = animatedContentScope,
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun Content(paginationState: PaginationState<Int, MainImage>) {
+    // Or any other paginated composable
+    PaginatedLazyColumn(
+        paginationState = paginationState,
+        firstPageProgressIndicator = {
+            WcsLoadingWheel(
+                contentDesc = stringResource(Res.string.features_main_loading),
+            )
+        },
+        newPageProgressIndicator = {
+            WcsLoadingWheel(
+                contentDesc = stringResource(Res.string.features_main_loading),
+            )
+        },
+        firstPageErrorIndicator = { e -> Text(e.message.toString()) },
+        newPageErrorIndicator = { e -> Text(e.message.toString()) },
+        firstPageEmptyIndicator = {
+            Text(text = "No Data first")
+        },
+        newPageEmptyIndicator = {
+            Text(text = "No Data new")
+        },
+    ) {
+        itemsIndexed(
+            paginationState.allItems!!, // safe to access here
+        ) { _, note ->
+            // Item(value = item)
+           Text(text = note.canonicaltitle)
         }
     }
 }
