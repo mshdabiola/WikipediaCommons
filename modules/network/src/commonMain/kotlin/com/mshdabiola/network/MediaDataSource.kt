@@ -11,7 +11,7 @@ import io.ktor.http.parametersOf
 internal class MediaDataSource(
     private val client: HttpClient,
 ) : IMediaDataSource {
-    override suspend fun getAllImages(limit: Int, continuation: String): List<Page> {
+    override suspend fun getAllImages(limit: Int, continuation: String): List<Page?> {
 
 
         try {
@@ -36,7 +36,7 @@ internal class MediaDataSource(
 
             // Check the response status and parse the body
             if (response.status.isSuccess()) {
-                return response.body<AllImageReponse>().query.pages
+                return response.body<AllImageReponse>().query.pages ?: emptyList()
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body() // Get the error message body
