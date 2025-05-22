@@ -7,15 +7,18 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.http.isSuccess
 import io.ktor.http.parametersOf
+import io.ktor.http.plus
 
 internal class MediaDataSource(
     private val client: HttpClient,
 ) : IMediaDataSource {
+    var cont =""
     override suspend fun getAllImages(limit: Int, continuation: String): List<Page> {
 
 
         try {
-            val parameter =
+
+            var parameter =
                 parametersOf(
                     "action" to listOf("query"),
                     "format" to listOf("json"),
@@ -25,18 +28,25 @@ internal class MediaDataSource(
                     "iiprop" to listOf("user|url|mime|canonicaltitle"),
                     "iilimit" to listOf("6"),
                     "grnlimit" to listOf(limit.toString()),
-                    "grncontinue" to
-                            listOf(
-                                continuation
-                                    .ifBlank { "0.573993798555|0.57399474331|62056655|0" },
-                            ),
+//                    "grncontinue" to
+//                            listOf(
+//                                continuation
+//                                    .ifBlank { "0.573993798555|0.57399474331|62056655|0" },
+//                            ),
                     "continue" to listOf("grncontinue||"),
+
                 )
+            if (continuation.isNotBlank()){
+              parameter=  parameter.plus(parametersOf(Pair("grncontinue",listOf(cont))))
+                println(parameter)
+            }
             val response = client.get(getUrl(parameter))
 
             // Check the response status and parse the body
             if (response.status.isSuccess()) {
-                return response.body<AllImageResponse>().query.pages
+                val allImageResponse: AllImageResponse = response.body()
+                cont = allImageResponse.continueX.grncontinue
+                return allImageResponse.query.pages
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body() // Get the error message body
