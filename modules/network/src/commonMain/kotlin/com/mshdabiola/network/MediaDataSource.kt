@@ -25,7 +25,7 @@ internal class MediaDataSource(
                     "formatversion" to listOf("2"),
                     "generator" to listOf("random"),
                     "prop" to listOf("imageinfo"),
-                    "iiprop" to listOf("user|url|mime|canonicaltitle"),
+                    "iiprop" to listOf("user|url|mime|canonicaltitle|sha1"),
                     "iilimit" to listOf("6"),
                     "grnlimit" to listOf(limit.toString()),
 //                    "grncontinue" to

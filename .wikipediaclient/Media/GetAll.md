@@ -1,7 +1,7 @@
 ```toml
 name = 'GetAll'
 method = 'GET'
-url = '{{BaseUrl}}?grncontinue=0.648146979471|0.648147361682|115268110|0&action=query&format=json&prop=imageinfo&continue=grncontinue||&generator=random&formatversion=2&iiprop=user|url|mime|canonicaltitle&grnlimit=20'
+url = '{{BaseUrl}}?grncontinue=0.648146979471|0.648147361682|115268110|0&action=query&format=json&prop=imageinfo&continue=grncontinue||&generator=random&formatversion=2&iiprop=user|url|mime|canonicaltitle|sha1&grnlimit=20'
 sortWeight = 16000000
 id = '03a49b8f-df71-45ef-a2c6-d27fdce2c24d'
 
@@ -35,7 +35,7 @@ value = '2'
 
 [[queryParams]]
 key = 'iiprop'
-value = 'user|url|mime|canonicaltitle'
+value = 'user|url|mime|canonicaltitle|sha1'
 
 [[queryParams]]
 key = 'grnlimit'

@@ -18,6 +18,7 @@ fun Imageinfo.toMainImage() = MainImage(
     descriptionshorturl,
     descriptionurl,
     mime,
+    sha1,
     url,
     user
 )

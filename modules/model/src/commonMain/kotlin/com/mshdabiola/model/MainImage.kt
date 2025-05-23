@@ -6,6 +6,7 @@ data class MainImage(
     val descriptionshorturl: String,
     val descriptionurl: String,
     val mime: String,
+    val sha1: String,
     val url: String,
     val user: String
 )

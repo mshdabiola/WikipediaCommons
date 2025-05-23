@@ -14,6 +14,8 @@ data class Imageinfo(
     var descriptionurl: String = "",
     @SerialName("mime")
     var mime: String = "",
+    @SerialName("sha1")
+    var sha1: String = "",
     @SerialName("url")
     var url: String = "",
     @SerialName("user")
