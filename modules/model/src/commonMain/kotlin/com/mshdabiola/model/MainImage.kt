@@ -2,9 +2,7 @@ package com.mshdabiola.model
 
 
 data class MainImage(
-    val canonicaltitle: String,
-    val descriptionshorturl: String,
-    val descriptionurl: String,
+    val title: String,
     val mime: String,
     val sha1: String,
     val url: String,
