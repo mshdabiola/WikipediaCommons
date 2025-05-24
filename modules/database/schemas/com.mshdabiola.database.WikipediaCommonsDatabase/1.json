@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "dd5e9b1516b6e6781a761b6509c3bd8c",
+    "identityHash": "936dc3ce190585bebafd4a8b46c3ed37",
     "entities": [
       {
         "tableName": "note_table",
@@ -104,11 +104,59 @@
             "id"
           ]
         }
+      },
+      {
+        "tableName": "main_image_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`title` TEXT NOT NULL, `mime` TEXT NOT NULL, `sha1` TEXT NOT NULL, `url` TEXT NOT NULL, `user` TEXT NOT NULL, `page` INTEGER NOT NULL, PRIMARY KEY(`sha1`))",
+        "fields": [
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mime",
+            "columnName": "mime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sha1",
+            "columnName": "sha1",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "user",
+            "columnName": "user",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "page",
+            "columnName": "page",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "sha1"
+          ]
+        }
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dd5e9b1516b6e6781a761b6509c3bd8c')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '936dc3ce190585bebafd4a8b46c3ed37')"
     ]
   }
 }
