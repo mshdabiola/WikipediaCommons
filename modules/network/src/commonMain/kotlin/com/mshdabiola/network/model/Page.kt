@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Page(
+internal data class Page(
     @SerialName("imageinfo")
     var imageinfo: List<Imageinfo> = listOf(),
     @SerialName("imagerepository")

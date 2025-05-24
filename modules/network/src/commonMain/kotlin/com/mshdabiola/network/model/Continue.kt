@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Continue(
+internal data class Continue(
     @SerialName("continue")
     var continueX: String = "",
     @SerialName("grncontinue")

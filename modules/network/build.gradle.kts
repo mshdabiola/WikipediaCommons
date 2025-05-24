@@ -24,6 +24,7 @@ kotlin {
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.serialization)
                 implementation(libs.ktor.client.resources)
+                implementation(projects.modules.model)
             }
         }
         val nonJsMain by getting {

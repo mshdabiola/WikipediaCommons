@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Imageinfo(
+internal data class Imageinfo(
     @SerialName("canonicaltitle")
     var canonicaltitle: String = "",
     @SerialName("descriptionshorturl")

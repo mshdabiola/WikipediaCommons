@@ -1,7 +1,8 @@
 package com.mshdabiola.network
 
+import com.mshdabiola.model.MainImage
 import com.mshdabiola.network.model.AllImageResponse
-import com.mshdabiola.network.model.Page
+import com.mshdabiola.network.model.toMainImage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
@@ -13,7 +14,7 @@ internal class MediaDataSource(
     private val client: HttpClient,
 ) : IMediaDataSource {
     var cont =""
-    override suspend fun getAllImages(limit: Int, continuation: String): List<Page> {
+    override suspend fun getAllImages(limit: Int, continuation: String): List<MainImage> {
 
 
         try {
@@ -37,7 +38,8 @@ internal class MediaDataSource(
 
                 )
             if (continuation.isNotBlank()){
-              parameter=  parameter.plus(parametersOf(Pair("grncontinue",listOf(cont))))
+              parameter=  parameter.plus(parametersOf(
+                  Pair("grncontinue",listOf(cont))))
                 println(parameter)
             }
             val response = client.get(getUrl(parameter))
@@ -46,7 +48,15 @@ internal class MediaDataSource(
             if (response.status.isSuccess()) {
                 val allImageResponse: AllImageResponse = response.body()
                 cont = allImageResponse.continueX.grncontinue
-                return allImageResponse.query.pages
+                return allImageResponse
+                    .query
+                    .pages
+                    .map { it.imageinfo }
+                    .flatten()
+                    .filter { it.mime.endsWith("jpeg")
+                            ||it.mime.endsWith("jpg")
+                            || it.mime.endsWith("png")  }
+                    .map { it.toMainImage() }
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body() // Get the error message body
@@ -58,4 +68,5 @@ internal class MediaDataSource(
             throw e // Re-throw the exception or handle it as needed
         }
     }
+
 }

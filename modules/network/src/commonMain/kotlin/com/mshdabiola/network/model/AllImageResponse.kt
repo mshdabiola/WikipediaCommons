@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class AllImageResponse(
+internal data class AllImageResponse(
     @SerialName("batchcomplete")
     var batchcomplete: Boolean = false,
     @SerialName("continue")

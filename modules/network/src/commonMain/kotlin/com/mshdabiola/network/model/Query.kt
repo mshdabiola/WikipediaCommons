@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Query(
+internal data class Query(
     @SerialName("pages")
     var pages: List<Page> = listOf()
 )
