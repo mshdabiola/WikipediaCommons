@@ -18,6 +18,10 @@ val daoModules =
         single {
             get<WikipediaCommonsDatabase>().getImageDao()
         }
+
+        single {
+            get<WikipediaCommonsDatabase>().getMainImageDao()
+        }
     }
 
 fun getRoomDatabase(builder: RoomDatabase.Builder<WikipediaCommonsDatabase>): WikipediaCommonsDatabase {
