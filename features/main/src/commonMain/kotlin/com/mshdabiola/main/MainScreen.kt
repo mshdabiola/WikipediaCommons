@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -50,7 +49,6 @@ import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.model.Note
-import com.mshdabiola.ui.NoteCard
 import com.mshdabiola.ui.SharedContentPreview
 import com.mshdabiola.ui.noteItems
 import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
@@ -284,7 +282,7 @@ fun Content(paginationState: PaginationState<Int, MainImage>) {
             paginationState.allItems!!, // safe to access here
         ) { _, note ->
             // Item(value = item)
-           Text(text = note.canonicaltitle)
+           Text(text = note.title)
         }
     }
 }
