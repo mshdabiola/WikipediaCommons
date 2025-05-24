@@ -15,7 +15,7 @@ import com.mshdabiola.database.model.NoteEntity
 
 // fun createDatabase(): MusicDatabase {     return Room. inMemoryDatabaseBuilder<MusicDatabase>(         factory = MusicDatabaseConstructor::initialize     ).build() }
 @Suppress("EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
-expect object SkeletonsDatabaseCtor : RoomDatabaseConstructor<SkeletonDatabase>
+expect object WikipediaCommonsDatabaseCtor : RoomDatabaseConstructor<WikipediaCommonsDatabase>
 
 @Database(
     entities = [NoteEntity::class, ImageEntity::class],
@@ -27,8 +27,8 @@ expect object SkeletonsDatabaseCtor : RoomDatabaseConstructor<SkeletonDatabase>
 //    ,
     exportSchema = true,
 )
-@ConstructedBy(SkeletonsDatabaseCtor::class) // NEW
-abstract class SkeletonDatabase : RoomDatabase() {
+@ConstructedBy(WikipediaCommonsDatabaseCtor::class) // NEW
+abstract class WikipediaCommonsDatabase : RoomDatabase() {
     abstract fun getNoteDao(): NoteDao
 
     abstract fun getImageDao(): ImageDao
