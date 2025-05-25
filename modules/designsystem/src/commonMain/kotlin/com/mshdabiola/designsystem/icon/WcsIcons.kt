@@ -32,6 +32,7 @@ import androidx.compose.material.icons.rounded.LocalLibrary
 import androidx.compose.material.icons.rounded.LocationOn
 import androidx.compose.material.icons.rounded.Mail
 import androidx.compose.material.icons.rounded.Map
+import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.material.icons.rounded.Pages
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Photo
@@ -44,6 +45,7 @@ import androidx.compose.material.icons.rounded.ViewDay
 import androidx.compose.material.icons.rounded.Wallpaper
 
 object WcsIcons {
+    val Menu = Icons.Rounded.Menu
     val Stairs = Icons.Rounded.Stairs
     val LocalLibrary = Icons.Rounded.LocalLibrary
     val Add = Icons.Rounded.Add
