@@ -11,5 +11,5 @@ data class MainImageEntity(
     val sha1: String,
     val url: String,
     val user: String,
-    val page:Int
+    val page: Int,
 )

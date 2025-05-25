@@ -4,7 +4,6 @@
 
 package com.mshdabiola.database.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
@@ -22,5 +21,5 @@ interface MainImageDao {
     suspend fun clearAll()
 
     @Query("SELECT * FROM main_image_table WHERE page = :page")
-    suspend fun getByPage(page:Int):List<MainImageEntity>
+    suspend fun getByPage(page: Int): List<MainImageEntity>
 }
