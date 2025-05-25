@@ -3,12 +3,10 @@ package com.mshdabiola.network
 import java.io.File
 import java.nio.charset.Charset
 import kotlin.io.readText
-import kotlin.text.trim
-
-// Example usage in a test function:
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
+import kotlin.text.trim
 
 fun readFileFromTestResources(fileName: String): String? {
     return try {
@@ -35,7 +33,6 @@ fun readFileFromTestResources(fileName: String): String? {
 }
 
 class ResourceReadingTest {
-
     @Test
     fun testReadingExampleFile() {
         val fileContent = readFileFromTestResources("test.json")

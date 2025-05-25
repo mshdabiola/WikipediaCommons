@@ -13,12 +13,13 @@ import io.ktor.http.plus
 internal class MediaDataSource(
     private val client: HttpClient,
 ) : IMediaDataSource {
-    var cont =""
-    override suspend fun getAllImages(limit: Int, continuation: String): List<MainImage> {
+    var cont = ""
 
-
+    override suspend fun getAllImages(
+        limit: Int,
+        continuation: String,
+    ): List<MainImage> {
         try {
-
             var parameter =
                 parametersOf(
                     "action" to listOf("query"),
@@ -35,11 +36,14 @@ internal class MediaDataSource(
 //                                    .ifBlank { "0.573993798555|0.57399474331|62056655|0" },
 //                            ),
                     "continue" to listOf("grncontinue||"),
-
                 )
-            if (continuation.isNotBlank()){
-              parameter=  parameter.plus(parametersOf(
-                  Pair("grncontinue",listOf(cont))))
+            if (continuation.isNotBlank()) {
+                parameter =
+                    parameter.plus(
+                        parametersOf(
+                            Pair("grncontinue", listOf(cont)),
+                        ),
+                    )
                 println(parameter)
             }
             val response = client.get(getUrl(parameter))
@@ -53,9 +57,11 @@ internal class MediaDataSource(
                     .pages
                     .map { it.imageinfo }
                     .flatten()
-                    .filter { it.mime.endsWith("jpeg")
-                            ||it.mime.endsWith("jpg")
-                            || it.mime.endsWith("png")  }
+                    .filter {
+                        it.mime.endsWith("jpeg") ||
+                            it.mime.endsWith("jpg") ||
+                            it.mime.endsWith("png")
+                    }
                     .map { it.toMainImage() }
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
@@ -68,5 +74,4 @@ internal class MediaDataSource(
             throw e // Re-throw the exception or handle it as needed
         }
     }
-
 }

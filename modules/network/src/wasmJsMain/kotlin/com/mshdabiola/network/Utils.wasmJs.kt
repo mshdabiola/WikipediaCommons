@@ -1,3 +1,3 @@
 package com.mshdabiola.network
 
-actual const val commonHost: String=""
+actual const val BASE_URL_HOST: String = ""

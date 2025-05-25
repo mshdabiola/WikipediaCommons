@@ -1,6 +1,5 @@
 package com.mshdabiola.network.model
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,5 +10,5 @@ internal data class AllImageResponse(
     @SerialName("continue")
     var continueX: Continue = Continue(),
     @SerialName("query")
-    var query: Query = Query()
+    var query: Query = Query(),
 )

@@ -2,15 +2,14 @@ package com.mshdabiola.network.model
 
 import com.mshdabiola.model.MainImage
 
-
-internal fun Imageinfo.toMainImage() = MainImage(
-    cleanImageTitle(canonicaltitle),
-    mime,
-    sha1,
-    url,
-    user
-)
-
+internal fun Imageinfo.toMainImage() =
+    MainImage(
+        cleanImageTitle(canonicaltitle),
+        mime,
+        sha1,
+        url,
+        user,
+    )
 
 private fun cleanImageTitle(title: String): String {
     var cleanedTitle = title

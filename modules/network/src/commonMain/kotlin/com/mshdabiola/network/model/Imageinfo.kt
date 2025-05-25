@@ -1,6 +1,5 @@
 package com.mshdabiola.network.model
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -19,5 +18,5 @@ internal data class Imageinfo(
     @SerialName("url")
     var url: String = "",
     @SerialName("user")
-    var user: String = ""
+    var user: String = "",
 )

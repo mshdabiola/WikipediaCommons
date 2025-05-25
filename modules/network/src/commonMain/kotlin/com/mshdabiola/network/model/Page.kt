@@ -1,6 +1,5 @@
 package com.mshdabiola.network.model
 
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -15,5 +14,5 @@ internal data class Page(
     @SerialName("pageid")
     var pageid: Int = 0,
     @SerialName("title")
-    var title: String = ""
+    var title: String = "",
 )

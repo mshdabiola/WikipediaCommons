@@ -2,7 +2,6 @@ package com.mshdabiola.network.di
 
 import com.mshdabiola.network.IMediaDataSource
 import com.mshdabiola.network.MediaDataSource
-import io.ktor.util.network.NetworkAddress
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
