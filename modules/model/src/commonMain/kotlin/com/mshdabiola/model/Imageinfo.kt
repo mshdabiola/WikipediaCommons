@@ -1,8 +1,6 @@
 package com.mshdabiola.model
 
-
-
-data class Image(
+data class Imageinfo(
     val descriptionShortUrl: String,
     val descriptionUrl: String,
     val mediaType: String,
@@ -11,5 +9,5 @@ data class Image(
     val url: String,
     val user: String,
     val userid: Int,
-    val id :String
+    val id: String,
 )
