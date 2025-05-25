@@ -6,7 +6,6 @@ import com.mshdabiola.database.dao.MainImageDao
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.network.IMediaDataSource
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -20,7 +19,6 @@ class RealMediaRepository(
         limit: Int,
     ): List<MainImage> {
         return withContext(ioDispatcher) {
-
             val imagesFromDatabase = getImagesFromDatabase(page)
 
             if (imagesFromDatabase.isNotEmpty()) {
@@ -28,20 +26,21 @@ class RealMediaRepository(
                 return@withContext imagesFromDatabase
             }
 
-
-
             // Fetch from network
             val networkImages = mediaDataSource.getAllImages(limit)
 
             // Save to database
-            saveImagesToDatabase(networkImages,page)
+            saveImagesToDatabase(networkImages, page)
 
             // Return network results
             networkImages
         }
     }
 
-    private suspend fun saveImagesToDatabase(images: List<MainImage>,page:Int) {
+    private suspend fun saveImagesToDatabase(
+        images: List<MainImage>,
+        page: Int,
+    ) {
         withContext(ioDispatcher) {
             val imageEntities = images.map { it.asMainImageEntity(page) }
             mainImageDao.insertAll(imageEntities)
