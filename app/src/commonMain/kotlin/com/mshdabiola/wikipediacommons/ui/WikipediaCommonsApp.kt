@@ -49,7 +49,7 @@ import com.mshdabiola.model.ThemeBrand
 import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.wikipediacommons.MainActivityUiState
 import com.mshdabiola.wikipediacommons.MainAppViewModel
-import com.mshdabiola.wikipediacommons.navigation.HydraulicAppNavHost
+import com.mshdabiola.wikipediacommons.navigation.WikipediaCommonsNavHost
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -137,7 +137,7 @@ fun WikipediaCommonsApp() {
                                             WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                         ),
                                 ) {
-                                    HydraulicAppNavHost(
+                                    WikipediaCommonsNavHost(
                                         appState = appState,
                                         onShowSnackbar = { message, action ->
                                             snackbarHostState.showSnackbar(
