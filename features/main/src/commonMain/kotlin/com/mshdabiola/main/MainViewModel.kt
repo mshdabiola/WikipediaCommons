@@ -22,6 +22,15 @@ class MainViewModel(
     modelRepository: NoteRepository,
     private val mediaRepository: IMediaRepository,
 ) : ViewModel() {
+    val bookmarkSet: StateFlow<Set<String>> =
+        mediaRepository
+            .bookmarkSet
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptySet(),
+            )
+
     val paginationState =
         PaginationState<Int, MainImage>(
             initialPageKey = 1,
@@ -46,6 +55,12 @@ class MainViewModel(
             } catch (e: Exception) {
                 paginationState.setError(e)
             }
+        }
+    }
+
+    fun toggleBookmark(id: String) {
+        viewModelScope.launch {
+            mediaRepository.toggleBookmark(id)
         }
     }
 

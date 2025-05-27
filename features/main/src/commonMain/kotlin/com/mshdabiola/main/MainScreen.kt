@@ -81,15 +81,19 @@ internal fun MainRoute(
     val viewModel: MainViewModel = koinViewModel()
 
     val feedNote = viewModel.notes.collectAsStateWithLifecycle()
+    val bookmarkedIds = viewModel.bookmarkSet.collectAsStateWithLifecycle()
 
     MainScreen(
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
         modifier = modifier,
         paginationState = viewModel.paginationState,
+        bookmarkedIds = bookmarkedIds.value,
         onImageClick = {
         },
-        onBookmarkClick = {},
+        onBookmarkClick = {
+            viewModel.toggleBookmark(it)
+        },
         onSearchClick = {},
         onMenuClick = {},
     )
@@ -105,10 +109,11 @@ internal fun MainScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
     paginationState: PaginationState<Int, MainImage>,
-    onImageClick: (String) -> Unit,
-    onBookmarkClick: (String) -> Unit,
-    onSearchClick: () -> Unit,
-    onMenuClick: () -> Unit,
+    bookmarkedIds: Set<String> = emptySet(),
+    onImageClick: (String) -> Unit = {},
+    onBookmarkClick: (String) -> Unit = {},
+    onSearchClick: () -> Unit = {},
+    onMenuClick: () -> Unit = {},
 ) {
     Column(
         modifier =
@@ -194,7 +199,7 @@ internal fun MainScreen(
             items(items = paginationState.allItems!!) { image ->
                 ImageCard(
                     image = image,
-                    isBookmarked = false,
+                    isBookmarked = image.sha1 in bookmarkedIds,
                     onClick = { onImageClick(image.sha1) },
                     onBookmarkClick = { onBookmarkClick(image.sha1) },
                 )
