@@ -1,6 +1,7 @@
 package: name='com.mshdabiola.wikipediacommons.foss' versionCode='1' versionName='0.0.1' platformBuildVersionName='15' platformBuildVersionCode='35' compileSdkVersion='35' compileSdkVersionCodename='15'
 minSdkVersion:'24'
 targetSdkVersion:'35'
+uses-permission: name='android.permission.INTERNET'
 uses-permission: name='android.permission.WRITE_EXTERNAL_STORAGE'
 uses-permission: name='android.permission.READ_PHONE_STATE'
 uses-permission: name='android.permission.READ_EXTERNAL_STORAGE'
