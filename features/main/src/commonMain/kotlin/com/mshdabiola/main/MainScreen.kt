@@ -8,7 +8,6 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -143,10 +142,9 @@ internal fun MainScreen(
             },
             newPageProgressIndicator = {
                 Row(
-                    modifier= Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-
+                    horizontalArrangement = Arrangement.Center,
                 ) {
                     WcsLoadingWheel(
                         contentDesc = stringResource(Res.string.features_main_loading),
@@ -167,7 +165,7 @@ internal fun MainScreen(
                     Text(e.message ?: "Error occur")
                     WcsButton(onClick = {
                         paginationState.retryLastFailedRequest()
-                    }){
+                    }) {
                         Text("Retry")
                     }
                 }
@@ -176,7 +174,7 @@ internal fun MainScreen(
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         e.message ?: "Error occur",
