@@ -1,6 +1,7 @@
 
 import com.android.build.api.variant.ApplicationAndroidComponentsExtension
 import com.google.firebase.crashlytics.buildtools.gradle.CrashlyticsExtension
+import com.google.firebase.perf.plugin.FirebasePerfExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
@@ -14,7 +15,9 @@ class AndroidApplicationFirebaseConventionPlugin : Plugin<Project> {
                 apply("com.google.firebase.crashlytics")
             }
 
-
+            extensions.configure<FirebasePerfExtension> {
+                setInstrumentationEnabled(false)
+            }
             extensions.configure<ApplicationAndroidComponentsExtension> {
                 finalizeDsl {
                     it.buildTypes.forEach { buildType ->
