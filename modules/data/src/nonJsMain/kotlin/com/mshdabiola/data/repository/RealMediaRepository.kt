@@ -3,17 +3,28 @@ package com.mshdabiola.data.repository
 import com.mshdabiola.data.model.asMainImage
 import com.mshdabiola.data.model.asMainImageEntity
 import com.mshdabiola.database.dao.MainImageDao
+import com.mshdabiola.datastore.Store
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.network.IMediaDataSource
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class RealMediaRepository(
     private val mediaDataSource: IMediaDataSource,
     private val mainImageDao: MainImageDao,
+    private val store: Store,
     private val ioDispatcher: CoroutineDispatcher,
 ) : IMediaRepository {
+    override val bookmarkSet: Flow<Set<String>>
+        get() =
+            store
+                .userData
+                .map { it.bookmarkSet }
+                .flowOn(ioDispatcher)
+
     override suspend fun getAllMedia(
         page: Int,
         limit: Int,
@@ -34,6 +45,21 @@ class RealMediaRepository(
 
             // Return network results
             networkImages
+        }
+    }
+
+    override suspend fun toggleBookmark(id: String) {
+        withContext(ioDispatcher) {
+            store.updateUserData {
+                it.copy(
+                    bookmarkSet =
+                        if (id in it.bookmarkSet) {
+                            it.bookmarkSet - id
+                        } else {
+                            it.bookmarkSet + id
+                        },
+                )
+            }
         }
     }
 
