@@ -159,18 +159,30 @@ jobs:
       - name: Generate coverage reports for Jvm
         run: ./gradlew koverXmlReportJvm; ./gradlew koverHtmlReportJvm   #koverHtmlReportJvm
 
-      #      - name: Add coverage report to PR
-      #        id: kover
-      #        uses: mi-kas/kover-report@v1
-      #        with:
-      #          path: |
-      #            ${{ github.workspace }}/modules/analytics/build/reports/kover/reportJvm.xml
-      #
-      #          title: Code Coverage
-      #          update-comment: true
-      #          min-coverage-overall: 40
-      #          min-coverage-changed-files: 60
-      #          token: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Add coverage report to PR
+#        id: kover
+#        uses: mi-kas/kover-report@v1
+#        with:
+#          path: |
+#            ${{ github.workspace }}/modules/analytics/build/reports/kover/reportJvm.xml
+#
+#          title: Code Coverage
+#          update-comment: true
+#          min-coverage-overall: 40
+#          min-coverage-changed-files: 60
+#          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: stevenleadbeater/kotlin-kover-action@v1.0.3
+        id: kover-tests
+        with:
+            coverage-threshold: 80
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+            proxy-url: https://add-pr-comment-proxy-94idvmwyie-uc.a.run.app
+      - name: Check coverage
+        if: ${{(steps.kover-tests.outputs.line-coverage) < 40}}
+        shell: bash
+        run: exit "Line coverage expected to be > 40 but was ${{steps.kover-tests.outputs.line-coverage}}"
+
 
       - name: Upload local coverage reports (XML + HTML) (only API 30)
         uses: actions/upload-artifact@v4
