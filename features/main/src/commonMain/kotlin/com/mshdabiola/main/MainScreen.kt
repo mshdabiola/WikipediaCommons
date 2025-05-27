@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -64,6 +65,7 @@ import wikipediacommons.features.main.generated.resources.features_main_empty_de
 import wikipediacommons.features.main.generated.resources.features_main_empty_error
 import wikipediacommons.features.main.generated.resources.features_main_img_empty_bookmarks
 import wikipediacommons.features.main.generated.resources.features_main_loading
+import wikipediacommons.features.main.generated.resources.features_main_photo
 
 // import org.koin.androidx.compose.koinViewModel
 
@@ -141,7 +143,10 @@ internal fun MainScreen(
             },
             newPageProgressIndicator = {
                 Row(
+                    modifier= Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+
                 ) {
                     WcsLoadingWheel(
                         contentDesc = stringResource(Res.string.features_main_loading),
@@ -159,16 +164,22 @@ internal fun MainScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Icon(WcsIcons.Info, contentDescription = null)
-                    Text(e.message.toString())
+                    Text(e.message ?: "Error occur")
+                    WcsButton(onClick = {
+                        paginationState.retryLastFailedRequest()
+                    }){
+                        Text("Retry")
+                    }
                 }
             },
             newPageErrorIndicator = { e ->
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        e.message.toString(),
+                        e.message ?: "Error occur",
                         maxLines = 1,
                     )
                     WcsButton(onClick = { paginationState.retryLastFailedRequest() }) {
@@ -316,7 +327,7 @@ fun ImageCard(
                 contentScale = ContentScale.Crop,
                 placeholder =
                     painterResource(
-                        Res.drawable.features_main_img_empty_bookmarks,
+                        Res.drawable.features_main_photo,
                     ),
                 //                error = painterResource(id = R.drawable.ic_launcher_foreground),
                 // Replace with your error image
@@ -333,6 +344,7 @@ fun ImageCard(
                         text = image.title,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
+                        maxLines = 1,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
