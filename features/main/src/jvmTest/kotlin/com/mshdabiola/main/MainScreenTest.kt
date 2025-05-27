@@ -4,9 +4,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.mshdabiola.data.model.Result
 import com.mshdabiola.model.MainImage
-import com.mshdabiola.testing.fake.notes
 import com.mshdabiola.ui.SharedContentPreview
 import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
 import org.junit.Rule
