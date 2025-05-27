@@ -14,7 +14,10 @@ import com.mshdabiola.data.model.Result
 import com.mshdabiola.designsystem.DevicePreviews
 import com.mshdabiola.designsystem.theme.darkDefaultScheme
 import com.mshdabiola.designsystem.theme.lightDefaultScheme
+import com.mshdabiola.model.MainImage
 import com.mshdabiola.testing.fake.notes
+import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
+
 import com.mshdabiola.ui.SharedContentPreview
 
 class ScreenScreenshotTests {
@@ -23,13 +26,25 @@ class ScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun LoadingLight() {
+        val paginationState =
+            rememberPaginationState<Int, MainImage>(
+                initialPageKey = 1,
+                onRequestPage = {
+                    this.appendPage(sampleImages, it + 1)
+                },
+            )
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
                 SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                     MainScreen(
-                        mainState = Result.Loading,
+                        modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        paginationState = paginationState,
+                        onImageClick = {},
+                        onBookmarkClick = {},
+                        onSearchClick = {},
+                        onMenuClick = { },
                     )
                 }
             }
@@ -40,13 +55,25 @@ class ScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun LoadingDark() {
+        val paginationState =
+            rememberPaginationState<Int, MainImage>(
+                initialPageKey = 1,
+                onRequestPage = {
+                    this.appendPage(sampleImages, it + 1)
+                },
+            )
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
                 SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                     MainScreen(
-                        mainState = Result.Loading,
+                        modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        paginationState = paginationState,
+                        onImageClick = {},
+                        onBookmarkClick = {},
+                        onSearchClick = {},
+                        onMenuClick = { },
                     )
                 }
             }
@@ -57,16 +84,25 @@ class ScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun MainLight() {
+        val paginationState =
+            rememberPaginationState<Int, MainImage>(
+                initialPageKey = 1,
+                onRequestPage = {
+                    this.appendPage(sampleImages, it + 1)
+                },
+            )
         MaterialTheme(colorScheme = lightDefaultScheme) {
             Surface {
                 SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                     MainScreen(
                         modifier = Modifier.fillMaxSize(),
-                        mainState = Result.Success(
-                            notes,
-                        ),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        paginationState = paginationState,
+                        onImageClick = {},
+                        onBookmarkClick = {},
+                        onSearchClick = {},
+                        onMenuClick = { },
                     )
                 }
             }
@@ -77,15 +113,25 @@ class ScreenScreenshotTests {
     @DevicePreviews
     @Composable
     fun MainDark() {
+        val paginationState =
+            rememberPaginationState<Int, MainImage>(
+                initialPageKey = 1,
+                onRequestPage = {
+                    this.appendPage(sampleImages, it + 1)
+                },
+            )
         MaterialTheme(colorScheme = darkDefaultScheme) {
             Surface {
                 SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                     MainScreen(
-                        mainState = Result.Success(
-                            notes,
-                        ),
+                        modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        paginationState = paginationState,
+                        onImageClick = {},
+                        onBookmarkClick = {},
+                        onSearchClick = {},
+                        onMenuClick = { },
                     )
                 }
             }

@@ -276,10 +276,10 @@ fun MainLight() {
                     sharedTransitionScope = sharedTransitionScope,
                     animatedContentScope = animatedContentScope,
                     paginationState = paginationState,
-                    onImageClick = { /*TODO*/ },
-                    onBookmarkClick = { /*TODO*/ },
-                    onSearchClick = { /*TODO*/ },
-                    onMenuClick = { /*TODO*/ },
+                    onImageClick = {},
+                    onBookmarkClick = {},
+                    onSearchClick = {},
+                    onMenuClick = { },
                 )
             }
         }

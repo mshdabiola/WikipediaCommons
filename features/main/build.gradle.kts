@@ -15,11 +15,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 api(compose.components.resources)
-                implementation(libs.lazyPaginationCompose)
-//                implementation("dev.sargunv.maplibre-compose:maplibre-compose:0.7.0")
-//                implementation("dev.sargunv.maplibre-compose:maplibre-compose-material3:0.7.0")
-
-
             }
         }
 
