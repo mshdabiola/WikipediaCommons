@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import co.touchlab.kermit.Logger
 import co.touchlab.kermit.loggerConfigInit
 import co.touchlab.kermit.platformLogWriter
@@ -62,7 +61,7 @@ class NavigationTest {
     fun firstScreen_isForYou() {
         composeTestRule.apply {
             // VERIFY for you is selected
-            this.onNodeWithTag("main:add",true).assertExists()
+            this.onNodeWithTag("main:add", true).assertExists()
         }
     }
 }
