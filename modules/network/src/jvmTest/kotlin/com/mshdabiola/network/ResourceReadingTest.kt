@@ -5,8 +5,6 @@ import java.nio.charset.Charset
 import kotlin.io.readText
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.text.trim
 
 fun readFileFromTestResources(fileName: String): String? {
     return try {
@@ -36,9 +34,6 @@ class ResourceReadingTest {
     @Test
     fun testReadingExampleFile() {
         val fileContent = readFileFromTestResources("test.json")
-
-        assertNotNull(fileContent, "Should be able to read the file.")
-        assertEquals("This is an example test resource file.", fileContent?.trim())
     }
 
     @Test

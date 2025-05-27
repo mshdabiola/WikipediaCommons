@@ -3,7 +3,7 @@ package com.mshdabiola.testing.fake.repository
 import com.mshdabiola.data.repository.IMediaRepository
 import com.mshdabiola.model.MainImage
 
-class FakeNetworkRepository : IMediaRepository {
+class FakeMediaRepository : IMediaRepository {
     override suspend fun getAllMedia(
         page: Int,
         limit: Int,
