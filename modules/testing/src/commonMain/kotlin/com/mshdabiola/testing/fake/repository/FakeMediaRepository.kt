@@ -18,4 +18,12 @@ class FakeMediaRepository : IMediaRepository {
 
     override suspend fun toggleBookmark(id: String) {
     }
+
+    override suspend fun search(
+        title: String,
+        page: Int,
+        limit: Int,
+    ): List<MainImage> {
+       return emptyList()
+    }
 }

@@ -63,6 +63,16 @@ class RealMediaRepository(
         }
     }
 
+    override suspend fun search(
+        title: String,
+        page: Int,
+        limit: Int,
+    ): List<MainImage> {
+        return withContext(ioDispatcher) {
+            mediaDataSource.search(title, page, limit)
+        }
+    }
+
     private suspend fun saveImagesToDatabase(
         images: List<MainImage>,
         page: Int,
