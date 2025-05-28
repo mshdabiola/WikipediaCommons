@@ -151,6 +151,8 @@ jobs:
             large_files: true
             ignore_runs: false
             files: ./**/build/test-results/**/*.xml
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            
 
 #      - name: Check lint
 #        run: ./gradlew lintDemoFossReliantRelease
