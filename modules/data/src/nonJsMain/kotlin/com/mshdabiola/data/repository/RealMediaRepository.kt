@@ -24,6 +24,11 @@ class RealMediaRepository(
                 .userData
                 .map { it.bookmarkSet }
                 .flowOn(ioDispatcher)
+    override val searchHistory: Flow<List<String>>
+        get() =
+            store
+                .userData
+                .map { it.searchHistory.reversed() }
 
     override suspend fun getAllMedia(
         page: Int,
@@ -70,6 +75,23 @@ class RealMediaRepository(
     ): List<MainImage> {
         return withContext(ioDispatcher) {
             mediaDataSource.search(title, page, limit)
+        }
+    }
+
+    override suspend fun addSearchHistory(search: String) {
+        withContext(ioDispatcher) {
+            store.updateUserData {
+                it.copy(
+                    searchHistory =
+                        if (search in it.searchHistory) {
+                            it.searchHistory
+                        } else {
+                            val list = it.searchHistory + search
+
+                            list.takeLast(6)
+                        },
+                )
+            }
         }
     }
 

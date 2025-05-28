@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface IMediaRepository {
     val bookmarkSet: Flow<Set<String>>
+    val searchHistory: Flow<List<String>>
 
     suspend fun getAllMedia(
         page: Int,
@@ -18,4 +19,6 @@ interface IMediaRepository {
         page: Int,
         limit: Int,
     ): List<MainImage>
+
+    suspend fun addSearchHistory(search: String)
 }
