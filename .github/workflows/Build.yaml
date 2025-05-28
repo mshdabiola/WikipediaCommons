@@ -145,10 +145,10 @@ jobs:
           path: '**/build/reports/tests/jvmTest'
 
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
+        uses: EnricoMi/publish-unit-test-result-action@v2.20.0
         with:
-            check_name: Test results JDK
-            comment_title: Test results JDK
+            check_name: Test results
+            comment_title: Test results
             large_files: true
             ignore_runs: false
             files: ./**/build/test-results/**/*.xml
