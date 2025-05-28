@@ -53,6 +53,7 @@ include(":benchmarks")
 include(":app")
 
 include(":features:main")
+include(":features:search")
 include(":features:detail")
 include(":features:setting")
 //include(":lint")
