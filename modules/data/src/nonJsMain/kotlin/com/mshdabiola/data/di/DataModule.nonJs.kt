@@ -1,6 +1,8 @@
 package com.mshdabiola.data.di
 
+import com.mshdabiola.data.repository.IMediaRepository
 import com.mshdabiola.data.repository.NoteRepository
+import com.mshdabiola.data.repository.RealMediaRepository
 import com.mshdabiola.data.repository.RealModelRepository
 import com.mshdabiola.database.di.databaseModule
 import kotlinx.coroutines.CoroutineDispatcher
@@ -15,5 +17,6 @@ actual val dataModule: Module
         module {
             includes(commonModule, databaseModule)
             single { Dispatchers.IO } bind CoroutineDispatcher::class
+            singleOf(::RealMediaRepository) bind IMediaRepository::class
             singleOf(::RealModelRepository) bind NoteRepository::class
         }

@@ -2,7 +2,7 @@ package database
 
 import androidx.room.Room
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.mshdabiola.database.SkeletonDatabase
+import com.mshdabiola.database.WikipediaCommonsDatabase
 import com.mshdabiola.database.di.daoModules
 import com.mshdabiola.database.di.getRoomDatabase
 import org.junit.Rule
@@ -19,7 +19,7 @@ abstract class AbstractTest : KoinTest {
                     single {
                         val db =
                             Room
-                                .inMemoryDatabaseBuilder<SkeletonDatabase>()
+                                .inMemoryDatabaseBuilder<WikipediaCommonsDatabase>()
                                 .setDriver(BundledSQLiteDriver())
                         getRoomDatabase(db)
                     }

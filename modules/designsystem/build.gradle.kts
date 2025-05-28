@@ -43,6 +43,9 @@ kotlin {
                 api(libs.koin.compose)
                 api(libs.koin.composeVM)
 
+                api(libs.lazyPaginationCompose)
+
+
             }
         }
         val androidMain by getting {

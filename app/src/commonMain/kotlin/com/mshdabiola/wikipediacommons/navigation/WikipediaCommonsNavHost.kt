@@ -19,7 +19,7 @@ import com.mshdabiola.wikipediacommons.ui.WikipediaCommonsAppState
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun HydraulicAppNavHost(
+fun WikipediaCommonsNavHost(
     appState: WikipediaCommonsAppState,
     onShowSnackbar: suspend (String, String?) -> Boolean = { _, _ -> false },
     modifier: Modifier = Modifier,

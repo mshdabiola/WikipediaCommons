@@ -4,11 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Continue(
+internal data class Continue(
     @SerialName("continue")
-    val continueX: String? = null,
-    @SerialName("gsroffset")
-    val gsroffset: Int? = null,
+    var continueX: String = "",
     @SerialName("grncontinue")
-    val grncontinue: String? = null,
+    var grncontinue: String = "",
 )

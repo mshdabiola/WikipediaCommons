@@ -9,6 +9,7 @@ data class ImageEntity(
     val descriptionUrl: String,
     val mediaType: String,
     val mime: String,
+    val sha1: String,
     val timestamp: String,
     val url: String,
     val user: String,

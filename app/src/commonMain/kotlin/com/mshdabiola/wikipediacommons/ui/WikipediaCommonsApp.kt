@@ -18,17 +18,14 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.PermanentNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -43,20 +40,16 @@ import com.mshdabiola.analytics.AnalyticsHelper
 import com.mshdabiola.analytics.LocalAnalyticsHelper
 import com.mshdabiola.designsystem.component.WcsBackground
 import com.mshdabiola.designsystem.component.WcsGradientBackground
-import com.mshdabiola.designsystem.component.WcsTopAppBar
 import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.designsystem.theme.GradientColors
 import com.mshdabiola.designsystem.theme.LocalGradientColors
 import com.mshdabiola.designsystem.theme.WcsTheme
-import com.mshdabiola.detail.navigation.Detail
-import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.model.DarkThemeConfig
 import com.mshdabiola.model.ThemeBrand
-import com.mshdabiola.setting.navigation.navigateToSetting
 import com.mshdabiola.ui.semanticsCommon
 import com.mshdabiola.wikipediacommons.MainActivityUiState
 import com.mshdabiola.wikipediacommons.MainAppViewModel
-import com.mshdabiola.wikipediacommons.navigation.HydraulicAppNavHost
+import com.mshdabiola.wikipediacommons.navigation.WikipediaCommonsNavHost
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -118,46 +111,14 @@ fun WikipediaCommonsApp() {
                                 containerColor = Color.Transparent,
                                 contentWindowInsets = WindowInsets(0, 0, 0, 0),
                                 snackbarHost = { SnackbarHost(snackbarHostState) },
-                                topBar = {
-                                    if (appState.shouldShowTopBar) {
-                                        if (appState.isMain) {
-                                            WcsTopAppBar(
-                                                titleRes = "Note",
-                                                navigationIcon = WcsIcons.Person,
-                                                navigationIconContentDescription = "",
-                                                actionIcon = WcsIcons.Settings,
-                                                actionIconContentDescription = "se",
-                                                onActionClick = { appState.navController.navigateToSetting() },
-                                            )
-                                        } else {
-                                            TopAppBar(
-                                                title = { Text("Setting") },
-                                                navigationIcon = {
-                                                    IconButton(onClick = { appState.navController.popBackStack() }) {
-                                                        Icon(WcsIcons.ArrowBack, "back")
-                                                    }
-                                                },
-                                            )
-                                        }
-                                    }
-                                },
                                 floatingActionButton = {
                                     if (appState.isMain) {
-                                        ExtendedFloatingActionButton(
+                                        FloatingActionButton(
                                             modifier = Modifier.testTag("main:add"),
-                                            text = { Text("Add Note") },
-                                            icon = {
-                                                Icon(
-                                                    WcsIcons.Add,
-                                                    contentDescription = "add",
-                                                )
-                                            },
-                                            onClick = {
-                                                appState.navController.navigateToDetail(
-                                                    Detail(-1),
-                                                )
-                                            },
-                                        )
+                                            onClick = {},
+                                        ) {
+                                            Icon(WcsIcons.Add, contentDescription = "Add")
+                                        }
                                     }
                                 },
                                 bottomBar = {
@@ -176,7 +137,7 @@ fun WikipediaCommonsApp() {
                                             WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal),
                                         ),
                                 ) {
-                                    HydraulicAppNavHost(
+                                    WikipediaCommonsNavHost(
                                         appState = appState,
                                         onShowSnackbar = { message, action ->
                                             snackbarHostState.showSnackbar(

@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "59895df2c63ac5425231528ca7dbdc0a",
+    "identityHash": "dd5e9b1516b6e6781a761b6509c3bd8c",
     "entities": [
       {
         "tableName": "note_table",
@@ -35,7 +35,7 @@
       },
       {
         "tableName": "image_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`descriptionShortUrl` TEXT NOT NULL, `descriptionUrl` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `mime` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `url` TEXT NOT NULL, `user` TEXT NOT NULL, `userid` INTEGER NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`descriptionShortUrl` TEXT NOT NULL, `descriptionUrl` TEXT NOT NULL, `mediaType` TEXT NOT NULL, `mime` TEXT NOT NULL, `sha1` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `url` TEXT NOT NULL, `user` TEXT NOT NULL, `userid` INTEGER NOT NULL, `id` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "descriptionShortUrl",
@@ -58,6 +58,12 @@
           {
             "fieldPath": "mime",
             "columnName": "mime",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "sha1",
+            "columnName": "sha1",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -102,7 +108,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '59895df2c63ac5425231528ca7dbdc0a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'dd5e9b1516b6e6781a761b6509c3bd8c')"
     ]
   }
 }

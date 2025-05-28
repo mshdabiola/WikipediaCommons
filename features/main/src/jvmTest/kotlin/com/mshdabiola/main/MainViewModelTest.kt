@@ -6,6 +6,7 @@ package com.mshdabiola.main
 
 import app.cash.turbine.test
 import com.mshdabiola.data.model.Result
+import com.mshdabiola.data.repository.IMediaRepository
 import com.mshdabiola.data.repository.NoteRepository
 import com.mshdabiola.testing.fake.testDataModule
 import com.mshdabiola.testing.util.MainDispatcherRule
@@ -32,6 +33,7 @@ class MainViewModelTest : KoinTest {
             this.modules(testDataModule)
         }
     private val noteRepository by inject<NoteRepository>()
+    private val mediaRepository by inject<IMediaRepository>()
 
     @Test
     fun init() =
@@ -39,6 +41,7 @@ class MainViewModelTest : KoinTest {
             val viewModel =
                 MainViewModel(
                     noteRepository,
+                    mediaRepository = mediaRepository,
                 )
 
             viewModel

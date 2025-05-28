@@ -4,11 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Response(
+internal data class AllImageResponse(
     @SerialName("batchcomplete")
-    val batchcomplete: Boolean? = null,
+    var batchcomplete: Boolean = false,
     @SerialName("continue")
-    val continueX: Continue? = null,
+    var continueX: Continue = Continue(),
     @SerialName("query")
-    val query: Query? = null,
+    var query: Query = Query(),
 )

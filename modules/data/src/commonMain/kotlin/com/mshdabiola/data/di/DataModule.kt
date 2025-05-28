@@ -1,9 +1,7 @@
 package com.mshdabiola.data.di
 
 import com.mshdabiola.analytics.di.analyticsModule
-import com.mshdabiola.data.repository.INetworkRepository
 import com.mshdabiola.data.repository.OfflineFirstUserDataRepository
-import com.mshdabiola.data.repository.RealINetworkRepository
 import com.mshdabiola.data.repository.UserDataRepository
 import com.mshdabiola.datastore.di.datastoreModule
 import com.mshdabiola.network.di.networkModule
@@ -24,6 +22,5 @@ expect val dataModule: Module
 val commonModule =
     module {
         includes(datastoreModule, networkModule, analyticsModule)
-        singleOf(::RealINetworkRepository) bind INetworkRepository::class
         singleOf(::OfflineFirstUserDataRepository) bind UserDataRepository::class
     }
