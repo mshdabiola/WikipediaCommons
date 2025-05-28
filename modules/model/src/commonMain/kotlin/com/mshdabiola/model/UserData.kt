@@ -16,4 +16,5 @@ data class UserData(
     val useDynamicColor: Boolean = true,
     val shouldHideOnboarding: Boolean = false,
     val bookmarkSet: Set<String> = emptySet(),
+    val searchHistory: List<String> = emptyList(),
 )
