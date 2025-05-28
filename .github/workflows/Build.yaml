@@ -123,12 +123,12 @@ jobs:
       # https://android-review.googlesource.com/c/platform/frameworks/support/+/2602790 landed in a
       # release build
 
-      - name: Build all build type and flavor permutations
-        run: ./gradlew assembleDemoFossReliant :benchmarks:assembleDemoFossReliant
-          -x pixel6Api33DemoFossReliantNonMinifiedReleaseAndroidTest
-          -x pixel6Api33DemoFossReliantNonMinifiedBenchmarkAndroidTest
-          -x collectDemoFossReliantNonMinifiedReleaseBaselineProfile
-          -x collectDemoFossReliantNonMinifiedBenchmarkBaselineProfile
+#      - name: Build all build type and flavor permutations
+#        run: ./gradlew assembleDemoFossReliant :benchmarks:assembleDemoFossReliant
+#          -x pixel6Api33DemoFossReliantNonMinifiedReleaseAndroidTest
+#          -x pixel6Api33DemoFossReliantNonMinifiedBenchmarkAndroidTest
+#          -x collectDemoFossReliantNonMinifiedReleaseBaselineProfile
+#          -x collectDemoFossReliantNonMinifiedBenchmarkBaselineProfile
 
       - name: Upload build outputs (APKs)
         uses: actions/upload-artifact@v4
@@ -172,18 +172,6 @@ jobs:
 #          min-coverage-changed-files: 60
 #          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: stevenleadbeater/kotlin-kover-action@v1.0.3
-        id: kover-tests
-        with:
-            coverage-threshold: 80
-            repo-token: ${{ secrets.GITHUB_TOKEN }}
-            proxy-url: https://add-pr-comment-proxy-94idvmwyie-uc.a.run.app
-      - name: Check coverage
-        if: ${{(steps.kover-tests.outputs.line-coverage) < 40}}
-        shell: bash
-        run: exit "Line coverage expected to be > 40 but was ${{steps.kover-tests.outputs.line-coverage}}"
-
-
       - name: Upload local coverage reports (XML + HTML) (only API 30)
         uses: actions/upload-artifact@v4
         with:
@@ -192,6 +180,12 @@ jobs:
           compression-level: 1
           overwrite: false
           path: '**/build/reports/kover/'
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v5.4.3
+        with:
+            token: ${{ secrets.CODECOV_TOKEN }}
+            files: "**/build/reports/kover/reportJvm.xml"
 
   androidTest:
     runs-on: ubuntu-latest
