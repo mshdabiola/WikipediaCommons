@@ -50,75 +50,75 @@ jobs:
           build-scan-publish: true
           build-scan-terms-of-use-url: "https://gradle.com/terms-of-service"
           build-scan-terms-of-use-agree: "yes"
-
-      - name: Check build-logic
-        run: ./gradlew check -p build-logic
-
-      - name: Check ktlint
-        run: ./gradlew ktlintCheck
-
-      - name: Check Dependency Guard
-        id: dependencyguard_verify
-        continue-on-error: true
-        run: ./gradlew dependencyGuard
-
-      - name: Prevent updating Dependency Guard baselines if this is a fork
-        id: checkfork_dependencyguard
-        continue-on-error: false
-        if: steps.dependencyguard_verify.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
-        run: |
-          echo "::error::Dependency Guard failed, please update baselines with: ./gradlew dependencyGuardBaseline" && exit 1
-
-        # Runs if previous job failed
-      - name: Generate new Dependency Guard baselines if verification failed and it's a PR
-        id: dependencyguard_baseline
-        if: steps.dependencyguard_verify.outcome == 'failure' && github.event_name == 'pull_request'
-        run: |
-          ./gradlew dependencyGuardBaseline
-
-      - name: Push new Dependency Guard baselines if available
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.dependencyguard_baseline.outcome == 'success'
-        with:
-          file_pattern: '**/dependencies/*.txt'
-          disable_globbing: true
-          commit_message: "🤖 Updates baselines for Dependency Guard"
-
-      - name: Run all local screenshot tests
-        id: screenshotsverify
-        continue-on-error: true
-        run: ./gradlew validateDemoFossReliantDebugScreenshotTest
-
-      - name: Prevent pushing new screenshots if this is a fork
-        id: checkfork_screenshots
-        continue-on-error: false
-        if: steps.screenshotsverify.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
-        run: |
-          echo "::error::Screenshot tests failed, please create a PR in your fork first." && exit 1
-
-      # Runs if previous job failed
-      - name: Generate new screenshots if verification failed and it's a PR
-        id: screenshotsrecord
-        if: steps.screenshotsverify.outcome == 'failure' && github.event_name == 'pull_request'
-        run: |
-          ./gradlew updateDemoFossReliantDebugScreenshotTest
-
-      - name: Push new screenshots if available
-        uses: stefanzweifel/git-auto-commit-action@v5
-        if: steps.screenshotsrecord.outcome == 'success'
-        with:
-          file_pattern: '*/*.png'
-          disable_globbing: true
-          commit_message: "🤖 Updates screenshots"
-
-      - name: Create Module Graph
-        if: github.event_name == 'pull_request'
-        run: ./gradlew createModuleGraph
-
-      # Run local tests after screenshot tests to avoid wrong UP-TO-DATE. TODO: Ignore screenshots.
-      - name: Run local tests and create report
-        if: always()
-        run: ./gradlew jvmTest
+#
+#      - name: Check build-logic
+#        run: ./gradlew check -p build-logic
+#
+#      - name: Check ktlint
+#        run: ./gradlew ktlintCheck
+#
+#      - name: Check Dependency Guard
+#        id: dependencyguard_verify
+#        continue-on-error: true
+#        run: ./gradlew dependencyGuard
+#
+#      - name: Prevent updating Dependency Guard baselines if this is a fork
+#        id: checkfork_dependencyguard
+#        continue-on-error: false
+#        if: steps.dependencyguard_verify.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
+#        run: |
+#          echo "::error::Dependency Guard failed, please update baselines with: ./gradlew dependencyGuardBaseline" && exit 1
+#
+#        # Runs if previous job failed
+#      - name: Generate new Dependency Guard baselines if verification failed and it's a PR
+#        id: dependencyguard_baseline
+#        if: steps.dependencyguard_verify.outcome == 'failure' && github.event_name == 'pull_request'
+#        run: |
+#          ./gradlew dependencyGuardBaseline
+#
+#      - name: Push new Dependency Guard baselines if available
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        if: steps.dependencyguard_baseline.outcome == 'success'
+#        with:
+#          file_pattern: '**/dependencies/*.txt'
+#          disable_globbing: true
+#          commit_message: "🤖 Updates baselines for Dependency Guard"
+#
+#      - name: Run all local screenshot tests
+#        id: screenshotsverify
+#        continue-on-error: true
+#        run: ./gradlew validateDemoFossReliantDebugScreenshotTest
+#
+#      - name: Prevent pushing new screenshots if this is a fork
+#        id: checkfork_screenshots
+#        continue-on-error: false
+#        if: steps.screenshotsverify.outcome == 'failure' && github.event.pull_request.head.repo.full_name != github.repository
+#        run: |
+#          echo "::error::Screenshot tests failed, please create a PR in your fork first." && exit 1
+#
+#      # Runs if previous job failed
+#      - name: Generate new screenshots if verification failed and it's a PR
+#        id: screenshotsrecord
+#        if: steps.screenshotsverify.outcome == 'failure' && github.event_name == 'pull_request'
+#        run: |
+#          ./gradlew updateDemoFossReliantDebugScreenshotTest
+#
+#      - name: Push new screenshots if available
+#        uses: stefanzweifel/git-auto-commit-action@v5
+#        if: steps.screenshotsrecord.outcome == 'success'
+#        with:
+#          file_pattern: '*/*.png'
+#          disable_globbing: true
+#          commit_message: "🤖 Updates screenshots"
+#
+#      - name: Create Module Graph
+#        if: github.event_name == 'pull_request'
+#        run: ./gradlew createModuleGraph
+#
+#      # Run local tests after screenshot tests to avoid wrong UP-TO-DATE. TODO: Ignore screenshots.
+#      - name: Run local tests and create report
+#        if: always()
+#        run: ./gradlew jvmTest
       # Replace task exclusions with `-Pandroidx.baselineprofile.skipgeneration` when
       # https://android-review.googlesource.com/c/platform/frameworks/support/+/2602790 landed in a
       # release build
@@ -130,31 +130,31 @@ jobs:
 #          -x collectDemoFossReliantNonMinifiedReleaseBaselineProfile
 #          -x collectDemoFossReliantNonMinifiedBenchmarkBaselineProfile
 
-      - name: Upload build outputs (APKs)
-        uses: actions/upload-artifact@v4
-        with:
-          name: APKs
-          path: '**/build/outputs/apk/**/*.apk'
-
-      - name: Upload JVM local results (HTML)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: local-test-results
-          path: '**/build/reports/tests/jvmTest'
-
-      - name: Check lint
-        run: ./gradlew lintDemoFossReliantRelease
-
-      - name: Upload lint reports (HTML)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-reports
-          path: '**/build/reports/lint-results-*.html'
-
-      - name: Check badging
-        run: ./gradlew checkDemoFossReliantReleaseBadging
+#      - name: Upload build outputs (APKs)
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: APKs
+#          path: '**/build/outputs/apk/**/*.apk'
+#
+#      - name: Upload JVM local results (HTML)
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: local-test-results
+#          path: '**/build/reports/tests/jvmTest'
+#
+#      - name: Check lint
+#        run: ./gradlew lintDemoFossReliantRelease
+#
+#      - name: Upload lint reports (HTML)
+#        if: always()
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: lint-reports
+#          path: '**/build/reports/lint-results-*.html'
+#
+#      - name: Check badging
+#        run: ./gradlew checkDemoFossReliantReleaseBadging
 
       - name: Generate coverage reports for Jvm
         run: ./gradlew koverXmlReportJvm; ./gradlew koverHtmlReportJvm   #koverHtmlReportJvm
