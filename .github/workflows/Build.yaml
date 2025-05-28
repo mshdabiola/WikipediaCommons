@@ -150,8 +150,7 @@ jobs:
             comment_title: Test results JDK
             large_files: true
             ignore_runs: false
-            files: |
-              /github/workspace/**/build/reports/tests/**/*.xml
+            files: ./**/build/test-results/**/*.xml
 
 #      - name: Check lint
 #        run: ./gradlew lintDemoFossReliantRelease
