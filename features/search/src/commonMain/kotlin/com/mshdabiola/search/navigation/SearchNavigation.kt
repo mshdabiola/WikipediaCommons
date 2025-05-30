@@ -22,15 +22,13 @@ fun NavController.navigateToSearch(
 fun NavGraphBuilder.searchScreen(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
-    onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (String) -> Unit,
 ) {
     composable<Search> {
         SearchRoute(
             modifier = modifier,
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = this,
-            showSnackbar = onShowSnack,
             navigateToDetail = navigateToDetail,
         )
     }
