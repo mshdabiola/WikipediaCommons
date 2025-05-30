@@ -8,6 +8,8 @@ import kotlinx.coroutines.flow.flowOf
 class FakeMediaRepository : IMediaRepository {
     override val bookmarkSet: Flow<Set<String>>
         get() = flowOf(emptySet())
+    override val searchHistory: Flow<List<String>>
+        get() = flowOf(emptyList())
 
     override suspend fun getAllMedia(
         page: Int,
@@ -17,5 +19,16 @@ class FakeMediaRepository : IMediaRepository {
     }
 
     override suspend fun toggleBookmark(id: String) {
+    }
+
+    override suspend fun search(
+        title: String,
+        page: Int,
+        limit: Int,
+    ): List<MainImage> {
+        return emptyList()
+    }
+
+    override suspend fun addSearchHistory(search: String) {
     }
 }

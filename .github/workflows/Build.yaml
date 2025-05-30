@@ -184,7 +184,8 @@ jobs:
         uses: codecov/codecov-action@v5.4.3
         with:
             token: ${{ secrets.CODECOV_TOKEN }}
-            files: "**/build/reports/kover/reportJvm.xml"
+            files: "**/reportJvm.xml"
+            verbose: true
 
   androidTest:
     runs-on: ubuntu-latest
