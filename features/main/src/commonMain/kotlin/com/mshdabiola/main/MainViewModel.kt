@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.io.IOException
 
 class MainViewModel(
     modelRepository: NoteRepository,
@@ -52,7 +53,7 @@ class MainViewModel(
 
                 paginationState.appendPage(emptyList(), pageKey + 1)
                 // paginationState.appendPage(List(20){ Note(title = "Title ${pageKey.times(it)}")},pageKey+1)
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 paginationState.setError(e)
             }
         }

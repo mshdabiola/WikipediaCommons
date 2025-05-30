@@ -26,7 +26,6 @@ import com.mshdabiola.designsystem.component.WcsTopAppBar
 import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.ui.TrackScreenViewEvent
 import com.mshdabiola.ui.Waiting
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -78,7 +77,7 @@ internal fun DetailScreen(
             is DetailState.Success ->
                 MainContent(
                     modifier = modifier,
-                    state = it,
+//                    state = it,
                     sharedTransitionScope = sharedTransitionScope,
                     animatedContentScope = animatedContentScope,
                     title = title,
@@ -96,7 +95,7 @@ internal fun DetailScreen(
 @Composable
 internal fun MainContent(
     modifier: Modifier = Modifier,
-    state: DetailState,
+//    state: DetailState,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
     title: TextFieldState = TextFieldState(),
@@ -141,7 +140,7 @@ internal fun MainContent(
                 state = content,
                 placeholder = "content",
                 imeAction = ImeAction.Done,
-                keyboardAction = { coroutineScope.launch { onShowSnackbar("Note Update", null) } },
+//                keyboardAction = { coroutineScope.launch { onShowSnackbar("Note Update", null) } },
             )
         }
     }

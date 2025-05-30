@@ -29,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +51,7 @@ import com.mshdabiola.ui.SharedContentPreview
 import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
 import io.github.ahmad_hamwi.compose.pagination.PaginationState
 import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -70,13 +72,13 @@ internal fun MainRoute(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (String) -> Unit,
     showSnackbar: suspend (String, String?) -> Boolean,
 //    viewModel: MainViewModel,
 ) {
     val viewModel: MainViewModel = koinViewModel()
+    val coroutine = rememberCoroutineScope()
 
-    val feedNote = viewModel.notes.collectAsStateWithLifecycle()
     val bookmarkedIds = viewModel.bookmarkSet.collectAsStateWithLifecycle()
 
     MainScreen(
@@ -85,10 +87,12 @@ internal fun MainRoute(
         modifier = modifier,
         paginationState = viewModel.paginationState,
         bookmarkedIds = bookmarkedIds.value,
-        onImageClick = {
-        },
+        onImageClick = navigateToDetail,
         onBookmarkClick = {
             viewModel.toggleBookmark(it)
+            coroutine.launch {
+                showSnackbar("Bookmarked", null)
+            }
         },
         onSearchClick = {},
         onMenuClick = {},
@@ -193,12 +197,19 @@ internal fun MainScreen(
             },
         ) {
             items(items = paginationState.allItems!!) { image ->
-                ImageCard(
-                    image = image,
-                    isBookmarked = image.sha1 in bookmarkedIds,
-                    onClick = { onImageClick(image.sha1) },
-                    onBookmarkClick = { onBookmarkClick(image.sha1) },
-                )
+                with(sharedTransitionScope) {
+                    ImageCard(
+                        modifier =
+                            Modifier.sharedBounds(
+                                sharedContentState = rememberSharedContentState(image.sha1),
+                                animatedVisibilityScope = animatedContentScope,
+                            ),
+                        image = image,
+                        isBookmarked = image.sha1 in bookmarkedIds,
+                        onClick = { onImageClick(image.sha1) },
+                        onBookmarkClick = { onBookmarkClick(image.sha1) },
+                    )
+                }
             }
         }
     }
@@ -288,16 +299,76 @@ fun MainLight() {
 // Dummy data for preview and example
 val sampleImages =
     listOf(
-        MainImage(mime = "image/png", sha1 = "1", title = "Image 1", url = "https://example.com/image1.jpg", user = "User 1"),
-        MainImage(mime = "image/png", sha1 = "2", title = "Image 2", url = "https://example.com/image2.jpg", user = "User 2"),
-        MainImage(mime = "image/png", sha1 = "3", title = "Image 3", url = "https://example.com/image3.jpg", user = "User 3"),
-        MainImage(mime = "image/png", sha1 = "4", title = "Image 4", url = "https://example.com/image4.jpg", user = "User 4"),
-        MainImage(mime = "image/png", sha1 = "5", title = "Image 5", url = "https://example.com/image5.jpg", user = "User 5"),
-        MainImage(mime = "image/png", sha1 = "6", title = "Image 6", url = "https://example.com/image6.jpg", user = "User 6"),
-        MainImage(mime = "image/png", sha1 = "7", title = "Image 7", url = "https://example.com/image7.jpg", user = "User 7"),
-        MainImage(mime = "image/png", sha1 = "8", title = "Image 8", url = "https://example.com/image8.jpg", user = "User 8"),
-        MainImage(mime = "image/png", sha1 = "9", title = "Image 9", url = "https://example.com/image9.jpg", user = "User 9"),
-        MainImage(mime = "image/png", sha1 = "1", title = "Image 10", url = "https://example.com/image10.jpg", user = "User 10"),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 1",
+            url = "https://example.com/image1.jpg",
+            user = "User 1",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "2",
+            title = "Image 2",
+            url = "https://example.com/image2.jpg",
+            user = "User 2",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "3",
+            title = "Image 3",
+            url = "https://example.com/image3.jpg",
+            user = "User 3",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "4",
+            title = "Image 4",
+            url = "https://example.com/image4.jpg",
+            user = "User 4",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "5",
+            title = "Image 5",
+            url = "https://example.com/image5.jpg",
+            user = "User 5",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "6",
+            title = "Image 6",
+            url = "https://example.com/image6.jpg",
+            user = "User 6",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "7",
+            title = "Image 7",
+            url = "https://example.com/image7.jpg",
+            user = "User 7",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "8",
+            title = "Image 8",
+            url = "https://example.com/image8.jpg",
+            user = "User 8",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "9",
+            title = "Image 9",
+            url = "https://example.com/image9.jpg",
+            user = "User 9",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 10",
+            url = "https://example.com/image10.jpg",
+            user = "User 10",
+        ),
     )
 
 @OptIn(ExperimentalMaterial3Api::class)

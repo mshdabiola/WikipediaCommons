@@ -10,6 +10,7 @@ import io.ktor.client.request.get
 import io.ktor.http.isSuccess
 import io.ktor.http.parametersOf
 import io.ktor.http.plus
+import kotlinx.io.IOException
 
 internal class MediaDataSource(
     private val client: HttpClient,
@@ -67,12 +68,12 @@ internal class MediaDataSource(
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body() // Get the error message body
-                throw Exception("API request failed with status ${response.status}: $errorBody")
+                throw IOException("API request failed with status ${response.status}: $errorBody")
             }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             // Handle network errors or other exceptions during the request
-            e.printStackTrace()
-            throw e // Re-throw the exception or handle it as needed
+//            e.printStackTrace()
+            throw NetworkDataSourceException("An unexpected error occurred during media search: ${e.message}", e)
         }
     }
 
@@ -118,12 +119,12 @@ internal class MediaDataSource(
             } else {
                 // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body()
-                throw Exception("API request failed with status ${response.status}: $errorBody")
+                throw IOException("API request failed with status ${response.status}: $errorBody")
             }
-        } catch (e: Exception) {
+        } catch (e: IOException) {
             // Handle network errors or other exceptions during the request
-            e.printStackTrace()
-            throw e // Re-throw the exception or handle it as needed
+//            e.printStackTrace()
+            throw NetworkDataSourceException("An unexpected error occurred during media search: ${e.message}", e)
         }
     }
 }

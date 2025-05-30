@@ -8,6 +8,7 @@ import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,18 +17,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +36,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.mshdabiola.designsystem.component.WcsLoadingWheel
-import com.mshdabiola.designsystem.icon.WcsIcons
+import com.mshdabiola.designsystem.component.WcsTextField
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.ui.SharedContentPreview
@@ -59,15 +59,17 @@ internal fun SearchRoute(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    navigateToDetail: (Long) -> Unit,
-    showSnackbar: suspend (String, String?) -> Boolean,
+    navigateToDetail: (String) -> Unit,
 ) {
     val viewModel: SearchViewModel = koinViewModel()
-
+    val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
     SearchScreen(
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
         modifier = modifier,
+        search = viewModel.search,
+        searchHistory = searchHistory.value,
+        onSearchClick = navigateToDetail,
     )
 }
 
@@ -80,45 +82,35 @@ internal fun SearchScreen(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
+    search: TextFieldState = rememberTextFieldState(),
+    searchHistory: List<String> = emptyList(),
+    onSearchClick: (String) -> Unit = {},
 ) {
-    val searchQueryState = remember { mutableStateOf("") }
-    var isExpanded by remember { mutableStateOf(true) }
-
-    SearchBar(
-        modifier = Modifier.fillMaxSize(),
-        inputField = {
-            SearchBarDefaults.InputField(
-                query = searchQueryState.value,
-                onQueryChange = { searchQueryState.value = it },
-                onSearch = {
-                    // Trigger search action with searchQueryState.value
-                },
-                expanded = isExpanded,
-                onExpandedChange = { isExpanded = it },
-                placeholder = {
-                    Text("Search")
-                },
-                leadingIcon = {
-                    IconButton(
-                        onClick = {
-                            // Handle back navigation
-                        },
-                    ) {
-                        Icon(imageVector = WcsIcons.ArrowBack, contentDescription = "Go Back")
-                    }
-                },
-                trailingIcon = {
-                    IconButton(onClick = { searchQueryState.value = "" }) {
-                        Icon(imageVector = WcsIcons.Cancel, contentDescription = "Clear Search")
-                    }
-                },
+    with(sharedTransitionScope) {
+        Column(
+            modifier =
+                modifier
+                    .fillMaxSize()
+                    .sharedBounds(
+                        sharedContentState = rememberSharedContentState("search"),
+                        animatedVisibilityScope = animatedContentScope,
+                    ),
+        ) {
+            WcsTextField(
+                modifier = Modifier,
+                state = search,
             )
-        },
-        expanded = isExpanded,
-        windowInsets = SearchBarDefaults.windowInsets,
-        onExpandedChange = { isExpanded = it },
-    ) {
-        // Additional composable content can be added here if needed
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+            ) {
+                items(items = searchHistory) { his ->
+                    Text(
+                        modifier = Modifier.clickable { onSearchClick(his) },
+                        text = his,
+                    )
+                }
+            }
+        }
     }
 }
 

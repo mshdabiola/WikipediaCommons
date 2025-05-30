@@ -19,6 +19,7 @@ class FakeMediaRepository : IMediaRepository {
     }
 
     override suspend fun toggleBookmark(id: String) {
+        print(id)
     }
 
     override suspend fun search(
@@ -30,5 +31,6 @@ class FakeMediaRepository : IMediaRepository {
     }
 
     override suspend fun addSearchHistory(search: String) {
+        print(search)
     }
 }
