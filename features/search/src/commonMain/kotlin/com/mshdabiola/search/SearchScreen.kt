@@ -85,7 +85,7 @@ internal fun SearchScreen(
     var isExpanded by remember { mutableStateOf(true) }
 
     SearchBar(
-        modifier=Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         inputField = {
             SearchBarDefaults.InputField(
                 query = searchQueryState.value,
