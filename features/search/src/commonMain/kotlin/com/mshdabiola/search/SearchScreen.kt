@@ -76,40 +76,50 @@ internal fun SearchScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
 ) {
+    val searchQueryState = remember { mutableStateOf("") }
+    var isExpanded by remember { mutableStateOf(true) }
+
+    // Ensure these imports are available:
+    // import androidx.compose.runtime.mutableStateOf
+    // import androidx.compose.runtime.remember
+    // import androidx.compose.runtime.getValue
+    // import androidx.compose.runtime.setValue
+    // import androidx.compose.material3.Icon
+
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(
-                query = "",
-                onQueryChange = {},
-                onSearch = {},
-                expanded = true,
-                onExpandedChange = {},
+                query = searchQueryState.value,
+                onQueryChange = { searchQueryState.value = it },
+                onSearch = {
+                    // Trigger search action with searchQueryState.value
+                },
+                expanded = isExpanded,
+                onExpandedChange = { isExpanded = it },
                 placeholder = {
                     Text("Search")
                 },
                 leadingIcon = {
-                    IconButton(
-                        onClick = {},
-                    ) {
-                        WcsIcons.ArrowBack
+                    IconButton(onClick = {
+                        // Handle back navigation
+                    }) {
+                        Icon(imageVector = WcsIcons.ArrowBack, contentDescription = "Go Back")
                     }
                 },
                 trailingIcon = {
-                    IconButton(
-                        onClick = {},
-                    ) {
-                        WcsIcons.Cancel
+                    IconButton(onClick = { searchQueryState.value = "" }) {
+                        Icon(imageVector = WcsIcons.Cancel, contentDescription = "Clear Search")
                     }
                 },
             )
         },
-        expanded = true,
+        expanded = isExpanded,
         modifier = modifier,
         windowInsets = SearchBarDefaults.windowInsets,
-        onExpandedChange = {},
+        onExpandedChange = { isExpanded = it },
     ) {
+        // Additional composable content can be added here if needed
     }
-}
 
 @Composable
 private fun LoadingState(modifier: Modifier = Modifier) {
