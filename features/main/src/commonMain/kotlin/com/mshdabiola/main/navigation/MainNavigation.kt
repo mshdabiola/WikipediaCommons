@@ -23,7 +23,7 @@ fun NavGraphBuilder.mainScreen(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     onShowSnack: suspend (String, String?) -> Boolean,
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (String) -> Unit,
 ) {
     composable<Main> {
         MainRoute(

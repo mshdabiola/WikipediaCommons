@@ -29,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +51,7 @@ import com.mshdabiola.ui.SharedContentPreview
 import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
 import io.github.ahmad_hamwi.compose.pagination.PaginationState
 import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -70,13 +72,13 @@ internal fun MainRoute(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    navigateToDetail: (Long) -> Unit,
+    navigateToDetail: (String) -> Unit,
     showSnackbar: suspend (String, String?) -> Boolean,
 //    viewModel: MainViewModel,
 ) {
     val viewModel: MainViewModel = koinViewModel()
+    val coroutine = rememberCoroutineScope()
 
-    val feedNote = viewModel.notes.collectAsStateWithLifecycle()
     val bookmarkedIds = viewModel.bookmarkSet.collectAsStateWithLifecycle()
 
     MainScreen(
@@ -85,10 +87,12 @@ internal fun MainRoute(
         modifier = modifier,
         paginationState = viewModel.paginationState,
         bookmarkedIds = bookmarkedIds.value,
-        onImageClick = {
-        },
+        onImageClick = navigateToDetail,
         onBookmarkClick = {
             viewModel.toggleBookmark(it)
+            coroutine.launch {
+                showSnackbar("Bookmarked", null)
+            }
         },
         onSearchClick = {},
         onMenuClick = {},
@@ -193,12 +197,19 @@ internal fun MainScreen(
             },
         ) {
             items(items = paginationState.allItems!!) { image ->
-                ImageCard(
-                    image = image,
-                    isBookmarked = image.sha1 in bookmarkedIds,
-                    onClick = { onImageClick(image.sha1) },
-                    onBookmarkClick = { onBookmarkClick(image.sha1) },
-                )
+                with(sharedTransitionScope) {
+                    ImageCard(
+                        modifier =
+                            Modifier.sharedBounds(
+                                sharedContentState = rememberSharedContentState(image.sha1),
+                                animatedVisibilityScope = animatedContentScope,
+                            ),
+                        image = image,
+                        isBookmarked = image.sha1 in bookmarkedIds,
+                        onClick = { onImageClick(image.sha1) },
+                        onBookmarkClick = { onBookmarkClick(image.sha1) },
+                    )
+                }
             }
         }
     }
