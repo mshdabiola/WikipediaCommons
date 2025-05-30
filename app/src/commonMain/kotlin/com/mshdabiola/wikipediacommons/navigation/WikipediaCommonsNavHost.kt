@@ -9,7 +9,6 @@ import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.mshdabiola.detail.navigation.Detail
 import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
@@ -34,7 +33,7 @@ fun WikipediaCommonsNavHost(
                 modifier = Modifier,
                 sharedTransitionScope = this@SharedTransitionLayout,
                 onShowSnack = onShowSnackbar,
-                navigateToDetail = { navController.navigateToDetail(Detail(it)) },
+                navigateToDetail = { },
             )
             detailScreen(
                 modifier = Modifier,
