@@ -63,7 +63,7 @@ fun WcsTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun WcsTopAppBarPreview() {
+internal fun WcsTopAppBarPreview() {
     WcsTheme {
         WcsTopAppBar(
             titleRes = "Preview",
