@@ -17,7 +17,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SearchBar
+import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +33,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.mshdabiola.designsystem.component.WcsLoadingWheel
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.ui.SharedContentPreview
@@ -72,6 +76,39 @@ internal fun SearchScreen(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
 ) {
+    SearchBar(
+        inputField = {
+            SearchBarDefaults.InputField(
+                query = "",
+                onQueryChange = {},
+                onSearch = {},
+                expanded = true,
+                onExpandedChange = {},
+                placeholder = {
+                    Text("Search")
+                },
+                leadingIcon = {
+                    IconButton(
+                        onClick = {},
+                    ) {
+                        WcsIcons.ArrowBack
+                    }
+                },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {},
+                    ) {
+                        WcsIcons.Cancel
+                    }
+                },
+            )
+        },
+        expanded = true,
+        modifier = modifier,
+        windowInsets = SearchBarDefaults.windowInsets,
+        onExpandedChange = {},
+    ) {
+    }
 }
 
 @Composable
