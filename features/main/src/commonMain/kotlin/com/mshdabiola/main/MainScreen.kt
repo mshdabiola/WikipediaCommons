@@ -288,16 +288,76 @@ fun MainLight() {
 // Dummy data for preview and example
 val sampleImages =
     listOf(
-        MainImage(mime = "image/png", sha1 = "1", title = "Image 1", url = "https://example.com/image1.jpg", user = "User 1"),
-        MainImage(mime = "image/png", sha1 = "2", title = "Image 2", url = "https://example.com/image2.jpg", user = "User 2"),
-        MainImage(mime = "image/png", sha1 = "3", title = "Image 3", url = "https://example.com/image3.jpg", user = "User 3"),
-        MainImage(mime = "image/png", sha1 = "4", title = "Image 4", url = "https://example.com/image4.jpg", user = "User 4"),
-        MainImage(mime = "image/png", sha1 = "5", title = "Image 5", url = "https://example.com/image5.jpg", user = "User 5"),
-        MainImage(mime = "image/png", sha1 = "6", title = "Image 6", url = "https://example.com/image6.jpg", user = "User 6"),
-        MainImage(mime = "image/png", sha1 = "7", title = "Image 7", url = "https://example.com/image7.jpg", user = "User 7"),
-        MainImage(mime = "image/png", sha1 = "8", title = "Image 8", url = "https://example.com/image8.jpg", user = "User 8"),
-        MainImage(mime = "image/png", sha1 = "9", title = "Image 9", url = "https://example.com/image9.jpg", user = "User 9"),
-        MainImage(mime = "image/png", sha1 = "1", title = "Image 10", url = "https://example.com/image10.jpg", user = "User 10"),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 1",
+            url = "https://example.com/image1.jpg",
+            user = "User 1",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "2",
+            title = "Image 2",
+            url = "https://example.com/image2.jpg",
+            user = "User 2",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "3",
+            title = "Image 3",
+            url = "https://example.com/image3.jpg",
+            user = "User 3",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "4",
+            title = "Image 4",
+            url = "https://example.com/image4.jpg",
+            user = "User 4",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "5",
+            title = "Image 5",
+            url = "https://example.com/image5.jpg",
+            user = "User 5",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "6",
+            title = "Image 6",
+            url = "https://example.com/image6.jpg",
+            user = "User 6",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "7",
+            title = "Image 7",
+            url = "https://example.com/image7.jpg",
+            user = "User 7",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "8",
+            title = "Image 8",
+            url = "https://example.com/image8.jpg",
+            user = "User 8",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "9",
+            title = "Image 9",
+            url = "https://example.com/image9.jpg",
+            user = "User 9",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 10",
+            url = "https://example.com/image10.jpg",
+            user = "User 10",
+        ),
     )
 
 @OptIn(ExperimentalMaterial3Api::class)
