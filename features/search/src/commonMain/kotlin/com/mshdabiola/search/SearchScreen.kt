@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SearchBar
@@ -24,6 +25,10 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -79,13 +84,6 @@ internal fun SearchScreen(
     val searchQueryState = remember { mutableStateOf("") }
     var isExpanded by remember { mutableStateOf(true) }
 
-    // Ensure these imports are available:
-    // import androidx.compose.runtime.mutableStateOf
-    // import androidx.compose.runtime.remember
-    // import androidx.compose.runtime.getValue
-    // import androidx.compose.runtime.setValue
-    // import androidx.compose.material3.Icon
-
     SearchBar(
         inputField = {
             SearchBarDefaults.InputField(
@@ -100,9 +98,11 @@ internal fun SearchScreen(
                     Text("Search")
                 },
                 leadingIcon = {
-                    IconButton(onClick = {
-                        // Handle back navigation
-                    }) {
+                    IconButton(
+                        onClick = {
+                            // Handle back navigation
+                        },
+                    ) {
                         Icon(imageVector = WcsIcons.ArrowBack, contentDescription = "Go Back")
                     }
                 },
@@ -120,9 +120,10 @@ internal fun SearchScreen(
     ) {
         // Additional composable content can be added here if needed
     }
+}
 
 @Composable
-private fun LoadingState(modifier: Modifier = Modifier) {
+fun LoadingState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize().testTag("main:loading"),
         contentAlignment = Alignment.Center,
@@ -134,7 +135,7 @@ private fun LoadingState(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun EmptyState(modifier: Modifier = Modifier) {
+fun EmptyState(modifier: Modifier = Modifier) {
     Column(
         modifier =
             modifier
