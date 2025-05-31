@@ -11,18 +11,17 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import com.mshdabiola.search.SearchRoute
 
-fun NavController.navigateToSearch(
-    main: Search,
-    navOptions: NavOptions,
-) = navigate(main, navOptions)
+fun NavController.navigateToSearch(navOptions: NavOptions = navOptions { }) = navigate(Search, navOptions)
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 fun NavGraphBuilder.searchScreen(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     navigateToDetail: (String) -> Unit,
+    back: () -> Unit,
 ) {
     composable<Search> {
         SearchRoute(
@@ -30,6 +29,7 @@ fun NavGraphBuilder.searchScreen(
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = this,
             navigateToDetail = navigateToDetail,
+            back = back,
         )
     }
 }

@@ -60,6 +60,7 @@ internal fun SearchRoute(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
     navigateToDetail: (String) -> Unit,
+    back: () -> Unit,
 ) {
     val viewModel: SearchViewModel = koinViewModel()
     val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
@@ -70,6 +71,7 @@ internal fun SearchRoute(
         search = viewModel.search,
         searchHistory = searchHistory.value,
         onSearchClick = navigateToDetail,
+        back = back,
     )
 }
 
@@ -85,6 +87,7 @@ internal fun SearchScreen(
     search: TextFieldState = rememberTextFieldState(),
     searchHistory: List<String> = emptyList(),
     onSearchClick: (String) -> Unit = {},
+    back: () -> Unit = {},
 ) {
     with(sharedTransitionScope) {
         Column(
