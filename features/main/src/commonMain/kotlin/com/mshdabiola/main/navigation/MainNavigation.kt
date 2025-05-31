@@ -24,6 +24,7 @@ fun NavGraphBuilder.mainScreen(
     sharedTransitionScope: SharedTransitionScope,
     onShowSnack: suspend (String, String?) -> Boolean,
     navigateToDetail: (String) -> Unit,
+    navigateToSearch: () -> Unit,
 ) {
     composable<Main> {
         MainRoute(
@@ -32,6 +33,7 @@ fun NavGraphBuilder.mainScreen(
             animatedContentScope = this,
             showSnackbar = onShowSnack,
             navigateToDetail = navigateToDetail,
+            navigateToSearch = navigateToSearch,
         )
     }
 }
