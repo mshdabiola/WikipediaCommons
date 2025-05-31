@@ -125,6 +125,7 @@ kotlin {
             implementation(projects.features.main)
             implementation(projects.features.detail)
             implementation(projects.features.setting)
+            implementation(projects.features.search)
 
             // Logger
             implementation(libs.kermit)
