@@ -30,6 +30,7 @@ fun NavGraphBuilder.searchScreen(
             animatedContentScope = this,
             navigateToDetail = navigateToDetail,
             back = back,
+            onBackClick ={},
         )
     }
 }
