@@ -5,4 +5,12 @@
     <string name="features_main_empty_description">Updates you save will be stored here\nto read later</string>
     <string name="features_main_removed">Bookmark removed</string>
     <string name="features_main_undo">UNDO</string>
+    <string name="search_hint">Search Wikipedia Commons…</string>
+    <string name="search_icon_description">Search</string>
+    <string name="search_history_title">Search History</string>
+    <string name="search_clear_history">Clear History</string>
+    <string name="search_history_empty">No recent searches.</string>
+    <string name="abc_action_bar_up_description">Navigate up</string> <!-- Common Android resource string -->
+    <string name="abc_clear_search_api_title">Clear search</string> <!-- Common Android resource string -->
+
 </resources>
