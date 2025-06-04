@@ -134,7 +134,8 @@ internal fun MainScreen(
                     IconButton(
                         modifier =
                             Modifier.sharedBounds(
-                                sharedContentState = rememberSharedContentState("search"),
+                                sharedContentState =
+                                    rememberSharedContentState("search_bar_bounds"),
                                 animatedVisibilityScope = animatedContentScope,
                             ),
                         onClick = onSearchClick,
