@@ -27,12 +27,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.onClick
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
@@ -47,14 +47,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
@@ -73,7 +70,6 @@ import com.mshdabiola.designsystem.theme.WcsTheme
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.ui.SharedContentPreview
 import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
-import io.github.ahmad_hamwi.compose.pagination.PaginationState
 import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -89,7 +85,6 @@ import wikipediacommons.features.search.generated.resources.features_main_img_em
 import wikipediacommons.features.search.generated.resources.features_main_loading
 import wikipediacommons.features.search.generated.resources.search_clear_history
 import wikipediacommons.features.search.generated.resources.search_hint
-import wikipediacommons.features.search.generated.resources.search_history_empty
 import wikipediacommons.features.search.generated.resources.search_history_title
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
@@ -98,83 +93,65 @@ internal fun SearchRoute(
     modifier: Modifier = Modifier,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    navigateToDetail: (String) -> Unit, // This is executed when a search is submitted
+    navigateToDetail: (String) -> Unit,
     onBackClick: () -> Unit,
-    back: () -> Unit,
 ) {
     val viewModel: SearchViewModel = koinViewModel()
-    val searchHistory by viewModel.searchHistory.collectAsStateWithLifecycle()
+    val state = viewModel.searchState.collectAsStateWithLifecycle()
 
     SearchScreen(
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
         modifier = modifier,
-        paginationState = viewModel.paginationState,
-        searchState = viewModel.search, // Assuming your ViewModel holds TextFieldState
-        searchHistory = searchHistory,
-        onSearchSubmit = { query ->
-            if (query.isNotBlank()) {
-                viewModel.addToSearchHistory(query) // Add to history before navigating
-                navigateToDetail(query)
-            }
-        },
-        onClearSearch = { viewModel.search.clearText() },
-        onHistoryItemClick = { historyQuery ->
-            viewModel.search.edit {
-                this.replace(
-                    0,
-                    this.length,
-                    historyQuery,
-                )
-            } // Update TextFieldState
-            // Optionally, you could also immediately trigger search:
-            // viewModel.addToSearchHistory(historyQuery)
-            // navigateToDetail(historyQuery)
-        },
-        onClearHistory = viewModel::clearSearchHistory, // Assuming ViewModel has this
+        searchState = state.value,
+        searchQuery = viewModel.searchQuery,
+        onSearchSubmit = viewModel::onSearchSubmit,
+        onClearSearch = { viewModel.searchQuery.clearText() },
+        onHistoryItemClick = viewModel::onSearchHistory,
+        onClearHistory = viewModel::clearSearchHistory,
         onBackClick = onBackClick,
-        back = back,
+        onSearchItem = navigateToDetail,
     )
 }
 
 @OptIn(
     ExperimentalSharedTransitionApi::class,
-    ExperimentalMaterial3Api::class, // Needed for ListItem, etc.
+    ExperimentalMaterial3Api::class,
 )
 @Composable
 internal fun SearchScreen(
     modifier: Modifier = Modifier,
-    paginationState: PaginationState<Int, MainImage>,
+    searchState: SearchState,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    searchState: TextFieldState,
-    searchHistory: List<String>,
-    onSearchSubmit: (String) -> Unit,
-    onClearSearch: () -> Unit,
-    onHistoryItemClick: (String) -> Unit,
-    onClearHistory: () -> Unit,
-    onBackClick: () -> Unit,
-    back: () -> Unit = {},
+    searchQuery: TextFieldState,
+    onSearchSubmit: () -> Unit = {},
+    onClearSearch: () -> Unit = {},
+    onHistoryItemClick: (String) -> Unit = {},
+    onClearHistory: () -> Unit = {},
+    onBackClick: () -> Unit = {},
+    onSearchItem: (String) -> Unit = {},
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
-    var isSearchActive by remember { mutableStateOf(true) }
+//    var isSearchActive by remember { mutableStateOf(true) }
     val interactionSource = remember { MutableInteractionSource() }
-
-
 
     Surface(modifier = modifier.fillMaxSize()) {
         with(sharedTransitionScope) {
             Column(
-                modifier = Modifier.fillMaxSize()
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState("search_bar_bounds"),
-                        animatedVisibilityScope = animatedContentScope,
-                    ),
+                modifier =
+                    Modifier.fillMaxSize()
+                        .sharedBounds(
+                            sharedContentState =
+                                rememberSharedContentState("search_bar_bounds"),
+                            animatedVisibilityScope = animatedContentScope,
+                        ),
             ) {
                 WcsTextField(
-                    state = searchState,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    state = searchQuery,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
                     interactionSource = interactionSource,
                     placeholder = {
                         Text(
@@ -184,27 +161,25 @@ internal fun SearchScreen(
                         )
                     },
                     leadingIcon = {
-
                         IconButton(onClick = onBackClick) {
-
                             Icon(
-                                Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = stringResource(
-                                    Res.string.abc_action_bar_up_description,
-                                ),
-                            ) // Use a common back arrow description
+                                WcsIcons.ArrowBack,
+                                contentDescription =
+                                    stringResource(
+                                        Res.string.abc_action_bar_up_description,
+                                    ),
+                            )
                         }
-
                     },
                     trailingIcon = {
                         AnimatedVisibility(
-                            visible = searchState.text.isNotEmpty() && isSearchActive,
+                            visible = searchQuery.text.isNotEmpty(),
                             enter = fadeIn() + slideInHorizontally { it / 2 },
                             exit = fadeOut() + slideOutHorizontally { it / 2 },
                         ) {
                             IconButton(onClick = onClearSearch) {
                                 Icon(
-                                    Icons.Default.Close,
+                                    WcsIcons.Close,
                                     contentDescription =
                                         stringResource(
                                             Res.string.abc_clear_search_api_title,
@@ -213,44 +188,53 @@ internal fun SearchScreen(
                             }
                         }
                     },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Search,
-                        showKeyboardOnFocus = true,
-                    ),
+                    keyboardOptions =
+                        KeyboardOptions(
+                            imeAction = ImeAction.Search,
+                            showKeyboardOnFocus = true,
+                        ),
                     lineLimits = TextFieldLineLimits.SingleLine,
-                    colors = TextFieldDefaults.colors(
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent,
-                        disabledIndicatorColor = Color.Transparent,
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                    ),
-                    keyboardActions = { onSearchSubmit(searchState.text.toString()) },
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                        ),
+                    keyboardActions = { onSearchSubmit() },
                 )
 
                 HorizontalDivider()
 
-                PaginatedLazyColumn(
-                    modifier = Modifier.weight(1f),
-                    paginationState = paginationState,
-                    firstPageEmptyIndicator = {
+                when (searchState) {
+                    is SearchState.Loading -> {
+                        FullLoadingState()
+                    }
+                    is SearchState.History -> {
                         Column(modifier = Modifier.fillMaxSize()) {
-
-                            if (searchHistory.isNotEmpty()) {
+                            if (searchState.searchHistory.isNotEmpty()) {
                                 Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp, vertical = 8.dp),
                                     verticalAlignment = Alignment.CenterVertically,
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                 ) {
                                     Text(
-                                        text = stringResource(Res.string.search_history_title), // Add "Search History" to resources
+                                        text =
+                                            stringResource(
+                                                Res.string.search_history_title,
+                                            ),
                                         style = MaterialTheme.typography.titleSmall,
                                     )
                                     Text(
-                                        text = stringResource(Res.string.search_clear_history),
+                                        text =
+                                            stringResource(
+                                                Res.string.search_clear_history,
+                                            ),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.clickable { onClearHistory() },
@@ -258,144 +242,148 @@ internal fun SearchScreen(
                                 }
                             }
 
-
                             LazyColumn(
                                 modifier = Modifier.weight(1f),
-                            )
-                            {
-                                if (searchHistory.isEmpty()) {
+                            ) {
+                                if (searchState.searchHistory.isEmpty()) {
                                     item {
                                         FullEmptyState(
-
                                             modifier = Modifier.padding(top = 32.dp),
                                         )
                                     }
                                 } else {
-                                    items(items = searchHistory, key = { it }) { historyItem ->
+                                    items(
+                                        items = searchState.searchHistory,
+                                        key = { it },
+                                    ) { historyItem ->
                                         ListItem(
                                             headlineContent = { Text(historyItem) },
                                             leadingContent = {
                                                 Icon(
-                                                    Icons.Default.History,
+                                                    WcsIcons.History,
                                                     contentDescription = null,
                                                 )
                                             },
-                                            modifier = Modifier
-                                                .clickable {
-                                                    onHistoryItemClick(historyItem)
-                                                    isSearchActive = true // Keep search active
-                                                    keyboardController?.show() // Optionally show keyboard
-                                                    //   focusRequester.requestFocus()
-                                                }
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 16.dp),
+                                            modifier =
+                                                Modifier
+                                                    .clickable {
+                                                        onHistoryItemClick(historyItem)
+                                                        keyboardController?.show()
+                                                    }
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 16.dp),
                                         )
                                     }
                                 }
                             }
                         }
-
-                    },
-                    firstPageProgressIndicator = {
-                        FullLoadingState()
-                    },
-                    newPageProgressIndicator = {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center,
-                        ) {
-                            WcsLoadingWheel(
-                                contentDesc = "Loading",
-                            )
-                        }
-                    },
-                    firstPageErrorIndicator = { e ->
-                        Column(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalArrangement =
-                                Arrangement.spacedBy(
-                                    16.dp,
-                                    Alignment.CenterVertically,
-                                ),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Icon(WcsIcons.Info, contentDescription = null)
-                            Text(e.message ?: "Error occur")
-                            WcsButton(
-                                onClick = {
-                                    paginationState.retryLastFailedRequest()
-                                },
-                            ) {
-                                Text("Retry")
-                            }
-                        }
-                    },
-                    newPageErrorIndicator = { e ->
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalArrangement = Arrangement.spacedBy(
-                                8.dp,
-                                Alignment.CenterVertically,
-                            ),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                        ) {
-                            Text(
-                                e.message ?: "Error occur",
-                                maxLines = 1,
-                            )
-                            WcsButton(onClick = { paginationState.retryLastFailedRequest() }) {
-                                Text("Retry")
-                            }
-                        }
-                    },
-
-                    ) {
-                    item {
-                        Text("Search Results")
                     }
-                    items(items = paginationState.allItems!!) { image ->
-                        with(sharedTransitionScope) {
-                            ListItem(
-                                modifier = Modifier.fillMaxWidth().sharedBounds(
-                                    sharedContentState = rememberSharedContentState(image.sha1),
-                                    animatedVisibilityScope = animatedContentScope,
-                                ),
-                                leadingContent = {
-                                    AsyncImage(
-                                        model = image.url,
-                                        contentDescription = image.title,
+                    is SearchState.Results -> {
+                        PaginatedLazyColumn(
+                            modifier = Modifier.weight(1f),
+                            paginationState = searchState.paginationState,
+                            firstPageEmptyIndicator = {
+                            },
+                            firstPageProgressIndicator = {
+                                FullLoadingState()
+                            },
+                            newPageProgressIndicator = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    WcsLoadingWheel(
+                                        contentDesc = "Loading",
+                                    )
+                                }
+                            },
+                            firstPageErrorIndicator = { e ->
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(
+                                            16.dp,
+                                            Alignment.CenterVertically,
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Icon(WcsIcons.Info, contentDescription = null)
+                                    Text(e.message ?: "Error occur")
+                                    WcsButton(
+                                        onClick = {
+                                            searchState.paginationState.retryLastFailedRequest()
+                                        },
+                                    ) {
+                                        Text("Retry")
+                                    }
+                                }
+                            },
+                            newPageErrorIndicator = { e ->
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(
+                                            8.dp,
+                                            Alignment.CenterVertically,
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Text(
+                                        e.message ?: "Error occur",
+                                        maxLines = 1,
+                                    )
+                                    WcsButton(onClick = {
+                                        searchState
+                                            .paginationState.retryLastFailedRequest()
+                                    }) {
+                                        Text("Retry")
+                                    }
+                                }
+                            },
+                        ) {
+                            items(items = searchState.paginationState.allItems!!) { image ->
+                                with(sharedTransitionScope) {
+                                    ListItem(
                                         modifier =
                                             Modifier
-                                                .size(64.dp),
-                                        // Adjust height as needed
-                                        contentScale = ContentScale.Crop,
-//                                        placeholder =
-//                                            painterResource(
-//                                                wikipediacommons.features.main.generated.resources.Res.drawable.features_main_photo,
-//                                            ),
-
+                                                .fillMaxWidth()
+                                                .clickable { onSearchItem(image.sha1) }
+                                                .sharedBounds(
+                                                    sharedContentState =
+                                                        rememberSharedContentState(image.sha1),
+                                                    animatedVisibilityScope = animatedContentScope,
+                                                ),
+                                        leadingContent = {
+                                            AsyncImage(
+                                                model = image.url,
+                                                contentDescription = image.title,
+                                                modifier =
+                                                    Modifier
+                                                        .size(64.dp),
+                                                // Adjust height as needed
+                                                contentScale = ContentScale.Crop,
+                                            )
+                                        },
+                                        headlineContent = {
+                                            Text(image.title)
+                                        },
+                                        supportingContent = {
+                                            Text(image.user)
+                                        },
                                     )
-                                },
-                                headlineContent = {
-                                    Text(image.title)
-                                },
-                                supportingContent = {
-                                    Text(image.user)
-                                },
-                            )
+                                }
+                            }
                         }
                     }
-
                 }
-
             }
         }
     }
 }
 
 @Composable
-fun FullLoadingState(modifier: Modifier = Modifier) { // Renamed to avoid conflict
+fun FullLoadingState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize().testTag("main:loading"),
         contentAlignment = Alignment.Center,
@@ -410,49 +398,6 @@ fun FullLoadingState(modifier: Modifier = Modifier) { // Renamed to avoid confli
     ExperimentalSharedTransitionApi::class,
     ExperimentalMaterial3Api::class,
 )
-@Preview
-@Composable
-internal fun SearchScreenPreview2() {
-    WcsTheme {
-        SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
-            SearchScreen(
-                modifier = Modifier,
-                paginationState = rememberPaginationState(
-                    initialPageKey = 1,
-                    onRequestPage = {
-                        appendPage(listOf(
-                            MainImage(
-                                title = "Image 1",
-                                mime = "image/jpeg",
-                                sha1 = "sha1_1",
-                                url = "https://example.com/image1.jpg",
-                                user = "User 1"
-                            ),
-                            MainImage(
-                                title = "Image 2",
-                                mime = "image/png",
-                                sha1 = "sha1_2",
-                                url = "https://example.com/image2.png",
-                                user = "User 2"
-                            )
-                        ), 2)
-                    }
-                ),
-                sharedTransitionScope = sharedTransitionScope,
-                animatedContentScope = animatedVisibilityScope,
-                searchState = rememberTextFieldState(initialText = "Search Query"),
-                searchHistory = listOf("History 1", "History 2"),
-                onSearchSubmit = {},
-                onClearSearch = {},
-                onHistoryItemClick = {},
-                onClearHistory = {},
-                onBackClick = {},
-                back = {}
-            )
-        }
-    }
-}
-
 @Composable
 fun FullEmptyState(modifier: Modifier = Modifier) {
     Column(
@@ -467,11 +412,16 @@ fun FullEmptyState(modifier: Modifier = Modifier) {
         val iconTint = LocalTintTheme.current.iconTint
         Image(
             modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(
-                Res.drawable.features_main_img_empty_bookmarks,
-            ),
-            colorFilter = if (iconTint != Color.Unspecified)
-                ColorFilter.tint(iconTint) else null,
+            painter =
+                painterResource(
+                    Res.drawable.features_main_img_empty_bookmarks,
+                ),
+            colorFilter =
+                if (iconTint != Color.Unspecified) {
+                    ColorFilter.tint(iconTint)
+                } else {
+                    null
+                },
             contentDescription = null,
         )
         Spacer(modifier = Modifier.height(48.dp))
@@ -497,24 +447,20 @@ fun FullEmptyState(modifier: Modifier = Modifier) {
 @Composable
 fun SearchScreenPreview() {
     val searchState = rememberTextFieldState("Preview Query")
-    val history = remember { mutableStateOf(listOf("Kotlin", "Compose", "Android Development")) }
 
-    val pagerState = rememberPaginationState<Int, MainImage>(
-        initialPageKey = 1,
-        onRequestPage = {
-            appendPage(emptyList(), 2)
-        },
-    )
+    val state =
+        SearchState.History(
+            listOf("Kotlin", "Compose", "Android Development"),
+        )
     WcsTheme(darkTheme = false) {
         Surface {
             SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                 SearchScreen(
                     sharedTransitionScope = sharedTransitionScope,
                     animatedContentScope = animatedContentScope,
-                    searchState = searchState,
-                    paginationState = pagerState,
-                    searchHistory = history.value,
-                    onSearchSubmit = { query -> println("Search submitted: $query") },
+                    searchState = state,
+                    searchQuery = searchState,
+                    onSearchSubmit = { },
                     onClearSearch = { searchState.clearText() },
                     onHistoryItemClick = { query ->
                         searchState.edit {
@@ -525,7 +471,7 @@ fun SearchScreenPreview() {
                             )
                         }
                     },
-                    onClearHistory = { history.value = emptyList() },
+                    onClearHistory = {},
                     onBackClick = { println("Back clicked") },
                 )
             }
@@ -534,37 +480,142 @@ fun SearchScreenPreview() {
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
-@Preview
+@Preview()
 @Composable
-fun SearchScreenEmptyHistoryPreview() {
-    val searchState = rememberTextFieldState()
-    val history = remember { mutableStateOf<List<String>>(emptyList()) }
-    val pagerState = rememberPaginationState<Int, MainImage>(
-        initialPageKey = 1,
-        onRequestPage = {},
-    )
-    WcsTheme(darkTheme = false) {
+internal fun SearchScreenEmptyHistoryPreview() {
+    val searchState = rememberTextFieldState(initialText = "")
+    // Pagination state that will show its firstPageEmptyIndicator
+    // This indicator in your SearchScreen then checks searchHistory.
+    val paginationState =
+        rememberPaginationState<Int, MainImage>(
+            initialPageKey = 1,
+            onRequestPage = {
+            },
+        )
+
+    WcsTheme {
         Surface {
-            SharedContentPreview { sharedTransitionScope, animatedContentScope ->
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
                 SearchScreen(
+                    modifier = Modifier,
                     sharedTransitionScope = sharedTransitionScope,
-                    animatedContentScope = animatedContentScope,
-                    searchState = searchState,
-                    paginationState = pagerState,
-                    searchHistory = history.value,
-                    onSearchSubmit = { query -> println("Search submitted: $query") },
-                    onClearSearch = { searchState.clearText() },
-                    onHistoryItemClick = { query ->
-                        searchState.edit {
-                            this.replace(
-                                0,
-                                this.length,
-                                query,
-                            )
-                        }
-                    },
-                    onClearHistory = { history.value = emptyList() },
-                    onBackClick = { println("Back clicked") },
+                    animatedContentScope = animatedVisibilityScope,
+                    searchState = SearchState.History(emptyList()),
+                    searchQuery = searchState,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenWithHistoryListPreview() {
+    val searchState = rememberTextFieldState(initialText = "")
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    searchState =
+                        SearchState.History(
+                            listOf(
+                                "Nature",
+                                "Technology",
+                                "Art",
+                                "Compose Multiplatform",
+                            ),
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenEmptyMainImagePreview() {
+    val searchState = rememberTextFieldState(initialText = "QueryThatYieldsNoResults")
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    searchState =
+                        SearchState.Results(
+                            paginationState =
+                                rememberPaginationState(
+                                    initialPageKey = 1,
+                                    onRequestPage = {
+                                        appendPage(emptyList(), 1)
+                                    },
+                                ),
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenWithMainImageListPreview() {
+    val searchState = rememberTextFieldState(initialText = "Photos")
+    val sampleImages =
+        listOf(
+            MainImage(
+                title = "Beautiful Landscape",
+                mime = "image/jpeg",
+                sha1 = "abc",
+                url = "url1",
+                user = "UserA",
+            ),
+            MainImage(
+                title = "City Skyline",
+                mime = "image/png",
+                sha1 = "def",
+                url = "url2",
+                user = "UserB",
+            ),
+            MainImage(
+                title = "Abstract Art",
+                mime = "image/jpeg",
+                sha1 = "ghi",
+                url = "url3",
+                user = "UserC",
+            ),
+        )
+    val paginationState =
+        rememberPaginationState(
+            initialPageKey = 1,
+            onRequestPage = { currentPage ->
+                appendPage(sampleImages, 1)
+            },
+        )
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    searchState =
+                        SearchState.Results(
+                            paginationState = paginationState,
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
                 )
             }
         }
