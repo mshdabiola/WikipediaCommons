@@ -27,15 +27,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.onClick
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -46,7 +42,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -79,13 +74,18 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import wikipediacommons.features.search.generated.resources.Res
 import wikipediacommons.features.search.generated.resources.abc_action_bar_up_description
 import wikipediacommons.features.search.generated.resources.abc_clear_search_api_title
+import wikipediacommons.features.search.generated.resources.error_occurred_default_message
 import wikipediacommons.features.search.generated.resources.features_main_empty_description
 import wikipediacommons.features.search.generated.resources.features_main_empty_error
 import wikipediacommons.features.search.generated.resources.features_main_img_empty_bookmarks
 import wikipediacommons.features.search.generated.resources.features_main_loading
+import wikipediacommons.features.search.generated.resources.loading_content_description
+import wikipediacommons.features.search.generated.resources.retry_button_text
+import wikipediacommons.features.search.generated.resources.search_bar_bounds_shared_content_key
 import wikipediacommons.features.search.generated.resources.search_clear_history
 import wikipediacommons.features.search.generated.resources.search_hint
 import wikipediacommons.features.search.generated.resources.search_history_title
+import wikipediacommons.features.search.generated.resources.search_results_label
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -143,7 +143,10 @@ internal fun SearchScreen(
                     Modifier.fillMaxSize()
                         .sharedBounds(
                             sharedContentState =
-                                rememberSharedContentState("search_bar_bounds"),
+                                rememberSharedContentState(
+                                    stringResource(
+                                        Res.string.search_bar_bounds_shared_content_key)
+                                ),
                             animatedVisibilityScope = animatedContentScope,
                         ),
             ) {
@@ -161,7 +164,10 @@ internal fun SearchScreen(
                         )
                     },
                     leadingIcon = {
-                        IconButton(onClick = onBackClick) {
+                        IconButton(
+                            modifier = Modifier.testTag("search_bar_back_button"),
+                            onClick = onBackClick,
+                        ) {
                             Icon(
                                 WcsIcons.ArrowBack,
                                 contentDescription =
@@ -177,7 +183,10 @@ internal fun SearchScreen(
                             enter = fadeIn() + slideInHorizontally { it / 2 },
                             exit = fadeOut() + slideOutHorizontally { it / 2 },
                         ) {
-                            IconButton(onClick = onClearSearch) {
+                            IconButton(
+                                onClick = onClearSearch,
+                                modifier = Modifier.testTag("search_bar_clear_button"),
+                            ) {
                                 Icon(
                                     WcsIcons.Close,
                                     contentDescription =
@@ -237,7 +246,8 @@ internal fun SearchScreen(
                                             ),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.clickable { onClearHistory() },
+                                        modifier = Modifier.clickable { onClearHistory() }
+                                            .testTag("search_clear_history_button"),
                                     )
                                 }
                             }
@@ -271,7 +281,8 @@ internal fun SearchScreen(
                                                         keyboardController?.show()
                                                     }
                                                     .fillMaxWidth()
-                                                    .padding(horizontal = 16.dp),
+                                                    .padding(horizontal = 16.dp)
+                                                    .testTag("search_history_item_$historyItem"),
                                         )
                                     }
                                 }
@@ -283,6 +294,18 @@ internal fun SearchScreen(
                             modifier = Modifier.weight(1f),
                             paginationState = searchState.paginationState,
                             firstPageEmptyIndicator = {
+                                FullEmptyState(
+                                    modifier = Modifier.padding(top = 32.dp),
+                                    title =
+                                        stringResource(
+                                            Res.string.search_results_label,
+                                        ),
+                                    message =
+                                        stringResource(
+                                            Res.string.features_main_empty_description,
+                                        ),
+                                    // Or a more specific "no results" message
+                                )
                             },
                             firstPageProgressIndicator = {
                                 FullLoadingState()
@@ -294,7 +317,7 @@ internal fun SearchScreen(
                                     horizontalArrangement = Arrangement.Center,
                                 ) {
                                     WcsLoadingWheel(
-                                        contentDesc = "Loading",
+                                        contentDesc = stringResource(Res.string.loading_content_description),
                                     )
                                 }
                             },
@@ -309,13 +332,14 @@ internal fun SearchScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
                                     Icon(WcsIcons.Info, contentDescription = null)
-                                    Text(e.message ?: "Error occur")
+                                    Text(e.message ?: stringResource(Res.string.error_occurred_default_message))
                                     WcsButton(
                                         onClick = {
                                             searchState.paginationState.retryLastFailedRequest()
                                         },
+                                        modifier = Modifier.testTag("search_retry_first_page_button"),
                                     ) {
-                                        Text("Retry")
+                                        Text(stringResource(Res.string.retry_button_text))
                                     }
                                 }
                             },
@@ -330,14 +354,14 @@ internal fun SearchScreen(
                                     horizontalAlignment = Alignment.CenterHorizontally,
                                 ) {
                                     Text(
-                                        e.message ?: "Error occur",
+                                        e.message ?: stringResource(Res.string.error_occurred_default_message),
                                         maxLines = 1,
                                     )
                                     WcsButton(onClick = {
                                         searchState
                                             .paginationState.retryLastFailedRequest()
-                                    }) {
-                                        Text("Retry")
+                                    }, modifier = Modifier.testTag("search_retry_new_page_button")) {
+                                        Text(stringResource(Res.string.retry_button_text))
                                     }
                                 }
                             },
@@ -353,7 +377,8 @@ internal fun SearchScreen(
                                                     sharedContentState =
                                                         rememberSharedContentState(image.sha1),
                                                     animatedVisibilityScope = animatedContentScope,
-                                                ),
+                                                )
+                                                .testTag("search_result_item_${image.sha1}"),
                                         leadingContent = {
                                             AsyncImage(
                                                 model = image.url,
@@ -399,7 +424,11 @@ fun FullLoadingState(modifier: Modifier = Modifier) {
     ExperimentalMaterial3Api::class,
 )
 @Composable
-fun FullEmptyState(modifier: Modifier = Modifier) {
+fun FullEmptyState(
+    modifier: Modifier = Modifier,
+    title: String = stringResource(Res.string.features_main_empty_error),
+    message: String = stringResource(Res.string.features_main_empty_description),
+) {
     Column(
         modifier =
             modifier
@@ -426,7 +455,7 @@ fun FullEmptyState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(48.dp))
         Text(
-            text = stringResource(Res.string.features_main_empty_error),
+            text = title,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
@@ -434,7 +463,7 @@ fun FullEmptyState(modifier: Modifier = Modifier) {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = stringResource(Res.string.features_main_empty_description),
+            text = message,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
@@ -554,7 +583,7 @@ internal fun SearchScreenEmptyMainImagePreview() {
                                 rememberPaginationState(
                                     initialPageKey = 1,
                                     onRequestPage = {
-                                        appendPage(emptyList(), 1)
+                                        appendPage(emptyList(), 2)
                                     },
                                 ),
                         ),
@@ -567,40 +596,91 @@ internal fun SearchScreenEmptyMainImagePreview() {
     }
 }
 
+val sampleImages =
+    listOf(
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 1",
+            url = "https://example.com/image1.jpg",
+            user = "User 1",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "2",
+            title = "Image 2",
+            url = "https://example.com/image2.jpg",
+            user = "User 2",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "3",
+            title = "Image 3",
+            url = "https://example.com/image3.jpg",
+            user = "User 3",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "4",
+            title = "Image 4",
+            url = "https://example.com/image4.jpg",
+            user = "User 4",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "5",
+            title = "Image 5",
+            url = "https://example.com/image5.jpg",
+            user = "User 5",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "6",
+            title = "Image 6",
+            url = "https://example.com/image6.jpg",
+            user = "User 6",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "7",
+            title = "Image 7",
+            url = "https://example.com/image7.jpg",
+            user = "User 7",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "8",
+            title = "Image 8",
+            url = "https://example.com/image8.jpg",
+            user = "User 8",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "9",
+            title = "Image 9",
+            url = "https://example.com/image9.jpg",
+            user = "User 9",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 10",
+            url = "https://example.com/image10.jpg",
+            user = "User 10",
+        ),
+    )
+
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Preview()
 @Composable
 internal fun SearchScreenWithMainImageListPreview() {
     val searchState = rememberTextFieldState(initialText = "Photos")
-    val sampleImages =
-        listOf(
-            MainImage(
-                title = "Beautiful Landscape",
-                mime = "image/jpeg",
-                sha1 = "abc",
-                url = "url1",
-                user = "UserA",
-            ),
-            MainImage(
-                title = "City Skyline",
-                mime = "image/png",
-                sha1 = "def",
-                url = "url2",
-                user = "UserB",
-            ),
-            MainImage(
-                title = "Abstract Art",
-                mime = "image/jpeg",
-                sha1 = "ghi",
-                url = "url3",
-                user = "UserC",
-            ),
-        )
+
     val paginationState =
-        rememberPaginationState(
+        rememberPaginationState<Int, MainImage>(
             initialPageKey = 1,
-            onRequestPage = { currentPage ->
-                appendPage(sampleImages, 1)
+            onRequestPage = {
+                this.appendPage(sampleImages, it + 1)
             },
         )
 

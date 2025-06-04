@@ -13,4 +13,13 @@
     <string name="abc_action_bar_up_description">Navigate up</string> <!-- Common Android resource string -->
     <string name="abc_clear_search_api_title">Clear search</string> <!-- Common Android resource string -->
 
+        <string name="search_bar_bounds_shared_content_key">search_bar_bounds</string>
+        <string name="loading_content_description">Loading</string>
+        <string name="error_occurred_default_message">Error occur</string>
+        <string name="retry_button_text">Retry</string>
+        <string name="search_results_label">Search Results</string>
+        <string name="search_clear_history_label">Clear search history</string>
+        <string name="search_history_item_label">View search result for %1$s</string>
+        <string name="search_result_item_label">View details for image %1$s</string>
+
 </resources>
