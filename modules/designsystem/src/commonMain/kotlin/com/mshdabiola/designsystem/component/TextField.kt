@@ -50,7 +50,7 @@ fun WcsTextField(
     state: TextFieldState,
     placeholder: String? = null,
     imeAction: ImeAction = ImeAction.Done,
-//    keyboardAction: () -> Unit = {},
+    keyboardAction: () -> Unit = {},
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
 ) {
     WcsTextField(
@@ -77,7 +77,7 @@ fun WcsTextField(
                 autoCorrectEnabled = true,
                 imeAction = imeAction,
             ),
-        // keyboardActions = KeyboardActions { keyboardAction() },
+        keyboardActions = { keyboardAction() },
         lineLimits = maxNum,
     )
 }
@@ -137,7 +137,7 @@ fun WcsTextField(
             inputTransformation = inputTransformation,
             lineLimits = lineLimits,
             onTextLayout = onTextLayout,
-            onKeyboardAction ={ keyboardActions()} ,
+            onKeyboardAction = { keyboardActions() },
             // codepointTransformation = codepointTransformation,
             decorator = @Composable { innerTextField ->
                 // places leading icon, text field with label and placeholder, trailing icon
