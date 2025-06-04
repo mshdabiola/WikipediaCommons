@@ -217,6 +217,7 @@ internal fun SearchScreen(
 
                 HorizontalDivider()
 
+
                 when (searchState) {
                     is SearchState.Loading -> {
                         FullLoadingState()
@@ -688,7 +689,7 @@ internal fun SearchScreenWithMainImageListPreview() {
         Surface {
             SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
                 SearchScreen(
-                    modifier = Modifier,
+                    modifier = Modifier.fillMaxSize(),
                     searchState =
                         SearchState.Results(
                             paginationState = paginationState,
