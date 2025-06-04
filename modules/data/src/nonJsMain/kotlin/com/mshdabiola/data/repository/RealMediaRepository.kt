@@ -95,6 +95,16 @@ class RealMediaRepository(
         }
     }
 
+    override suspend fun clearSearchHistory() {
+        withContext(ioDispatcher) {
+            store.updateUserData {
+                it.copy(
+                    searchHistory = emptyList(),
+                )
+            }
+        }
+    }
+
     private suspend fun saveImagesToDatabase(
         images: List<MainImage>,
         page: Int,
