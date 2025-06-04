@@ -29,8 +29,7 @@ fun NavGraphBuilder.searchScreen(
             sharedTransitionScope = sharedTransitionScope,
             animatedContentScope = this,
             navigateToDetail = navigateToDetail,
-            back = back,
-            onBackClick ={},
+            onBackClick = back,
         )
     }
 }
