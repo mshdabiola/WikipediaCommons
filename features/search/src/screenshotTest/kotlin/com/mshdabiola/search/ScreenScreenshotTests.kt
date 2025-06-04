@@ -6,6 +6,7 @@ package com.mshdabiola.search
 
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -29,6 +30,8 @@ class ScreenScreenshotTests {
                         modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        searchState = SearchState.Loading,
+                        searchQuery = rememberTextFieldState(),
                     )
                 }
             }
@@ -47,6 +50,8 @@ class ScreenScreenshotTests {
                         modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        searchState = SearchState.Loading,
+                        searchQuery = rememberTextFieldState(),
                     )
                 }
             }
@@ -65,6 +70,8 @@ class ScreenScreenshotTests {
                         modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        searchState = SearchState.Loading,
+                        searchQuery = rememberTextFieldState(),
                     )
                 }
             }
@@ -83,6 +90,8 @@ class ScreenScreenshotTests {
                         modifier = Modifier.fillMaxSize(),
                         sharedTransitionScope = sharedTransitionScope,
                         animatedContentScope = animatedContentScope,
+                        searchState = SearchState.Loading,
+                        searchQuery = rememberTextFieldState(),
                     )
                 }
             }
