@@ -26,6 +26,7 @@ import com.mshdabiola.designsystem.component.WcsTopAppBar
 import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.ui.TrackScreenViewEvent
 import com.mshdabiola.ui.Waiting
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
@@ -140,7 +141,7 @@ internal fun MainContent(
                 state = content,
                 placeholder = "content",
                 imeAction = ImeAction.Done,
-//                keyboardAction = { coroutineScope.launch { onShowSnackbar("Note Update", null) } },
+                keyboardAction = { coroutineScope.launch { onShowSnackbar("Note Update", null) } },
             )
         }
     }
