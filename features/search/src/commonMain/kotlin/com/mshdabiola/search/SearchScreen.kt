@@ -145,7 +145,8 @@ internal fun SearchScreen(
                             sharedContentState =
                                 rememberSharedContentState(
                                     stringResource(
-                                        Res.string.search_bar_bounds_shared_content_key)
+                                        Res.string.search_bar_bounds_shared_content_key,
+                                    ),
                                 ),
                             animatedVisibilityScope = animatedContentScope,
                         ),
@@ -217,7 +218,6 @@ internal fun SearchScreen(
 
                 HorizontalDivider()
 
-
                 when (searchState) {
                     is SearchState.Loading -> {
                         FullLoadingState()
@@ -247,8 +247,9 @@ internal fun SearchScreen(
                                             ),
                                         style = MaterialTheme.typography.labelMedium,
                                         color = MaterialTheme.colorScheme.primary,
-                                        modifier = Modifier.clickable { onClearHistory() }
-                                            .testTag("search_clear_history_button"),
+                                        modifier =
+                                            Modifier.clickable { onClearHistory() }
+                                                .testTag("search_clear_history_button"),
                                     )
                                 }
                             }
