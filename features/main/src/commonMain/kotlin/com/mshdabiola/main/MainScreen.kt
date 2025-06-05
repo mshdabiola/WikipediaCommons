@@ -74,6 +74,7 @@ internal fun MainRoute(
     animatedContentScope: AnimatedVisibilityScope,
     navigateToDetail: (String) -> Unit,
     showSnackbar: suspend (String, String?) -> Boolean,
+    navigateToSearch: () -> Unit,
 //    viewModel: MainViewModel,
 ) {
     val viewModel: MainViewModel = koinViewModel()
@@ -94,7 +95,7 @@ internal fun MainRoute(
                 showSnackbar("Bookmarked", null)
             }
         },
-        onSearchClick = {},
+        onSearchClick = navigateToSearch,
         onMenuClick = {},
     )
 }
@@ -129,8 +130,18 @@ internal fun MainScreen(
                 }
             },
             actions = {
-                IconButton(onClick = onSearchClick) {
-                    Icon(WcsIcons.Search, contentDescription = "Search")
+                with(sharedTransitionScope) {
+                    IconButton(
+                        modifier =
+                            Modifier.sharedBounds(
+                                sharedContentState =
+                                    rememberSharedContentState("search_bar_bounds"),
+                                animatedVisibilityScope = animatedContentScope,
+                            ),
+                        onClick = onSearchClick,
+                    ) {
+                        Icon(WcsIcons.Search, contentDescription = "Search")
+                    }
                 }
             },
         )

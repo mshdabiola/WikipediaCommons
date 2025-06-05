@@ -50,10 +50,10 @@ fun WcsTextField(
     state: TextFieldState,
     placeholder: String? = null,
     imeAction: ImeAction = ImeAction.Done,
-//    keyboardAction: () -> Unit = {},
+    keyboardAction: () -> Unit = {},
     maxNum: TextFieldLineLimits = TextFieldLineLimits.Default,
 ) {
-    MyTextField(
+    WcsTextField(
         modifier = modifier,
 //                    .bringIntoViewRequester(focusRequester2)
 //            .focusRequester(focusRequester)
@@ -77,14 +77,14 @@ fun WcsTextField(
                 autoCorrectEnabled = true,
                 imeAction = imeAction,
             ),
-        // keyboardActions = KeyboardActions { keyboardAction() },
+        keyboardActions = { keyboardAction() },
         lineLimits = maxNum,
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyTextField(
+fun WcsTextField(
     state: TextFieldState,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -100,7 +100,7 @@ fun MyTextField(
     isError: Boolean = false,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    // keyboardActions: KeyboardActions = KeyboardActions.Default,
+    keyboardActions: () -> Unit = {},
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = TextFieldDefaults.shape,
     colors: TextFieldColors = TextFieldDefaults.colors(),
@@ -137,6 +137,7 @@ fun MyTextField(
             inputTransformation = inputTransformation,
             lineLimits = lineLimits,
             onTextLayout = onTextLayout,
+            onKeyboardAction = { keyboardActions() },
             // codepointTransformation = codepointTransformation,
             decorator = @Composable { innerTextField ->
                 // places leading icon, text field with label and placeholder, trailing icon

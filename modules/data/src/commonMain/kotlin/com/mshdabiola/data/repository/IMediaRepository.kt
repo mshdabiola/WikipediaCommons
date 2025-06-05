@@ -21,4 +21,6 @@ interface IMediaRepository {
     ): List<MainImage>
 
     suspend fun addSearchHistory(search: String)
+
+    suspend fun clearSearchHistory()
 }

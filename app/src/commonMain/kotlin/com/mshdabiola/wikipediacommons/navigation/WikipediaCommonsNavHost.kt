@@ -13,6 +13,8 @@ import com.mshdabiola.detail.navigation.detailScreen
 import com.mshdabiola.detail.navigation.navigateToDetail
 import com.mshdabiola.main.navigation.Main
 import com.mshdabiola.main.navigation.mainScreen
+import com.mshdabiola.search.navigation.navigateToSearch
+import com.mshdabiola.search.navigation.searchScreen
 import com.mshdabiola.setting.navigation.settingScreen
 import com.mshdabiola.wikipediacommons.ui.WikipediaCommonsAppState
 
@@ -34,6 +36,13 @@ fun WikipediaCommonsNavHost(
                 sharedTransitionScope = this@SharedTransitionLayout,
                 onShowSnack = onShowSnackbar,
                 navigateToDetail = { },
+                navigateToSearch = navController::navigateToSearch,
+            )
+            searchScreen(
+                modifier = Modifier,
+                sharedTransitionScope = this@SharedTransitionLayout,
+                navigateToDetail = {},
+                back = navController::popBackStack,
             )
             detailScreen(
                 modifier = Modifier,

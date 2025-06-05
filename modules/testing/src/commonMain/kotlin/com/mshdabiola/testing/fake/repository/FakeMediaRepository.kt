@@ -33,4 +33,8 @@ class FakeMediaRepository : IMediaRepository {
     override suspend fun addSearchHistory(search: String) {
         print(search)
     }
+
+    override suspend fun clearSearchHistory() {
+        println("clear search")
+    }
 }

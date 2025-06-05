@@ -4,54 +4,88 @@
 
 package com.mshdabiola.search
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.clearText
 import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil3.compose.AsyncImage
+import com.mshdabiola.designsystem.component.WcsButton
 import com.mshdabiola.designsystem.component.WcsLoadingWheel
 import com.mshdabiola.designsystem.component.WcsTextField
+import com.mshdabiola.designsystem.icon.WcsIcons
 import com.mshdabiola.designsystem.theme.LocalTintTheme
 import com.mshdabiola.designsystem.theme.WcsTheme
+import com.mshdabiola.model.MainImage
 import com.mshdabiola.ui.SharedContentPreview
+import io.github.ahmad_hamwi.compose.pagination.PaginatedLazyColumn
+import io.github.ahmad_hamwi.compose.pagination.rememberPaginationState
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import wikipediacommons.features.search.generated.resources.Res
+import wikipediacommons.features.search.generated.resources.abc_action_bar_up_description
+import wikipediacommons.features.search.generated.resources.abc_clear_search_api_title
+import wikipediacommons.features.search.generated.resources.error_occurred_default_message
 import wikipediacommons.features.search.generated.resources.features_main_empty_description
 import wikipediacommons.features.search.generated.resources.features_main_empty_error
 import wikipediacommons.features.search.generated.resources.features_main_img_empty_bookmarks
 import wikipediacommons.features.search.generated.resources.features_main_loading
+import wikipediacommons.features.search.generated.resources.loading_content_description
+import wikipediacommons.features.search.generated.resources.retry_button_text
+import wikipediacommons.features.search.generated.resources.search_bar_bounds_shared_content_key
+import wikipediacommons.features.search.generated.resources.search_clear_history
+import wikipediacommons.features.search.generated.resources.search_hint
+import wikipediacommons.features.search.generated.resources.search_history_title
+import wikipediacommons.features.search.generated.resources.search_results_label
 
 @OptIn(KoinExperimentalAPI::class, ExperimentalSharedTransitionApi::class)
 @Composable
@@ -60,16 +94,23 @@ internal fun SearchRoute(
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
     navigateToDetail: (String) -> Unit,
+    onBackClick: () -> Unit,
 ) {
     val viewModel: SearchViewModel = koinViewModel()
-    val searchHistory = viewModel.searchHistory.collectAsStateWithLifecycle()
+    val state = viewModel.searchState.collectAsStateWithLifecycle()
+
     SearchScreen(
         sharedTransitionScope = sharedTransitionScope,
         animatedContentScope = animatedContentScope,
         modifier = modifier,
-        search = viewModel.search,
-        searchHistory = searchHistory.value,
-        onSearchClick = navigateToDetail,
+        searchState = state.value,
+        searchQuery = viewModel.searchQuery,
+        onSearchSubmit = viewModel::onSearchSubmit,
+        onClearSearch = { viewModel.searchQuery.clearText() },
+        onHistoryItemClick = viewModel::onSearchHistory,
+        onClearHistory = viewModel::clearSearchHistory,
+        onBackClick = onBackClick,
+        onSearchItem = navigateToDetail,
     )
 }
 
@@ -80,34 +121,288 @@ internal fun SearchRoute(
 @Composable
 internal fun SearchScreen(
     modifier: Modifier = Modifier,
+    searchState: SearchState,
     sharedTransitionScope: SharedTransitionScope,
     animatedContentScope: AnimatedVisibilityScope,
-    search: TextFieldState = rememberTextFieldState(),
-    searchHistory: List<String> = emptyList(),
-    onSearchClick: (String) -> Unit = {},
+    searchQuery: TextFieldState,
+    onSearchSubmit: () -> Unit = {},
+    onClearSearch: () -> Unit = {},
+    onHistoryItemClick: (String) -> Unit = {},
+    onClearHistory: () -> Unit = {},
+    onBackClick: () -> Unit = {},
+    onSearchItem: (String) -> Unit = {},
 ) {
-    with(sharedTransitionScope) {
-        Column(
-            modifier =
-                modifier
-                    .fillMaxSize()
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState("search"),
-                        animatedVisibilityScope = animatedContentScope,
-                    ),
-        ) {
-            WcsTextField(
-                modifier = Modifier,
-                state = search,
-            )
-            LazyColumn(
-                modifier = Modifier.weight(1f),
+    val keyboardController = LocalSoftwareKeyboardController.current
+//    var isSearchActive by remember { mutableStateOf(true) }
+    val interactionSource = remember { MutableInteractionSource() }
+
+    Surface(modifier = modifier.fillMaxSize()) {
+        with(sharedTransitionScope) {
+            Column(
+                modifier =
+                    Modifier.fillMaxSize()
+                        .sharedBounds(
+                            sharedContentState =
+                                rememberSharedContentState(
+                                    stringResource(
+                                        Res.string.search_bar_bounds_shared_content_key,
+                                    ),
+                                ),
+                            animatedVisibilityScope = animatedContentScope,
+                        ),
             ) {
-                items(items = searchHistory) { his ->
-                    Text(
-                        modifier = Modifier.clickable { onSearchClick(his) },
-                        text = his,
-                    )
+                WcsTextField(
+                    state = searchQuery,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth(),
+                    interactionSource = interactionSource,
+                    placeholder = {
+                        Text(
+                            stringResource(
+                                Res.string.search_hint,
+                            ),
+                        )
+                    },
+                    leadingIcon = {
+                        IconButton(
+                            modifier = Modifier.testTag("search_bar_back_button"),
+                            onClick = onBackClick,
+                        ) {
+                            Icon(
+                                WcsIcons.ArrowBack,
+                                contentDescription =
+                                    stringResource(
+                                        Res.string.abc_action_bar_up_description,
+                                    ),
+                            )
+                        }
+                    },
+                    trailingIcon = {
+                        AnimatedVisibility(
+                            visible = searchQuery.text.isNotEmpty(),
+                            enter = fadeIn() + slideInHorizontally { it / 2 },
+                            exit = fadeOut() + slideOutHorizontally { it / 2 },
+                        ) {
+                            IconButton(
+                                onClick = onClearSearch,
+                                modifier = Modifier.testTag("search_bar_clear_button"),
+                            ) {
+                                Icon(
+                                    WcsIcons.Close,
+                                    contentDescription =
+                                        stringResource(
+                                            Res.string.abc_clear_search_api_title,
+                                        ),
+                                ) // Common clear description
+                            }
+                        }
+                    },
+                    keyboardOptions =
+                        KeyboardOptions(
+                            imeAction = ImeAction.Search,
+                            showKeyboardOnFocus = true,
+                        ),
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    colors =
+                        TextFieldDefaults.colors(
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent,
+                            disabledIndicatorColor = Color.Transparent,
+                            focusedContainerColor = Color.Transparent,
+                            unfocusedContainerColor = Color.Transparent,
+                            disabledContainerColor = Color.Transparent,
+                        ),
+                    keyboardActions = { onSearchSubmit() },
+                )
+
+                HorizontalDivider()
+
+                when (searchState) {
+                    is SearchState.Loading -> {
+                        FullLoadingState()
+                    }
+                    is SearchState.History -> {
+                        Column(modifier = Modifier.fillMaxSize()) {
+                            if (searchState.searchHistory.isNotEmpty()) {
+                                Row(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                ) {
+                                    Text(
+                                        text =
+                                            stringResource(
+                                                Res.string.search_history_title,
+                                            ),
+                                        style = MaterialTheme.typography.titleSmall,
+                                    )
+                                    Text(
+                                        text =
+                                            stringResource(
+                                                Res.string.search_clear_history,
+                                            ),
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = MaterialTheme.colorScheme.primary,
+                                        modifier =
+                                            Modifier.clickable { onClearHistory() }
+                                                .testTag("search_clear_history_button"),
+                                    )
+                                }
+                            }
+
+                            LazyColumn(
+                                modifier = Modifier.weight(1f),
+                            ) {
+                                if (searchState.searchHistory.isEmpty()) {
+                                    item {
+                                        FullEmptyState(
+                                            modifier = Modifier.padding(top = 32.dp),
+                                        )
+                                    }
+                                } else {
+                                    items(
+                                        items = searchState.searchHistory,
+                                        key = { it },
+                                    ) { historyItem ->
+                                        ListItem(
+                                            headlineContent = { Text(historyItem) },
+                                            leadingContent = {
+                                                Icon(
+                                                    WcsIcons.History,
+                                                    contentDescription = null,
+                                                )
+                                            },
+                                            modifier =
+                                                Modifier
+                                                    .clickable {
+                                                        onHistoryItemClick(historyItem)
+                                                        keyboardController?.show()
+                                                    }
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 16.dp)
+                                                    .testTag("search_history_item_$historyItem"),
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    is SearchState.Results -> {
+                        PaginatedLazyColumn(
+                            modifier = Modifier.weight(1f),
+                            paginationState = searchState.paginationState,
+                            firstPageEmptyIndicator = {
+                                FullEmptyState(
+                                    modifier = Modifier.padding(top = 32.dp),
+                                    title =
+                                        stringResource(
+                                            Res.string.search_results_label,
+                                        ),
+                                    message =
+                                        stringResource(
+                                            Res.string.features_main_empty_description,
+                                        ),
+                                    // Or a more specific "no results" message
+                                )
+                            },
+                            firstPageProgressIndicator = {
+                                FullLoadingState()
+                            },
+                            newPageProgressIndicator = {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    horizontalArrangement = Arrangement.Center,
+                                ) {
+                                    WcsLoadingWheel(
+                                        contentDesc = stringResource(Res.string.loading_content_description),
+                                    )
+                                }
+                            },
+                            firstPageErrorIndicator = { e ->
+                                Column(
+                                    modifier = Modifier.fillMaxSize(),
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(
+                                            16.dp,
+                                            Alignment.CenterVertically,
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Icon(WcsIcons.Info, contentDescription = null)
+                                    Text(e.message ?: stringResource(Res.string.error_occurred_default_message))
+                                    WcsButton(
+                                        onClick = {
+                                            searchState.paginationState.retryLastFailedRequest()
+                                        },
+                                        modifier = Modifier.testTag("search_retry_first_page_button"),
+                                    ) {
+                                        Text(stringResource(Res.string.retry_button_text))
+                                    }
+                                }
+                            },
+                            newPageErrorIndicator = { e ->
+                                Column(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalArrangement =
+                                        Arrangement.spacedBy(
+                                            8.dp,
+                                            Alignment.CenterVertically,
+                                        ),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                ) {
+                                    Text(
+                                        e.message ?: stringResource(Res.string.error_occurred_default_message),
+                                        maxLines = 1,
+                                    )
+                                    WcsButton(onClick = {
+                                        searchState
+                                            .paginationState.retryLastFailedRequest()
+                                    }, modifier = Modifier.testTag("search_retry_new_page_button")) {
+                                        Text(stringResource(Res.string.retry_button_text))
+                                    }
+                                }
+                            },
+                        ) {
+                            items(items = searchState.paginationState.allItems!!) { image ->
+                                with(sharedTransitionScope) {
+                                    ListItem(
+                                        modifier =
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .clickable { onSearchItem(image.sha1) }
+                                                .sharedBounds(
+                                                    sharedContentState =
+                                                        rememberSharedContentState(image.sha1),
+                                                    animatedVisibilityScope = animatedContentScope,
+                                                )
+                                                .testTag("search_result_item_${image.sha1}"),
+                                        leadingContent = {
+                                            AsyncImage(
+                                                model = image.url,
+                                                contentDescription = image.title,
+                                                modifier =
+                                                    Modifier
+                                                        .size(64.dp),
+                                                // Adjust height as needed
+                                                contentScale = ContentScale.Crop,
+                                            )
+                                        },
+                                        headlineContent = {
+                                            Text(image.title)
+                                        },
+                                        supportingContent = {
+                                            Text(image.user)
+                                        },
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -115,7 +410,7 @@ internal fun SearchScreen(
 }
 
 @Composable
-fun LoadingState(modifier: Modifier = Modifier) {
+fun FullLoadingState(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize().testTag("main:loading"),
         contentAlignment = Alignment.Center,
@@ -126,8 +421,16 @@ fun LoadingState(modifier: Modifier = Modifier) {
     }
 }
 
+@OptIn(
+    ExperimentalSharedTransitionApi::class,
+    ExperimentalMaterial3Api::class,
+)
 @Composable
-fun EmptyState(modifier: Modifier = Modifier) {
+fun FullEmptyState(
+    modifier: Modifier = Modifier,
+    title: String = stringResource(Res.string.features_main_empty_error),
+    message: String = stringResource(Res.string.features_main_empty_description),
+) {
     Column(
         modifier =
             modifier
@@ -140,25 +443,29 @@ fun EmptyState(modifier: Modifier = Modifier) {
         val iconTint = LocalTintTheme.current.iconTint
         Image(
             modifier = Modifier.fillMaxWidth(),
-            painter = painterResource(Res.drawable.features_main_img_empty_bookmarks),
-            colorFilter = if (iconTint != Color.Unspecified) ColorFilter.tint(iconTint) else null,
+            painter =
+                painterResource(
+                    Res.drawable.features_main_img_empty_bookmarks,
+                ),
+            colorFilter =
+                if (iconTint != Color.Unspecified) {
+                    ColorFilter.tint(iconTint)
+                } else {
+                    null
+                },
             contentDescription = null,
         )
-
         Spacer(modifier = Modifier.height(48.dp))
-
         Text(
-            text = stringResource(Res.string.features_main_empty_error),
+            text = title,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
         )
-
         Spacer(modifier = Modifier.height(8.dp))
-
         Text(
-            text = stringResource(Res.string.features_main_empty_description),
+            text = message,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodyMedium,
@@ -166,17 +473,231 @@ fun EmptyState(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun SearchLight() {
+fun SearchScreenPreview() {
+    val searchState = rememberTextFieldState("Preview Query")
+
+    val state =
+        SearchState.History(
+            listOf("Kotlin", "Compose", "Android Development"),
+        )
     WcsTheme(darkTheme = false) {
         Surface {
             SharedContentPreview { sharedTransitionScope, animatedContentScope ->
                 SearchScreen(
-                    modifier = Modifier.fillMaxSize(),
                     sharedTransitionScope = sharedTransitionScope,
                     animatedContentScope = animatedContentScope,
+                    searchState = state,
+                    searchQuery = searchState,
+                    onSearchSubmit = { },
+                    onClearSearch = { searchState.clearText() },
+                    onHistoryItemClick = { query ->
+                        searchState.edit {
+                            this.replace(
+                                0,
+                                this.length,
+                                query,
+                            )
+                        }
+                    },
+                    onClearHistory = {},
+                    onBackClick = { println("Back clicked") },
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenEmptyHistoryPreview() {
+    val searchState = rememberTextFieldState(initialText = "")
+    // Pagination state that will show its firstPageEmptyIndicator
+    // This indicator in your SearchScreen then checks searchHistory.
+    val paginationState =
+        rememberPaginationState<Int, MainImage>(
+            initialPageKey = 1,
+            onRequestPage = {
+            },
+        )
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
+                    searchState = SearchState.History(emptyList()),
+                    searchQuery = searchState,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenWithHistoryListPreview() {
+    val searchState = rememberTextFieldState(initialText = "")
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    searchState =
+                        SearchState.History(
+                            listOf(
+                                "Nature",
+                                "Technology",
+                                "Art",
+                                "Compose Multiplatform",
+                            ),
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenEmptyMainImagePreview() {
+    val searchState = rememberTextFieldState(initialText = "QueryThatYieldsNoResults")
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier,
+                    searchState =
+                        SearchState.Results(
+                            paginationState =
+                                rememberPaginationState(
+                                    initialPageKey = 1,
+                                    onRequestPage = {
+                                        appendPage(emptyList(), 2)
+                                    },
+                                ),
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
+                )
+            }
+        }
+    }
+}
+
+val sampleImages =
+    listOf(
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 1",
+            url = "https://example.com/image1.jpg",
+            user = "User 1",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "2",
+            title = "Image 2",
+            url = "https://example.com/image2.jpg",
+            user = "User 2",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "3",
+            title = "Image 3",
+            url = "https://example.com/image3.jpg",
+            user = "User 3",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "4",
+            title = "Image 4",
+            url = "https://example.com/image4.jpg",
+            user = "User 4",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "5",
+            title = "Image 5",
+            url = "https://example.com/image5.jpg",
+            user = "User 5",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "6",
+            title = "Image 6",
+            url = "https://example.com/image6.jpg",
+            user = "User 6",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "7",
+            title = "Image 7",
+            url = "https://example.com/image7.jpg",
+            user = "User 7",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "8",
+            title = "Image 8",
+            url = "https://example.com/image8.jpg",
+            user = "User 8",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "9",
+            title = "Image 9",
+            url = "https://example.com/image9.jpg",
+            user = "User 9",
+        ),
+        MainImage(
+            mime = "image/png",
+            sha1 = "1",
+            title = "Image 10",
+            url = "https://example.com/image10.jpg",
+            user = "User 10",
+        ),
+    )
+
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+internal fun SearchScreenWithMainImageListPreview() {
+    val searchState = rememberTextFieldState(initialText = "Photos")
+
+    val paginationState =
+        rememberPaginationState<Int, MainImage>(
+            initialPageKey = 1,
+            onRequestPage = {
+                this.appendPage(sampleImages, it + 1)
+            },
+        )
+
+    WcsTheme {
+        Surface {
+            SharedContentPreview { sharedTransitionScope, animatedVisibilityScope ->
+                SearchScreen(
+                    modifier = Modifier.fillMaxSize(),
+                    searchState =
+                        SearchState.Results(
+                            paginationState = paginationState,
+                        ),
+                    searchQuery = searchState,
+                    sharedTransitionScope = sharedTransitionScope,
+                    animatedContentScope = animatedVisibilityScope,
                 )
             }
         }

@@ -26,6 +26,7 @@ import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.Domain
 import androidx.compose.material.icons.rounded.Explore
 import androidx.compose.material.icons.rounded.Grid3x3
+import androidx.compose.material.icons.rounded.History
 import androidx.compose.material.icons.rounded.Info
 import androidx.compose.material.icons.rounded.Leaderboard
 import androidx.compose.material.icons.rounded.LocalLibrary
@@ -45,6 +46,7 @@ import androidx.compose.material.icons.rounded.ViewDay
 import androidx.compose.material.icons.rounded.Wallpaper
 
 object WcsIcons {
+    val History = Icons.Rounded.History
     val Menu = Icons.Rounded.Menu
     val Stairs = Icons.Rounded.Stairs
     val LocalLibrary = Icons.Rounded.LocalLibrary
