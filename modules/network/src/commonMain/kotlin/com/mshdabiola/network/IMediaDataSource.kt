@@ -19,4 +19,6 @@ interface IMediaDataSource {
     suspend fun checkFileExistsBySha(sha1: String): Boolean
 
     suspend fun getMediaListFromCategory(category: String, limit: Int, continuation: String?): List<MainImage>
+
+    suspend fun getMediaListBySearchTerm(searchTerm: String, limit: Int, offset: Int): List<MainImage>
 }

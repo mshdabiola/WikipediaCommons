@@ -96,6 +96,9 @@ internal class MediaDataSource(
             val response = client.get(getUrl(parameter + dynamicParameters))
 
             if (response.status.isSuccess()) {
+                // Note: This uses AllSearchResponse, which might have a different Imageinfo structure
+                // than AllImageResponse used by other functions if iiprop/prop differ significantly.
+                // For GetMediaListFormSearch.md, we need AllImageResponse for richer data.
                 val searchImages: AllSearchResponse = response.body()
                 return searchImages
                     .query
@@ -213,6 +216,8 @@ internal class MediaDataSource(
                             }
                         }
                     } ?: emptyList()
+                // Note: GetMediaListFromCategory.md doesn't specify how to handle continuation for List<MainImage>.
+                // If pagination is needed, this function should return MediaListResult or similar.
                 return images
             } else {
                 val errorBody: String = response.body()
@@ -220,6 +225,56 @@ internal class MediaDataSource(
             }
         } catch (e: Exception) {
             throw NetworkDataSourceException("An unexpected error occurred during getMediaListFromCategory for category '$category': ${e.message}", e)
+        }
+    }
+
+    override suspend fun getMediaListBySearchTerm(searchTerm: String, limit: Int, offset: Int): List<MainImage> {
+        try {
+            val parameters = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "prop" to listOf("imageinfo", "coordinates"),
+                "iiprop" to listOf("url", "extmetadata", "user"),
+                "iiurlwidth" to listOf("640"),
+                "iiextmetadatafilter" to listOf("DateTime|Categories|GPSLatitude|GPSLongitude|ImageDescription|DateTimeOriginal|Artist|LicenseShortName|LicenseUrl"),
+                "generator" to listOf("search"),
+                "gsrwhat" to listOf("text"),
+                "gsrnamespace" to listOf("6"),
+                "gsrsearch" to listOf(searchTerm),
+                "gsrlimit" to listOf(limit.toString()),
+                "gsroffset" to listOf(offset.toString())
+            )
+
+            val response = client.get(getUrl(parameters))
+
+            if (response.status.isSuccess()) {
+                val allImageResponse: AllImageResponse = response.body() // Using AllImageResponse for richer data
+                return allImageResponse.query?.pages
+                    ?.flatMap { page ->
+                        val imageInfoList = page.imageinfo ?: emptyList()
+                        imageInfoList.mapNotNull { imageinfo ->
+                            val mainImage = imageinfo.toMainImage().copy(
+                                // latitude = page.coordinates?.firstOrNull()?.lat,
+                                // longitude = page.coordinates?.firstOrNull()?.lon
+                            )
+                            // Ensure only valid image types are processed
+                            if (mainImage.url.isNotBlank() &&
+                                (mainImage.url.endsWith("jpeg", ignoreCase = true) ||
+                                    mainImage.url.endsWith("jpg", ignoreCase = true) ||
+                                    mainImage.url.endsWith("png", ignoreCase = true))) {
+                                mainImage
+                            } else {
+                                null
+                            }
+                        }
+                    } ?: emptyList()
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException("An unexpected error occurred during getMediaListBySearchTerm for '$searchTerm': ${e.message}", e)
         }
     }
 }
