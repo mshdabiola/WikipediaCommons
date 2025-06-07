@@ -1,7 +1,6 @@
 package com.mshdabiola.network
 
 import com.mshdabiola.model.MainImage
-import com.mshdabiola.network.model.MediaListResult // Added import for MediaListResult
 
 interface IMediaDataSource {
     suspend fun getAllImages(
