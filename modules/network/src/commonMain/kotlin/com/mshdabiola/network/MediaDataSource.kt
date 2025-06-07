@@ -129,9 +129,7 @@ internal class MediaDataSource(
 
             if (response.status.isSuccess()) {
                 val pageExistenceResponse: PageExistenceResponse = response.body()
-                
                 val pageInfo = pageExistenceResponse.query?.pages?.firstOrNull()
-                
                 if (pageInfo == null || pageInfo.missing == true || pageInfo.invalid == true) {
                     return false
                 }
@@ -140,7 +138,7 @@ internal class MediaDataSource(
                 val errorBody: String = response.body()
                 throw IOException("API request failed with status ${response.status} while checking page existence: $errorBody")
             }
-        } catch (e: Exception) { 
+        } catch (e: Exception) {
             throw NetworkDataSourceException("An unexpected error occurred while checking page existence for title '$title': ${e.message}", e)
         }
     }
@@ -158,18 +156,70 @@ internal class MediaDataSource(
 
             if (response.status.isSuccess()) {
                 val fileExistenceResponse: FileExistenceShaResponse = response.body()
-                // If query is null or allimages is null or empty, the file doesn't exist.
                 return fileExistenceResponse.query?.allimages?.isNotEmpty() ?: false
             } else {
                 val errorBody: String = response.body()
-                // Consider if specific error codes from the API mean "not found" vs. a general error.
-                // For now, any non-success status is treated as an error and will rethrow.
                 throw IOException("API request failed with status ${response.status} while checking file existence by SHA1: $errorBody")
             }
-        } catch (e: Exception) { // Catching generic Exception (includes SerializationException, IOException, etc.)
-            // Log or handle more specifically if needed.
-            // Depending on requirements, you might want to return false if an error occurs rather than rethrowing.
+        } catch (e: Exception) {
             throw NetworkDataSourceException("An unexpected error occurred while checking file existence for SHA1 '$sha1': ${e.message}", e)
+        }
+    }
+
+    override suspend fun getMediaListFromCategory(
+        category: String,
+        limit: Int,
+        continuation: String?,
+    ): List<MainImage> {
+        try {
+            var parameters = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "generator" to listOf("categorymembers"),
+                "gcmtype" to listOf("file"),
+                "gcmsort" to listOf("timestamp"),
+                "gcmdir" to listOf("desc"),
+                "prop" to listOf("imageinfo", "coordinates"),
+                "iiprop" to listOf("url", "extmetadata", "user"),
+                "iiurlwidth" to listOf("640"),
+                "iiextmetadatafilter" to listOf("DateTime|Categories|GPSLatitude|GPSLongitude|ImageDescription|DateTimeOriginal|Artist|LicenseShortName|LicenseUrl"),
+                "gcmtitle" to listOf("Category:$category"),
+                "gcmlimit" to listOf(limit.toString()),
+            )
+            continuation?.takeIf { it.isNotBlank() }?.let {
+                parameters = parameters.plus(parametersOf("gcmcontinue" to listOf(it)))
+            }
+
+            val response = client.get(getUrl(parameters))
+
+            if (response.status.isSuccess()) {
+                val allImageResponse: AllImageResponse = response.body()
+                val images = allImageResponse.query?.pages
+                    ?.flatMap { page ->
+                        val imageInfoList = page.imageinfo ?: emptyList()
+                        imageInfoList.mapNotNull { imageinfo ->
+                            val mainImage = imageinfo.toMainImage().copy(
+                                // latitude = page.coordinates?.firstOrNull()?.lat,
+                                // longitude = page.coordinates?.firstOrNull()?.lon
+                            )
+                            if (mainImage.url.isNotBlank() && 
+                                (mainImage.url.endsWith("jpeg", ignoreCase = true) ||
+                                mainImage.url.endsWith("jpg", ignoreCase = true) ||
+                                mainImage.url.endsWith("png", ignoreCase = true))) {
+                                mainImage
+                            } else {
+                                null
+                            }
+                        }
+                    } ?: emptyList()
+                return images
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException("An unexpected error occurred during getMediaListFromCategory for category '$category': ${e.message}", e)
         }
     }
 }
