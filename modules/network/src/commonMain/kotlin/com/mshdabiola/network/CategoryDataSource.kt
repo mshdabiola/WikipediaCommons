@@ -201,4 +201,45 @@ internal class CategoryDataSource(
             )
         }
     }
+
+    override suspend fun searchCategoriesByTitle(
+        title: String,
+        limit: Int
+    ): List<SearchedCategoryInfo> {
+        try {
+            val params = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "generator" to listOf("categories"),
+                "prop" to listOf("categoryinfo", "description", "pageimages"),
+                "piprop" to listOf("thumbnail"),
+                "pithumbsize" to listOf("70"),
+                "gclshow" to listOf("!hidden"),
+                "titles" to listOf(title),
+                "gcllimit" to listOf(limit.toString())
+            )
+
+            val response = client.get(getUrl(params))
+
+            if (response.status.isSuccess()) {
+                val apiResponse: ApiSearchCategoryResponse = response.body()
+                return apiResponse.query?.pages?.mapNotNull {
+                    SearchedCategoryInfo(
+                        title = it.title,
+                        description = it.description,
+                        thumbnailUrl = it.thumbnail?.source
+                    )
+                } ?: emptyList()
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException(
+                "An unexpected error occurred during searchCategoriesByTitle for '$title': ${e.message}",
+                e
+            )
+        }
+    }
 }

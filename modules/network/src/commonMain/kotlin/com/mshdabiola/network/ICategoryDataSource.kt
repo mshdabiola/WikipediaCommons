@@ -28,4 +28,6 @@ interface ICategoryDataSource {
         limit: Int,
         offset: Int
     ): List<SearchedCategoryInfo>
+
+    suspend fun searchCategoriesByTitle(title: String, limit: Int): List<SearchedCategoryInfo>
 }
