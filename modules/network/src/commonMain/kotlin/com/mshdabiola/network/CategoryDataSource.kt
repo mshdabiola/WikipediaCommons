@@ -1,6 +1,8 @@
 package com.mshdabiola.network
 
+import com.mshdabiola.network.model.ApiSearchCategoryResponse
 import com.mshdabiola.network.model.ApiSubCategoryResponse
+import com.mshdabiola.network.model.SearchedCategoryInfo
 import com.mshdabiola.network.model.SubCategoryInfo
 import com.mshdabiola.network.model.SubCategoryListResult
 import io.ktor.client.HttpClient
@@ -38,9 +40,6 @@ internal class CategoryDataSource(
                 "gcmlimit" to listOf(limit.toString())
             )
             continuation?.takeIf { it.isNotBlank() }?.let {
-                // The .md file uses 'gcmtitle=Category:Gallery pages of sovereign states'
-                // but continuation for categorymembers is typically gcmcontinue
-                // Need to ensure Continue.kt has gcmcontinue
                 params = params + parametersOf("gcmcontinue" to listOf(it))
             }
 
@@ -52,8 +51,7 @@ internal class CategoryDataSource(
                     SubCategoryInfo(pageid = it.pageid, ns = it.ns, title = it.title)
                 } ?: emptyList()
 
-                // Assuming Continue.kt is updated to include gcmcontinue
-                val nextContinuation = apiResponse.continueResponse?.gcmcontinue 
+                val nextContinuation = apiResponse.continueResponse?.gcmcontinue
 
                 return SubCategoryListResult(
                     subCategories = subCategories,
@@ -61,11 +59,54 @@ internal class CategoryDataSource(
                 )
             } else {
                 val errorBody: String = response.body()
-                throw IOException("API request failed with status ${'$'}{response.status}: $errorBody")
+                throw IOException("API request failed with status ${response.status}: $errorBody")
             }
         } catch (e: Exception) {
             throw NetworkDataSourceException(
-                "An unexpected error occurred during getSubCategories for '$parentCategoryTitle': ${'$'}{e.message}",
+                "An unexpected error occurred during getSubCategories for '$parentCategoryTitle': ${e.message}",
+                e
+            )
+        }
+    }
+
+    override suspend fun searchCategories(
+        searchTerm: String,
+        limit: Int,
+        offset: Int
+    ): List<SearchedCategoryInfo> {
+        try {
+            val params = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "generator" to listOf("search"),
+                "prop" to listOf("description", "pageimages"),
+                "piprop" to listOf("thumbnail"),
+                "pithumbsize" to listOf("70"), // As per SearchCategories.md, can be parameterized
+                "gsrnamespace" to listOf("14"), // Namespace 14 is for Categories
+                "gsrsearch" to listOf(searchTerm),
+                "gsrlimit" to listOf(limit.toString()),
+                "gsroffset" to listOf(offset.toString())
+            )
+
+            val response = client.get(getUrl(params))
+
+            if (response.status.isSuccess()) {
+                val apiResponse: ApiSearchCategoryResponse = response.body()
+                return apiResponse.query?.pages?.mapNotNull {
+                    SearchedCategoryInfo(
+                        title = it.title,
+                        description = it.description,
+                        thumbnailUrl = it.thumbnail?.source
+                    )
+                } ?: emptyList()
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException(
+                "An unexpected error occurred during searchCategories for '$searchTerm': ${e.message}",
                 e
             )
         }
