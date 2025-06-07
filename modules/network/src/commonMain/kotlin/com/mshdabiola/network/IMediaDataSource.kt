@@ -15,4 +15,6 @@ interface IMediaDataSource {
     ): List<MainImage>
 
     suspend fun checkPageExists(title: String): Boolean
+
+    suspend fun checkFileExistsBySha(sha1: String): Boolean
 }

@@ -3,6 +3,7 @@ package com.mshdabiola.network
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.network.model.AllImageResponse
 import com.mshdabiola.network.model.AllSearchResponse
+import com.mshdabiola.network.model.FileExistenceShaResponse
 import com.mshdabiola.network.model.PageExistenceResponse
 import com.mshdabiola.network.model.toMainImage
 import io.ktor.client.HttpClient
@@ -131,27 +132,44 @@ internal class MediaDataSource(
                 
                 val pageInfo = pageExistenceResponse.query?.pages?.firstOrNull()
                 
-                // A page exists if it's not marked as 'missing' or 'invalid', 
-                // and typically has a positive pageid.
-                // If pageInfo is null (e.g. invalid API response or malformed title query),
-                // or if it explicitly has 'missing' or 'invalid' flags, then it doesn't exist.
                 if (pageInfo == null || pageInfo.missing == true || pageInfo.invalid == true) {
                     return false
                 }
-                // Some APIs might return a negative pageid for non-existent/invalid pages,
-                // or pageid might be null. A positive pageid confirms existence.
                 return pageInfo.pageid != null && pageInfo.pageid > 0
             } else {
                 val errorBody: String = response.body()
-                // You might want to return false or throw a more specific error
-                // depending on how you want to handle API errors for this check.
-                // For now, rethrowing as an IOException similar to other methods.
                 throw IOException("API request failed with status ${response.status} while checking page existence: $errorBody")
             }
-        } catch (e: Exception) { // Catching generic Exception to include SerializationException, IOException etc.
-            // Log or handle more specifically if needed.
-            // Consider returning false if an error occurs, or rethrowing.
+        } catch (e: Exception) { 
             throw NetworkDataSourceException("An unexpected error occurred while checking page existence for title '$title': ${e.message}", e)
+        }
+    }
+
+    override suspend fun checkFileExistsBySha(sha1: String): Boolean {
+        try {
+            val parameters = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "list" to listOf("allimages"),
+                "aisha1" to listOf(sha1)
+            )
+            val response = client.get(getUrl(parameters))
+
+            if (response.status.isSuccess()) {
+                val fileExistenceResponse: FileExistenceShaResponse = response.body()
+                // If query is null or allimages is null or empty, the file doesn't exist.
+                return fileExistenceResponse.query?.allimages?.isNotEmpty() ?: false
+            } else {
+                val errorBody: String = response.body()
+                // Consider if specific error codes from the API mean "not found" vs. a general error.
+                // For now, any non-success status is treated as an error and will rethrow.
+                throw IOException("API request failed with status ${response.status} while checking file existence by SHA1: $errorBody")
+            }
+        } catch (e: Exception) { // Catching generic Exception (includes SerializationException, IOException, etc.)
+            // Log or handle more specifically if needed.
+            // Depending on requirements, you might want to return false if an error occurs rather than rethrowing.
+            throw NetworkDataSourceException("An unexpected error occurred while checking file existence for SHA1 '$sha1': ${e.message}", e)
         }
     }
 }
