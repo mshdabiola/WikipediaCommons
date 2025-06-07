@@ -242,4 +242,38 @@ internal class CategoryDataSource(
             )
         }
     }
+
+    override suspend fun getCategoriesInfoByTitles(
+        titles: String,
+        limit: Int
+    ): List<SubCategoryInfo> {
+        try {
+            val params = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "generator" to listOf("categories"),
+                "prop" to listOf("info"), // As per ParentCategoryList.md (prop=info)
+                "titles" to listOf(titles), // Dynamic based on input
+                "gcllimit" to listOf(limit.toString())
+            )
+
+            val response = client.get(getUrl(params))
+
+            if (response.status.isSuccess()) {
+                val apiResponse: ApiSubCategoryResponse = response.body() // Reusing ApiSubCategoryResponse
+                return apiResponse.query?.pages?.map {
+                    SubCategoryInfo(pageid = it.pageid, ns = it.ns, title = it.title)
+                } ?: emptyList()
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException(
+                "An unexpected error occurred during getCategoriesInfoByTitles for '$titles': ${e.message}",
+                e
+            )
+        }
+    }
 }

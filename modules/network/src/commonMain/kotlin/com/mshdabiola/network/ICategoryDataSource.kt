@@ -2,6 +2,7 @@ package com.mshdabiola.network
 
 import com.mshdabiola.network.model.SubCategoryListResult
 import com.mshdabiola.network.model.SearchedCategoryInfo
+import com.mshdabiola.network.model.SubCategoryInfo
 
 interface ICategoryDataSource {
     suspend fun getSubCategories(
@@ -29,5 +30,13 @@ interface ICategoryDataSource {
         offset: Int
     ): List<SearchedCategoryInfo>
 
-    suspend fun searchCategoriesByTitle(title: String, limit: Int): List<SearchedCategoryInfo>
+    suspend fun searchCategoriesByTitle(
+        title: String,
+        limit: Int
+    ): List<SearchedCategoryInfo>
+
+    suspend fun getCategoriesInfoByTitles(
+        titles: String,
+        limit: Int
+    ): List<SubCategoryInfo>
 }
