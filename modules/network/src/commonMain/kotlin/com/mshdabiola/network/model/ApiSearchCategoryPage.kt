@@ -10,5 +10,6 @@ internal data class ApiSearchCategoryPage(
     val description: String? = null,
     val descriptionsource: String? = null,
     val thumbnail: ApiThumbnail? = null,
-    val pageimage: String? = null // The actual file name, not a URL
+    val pageimage: String? = null, // The actual file name, not a URL
+    val categoryinfo: ApiCategoryInfo? = null
 )

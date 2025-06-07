@@ -111,4 +111,47 @@ internal class CategoryDataSource(
             )
         }
     }
+
+    override suspend fun searchCategoriesByPrefix(
+        prefix: String,
+        limit: Int,
+        offset: Int
+    ): List<SearchedCategoryInfo> {
+        try {
+            val params = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "generator" to listOf("allcategories"),
+                "prop" to listOf("categoryinfo", "description", "pageimages"),
+                "piprop" to listOf("thumbnail"),
+                "pithumbsize" to listOf("70"), // As per SearchCategoriesForPrefix.md
+                "gacprefix" to listOf(prefix),
+                "gaclimit" to listOf(limit.toString()),
+                "gacoffset" to listOf(offset.toString())
+            )
+
+            val response = client.get(getUrl(params))
+
+            if (response.status.isSuccess()) {
+                val apiResponse: ApiSearchCategoryResponse = response.body()
+                return apiResponse.query?.pages?.mapNotNull {
+                    // The 'categoryinfo' is available via it.categoryinfo if needed in the future
+                    SearchedCategoryInfo(
+                        title = it.title,
+                        description = it.description,
+                        thumbnailUrl = it.thumbnail?.source
+                    )
+                } ?: emptyList()
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${response.status}: $errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException(
+                "An unexpected error occurred during searchCategoriesByPrefix for '$prefix': ${e.message}",
+                e
+            )
+        }
+    }
 }

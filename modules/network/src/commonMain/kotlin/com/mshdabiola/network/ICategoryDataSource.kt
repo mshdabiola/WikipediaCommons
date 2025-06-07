@@ -15,4 +15,10 @@ interface ICategoryDataSource {
         limit: Int,
         offset: Int
     ): List<SearchedCategoryInfo>
+
+    suspend fun searchCategoriesByPrefix(
+        prefix: String,
+        limit: Int,
+        offset: Int
+    ): List<SearchedCategoryInfo>
 }
