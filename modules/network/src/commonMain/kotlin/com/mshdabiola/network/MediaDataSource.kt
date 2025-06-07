@@ -277,4 +277,51 @@ internal class MediaDataSource(
             throw NetworkDataSourceException("An unexpected error occurred during getMediaListBySearchTerm for '$searchTerm': ${e.message}", e)
         }
     }
+
+
+    override suspend fun getMediaDetails(title: String): MainImage? {
+        try {
+            val parameters = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "prop" to listOf("categories", "imageinfo"),
+                "clprop" to listOf("hidden"),
+                "iiprop" to listOf("url", "extmetadata", "user"),
+                "iiurlwidth" to listOf("640"),
+                "iiextmetadatafilter" to listOf("DateTime|Categories|GPSLatitude|GPSLongitude|ImageDescription|DateTimeOriginal|Artist|LicenseShortName|LicenseUrl"),
+                "titles" to listOf(title)
+            )
+
+            val response = client.get(getUrl(parameters))
+
+            if (response.status.isSuccess()) {
+                val allImageResponse: AllImageResponse = response.body()
+                val page = allImageResponse.query?.pages?.firstOrNull()
+                val imageInfo = page?.imageinfo?.firstOrNull()
+
+                // The 'categories' are in page?.categories
+                // You might want to pass page?.categories to toMainImage() or handle them here
+
+                return if (imageInfo != null) {
+                    val mainImage = imageInfo.toMainImage() // Potentially pass page.categories if needed by toMainImage
+                    if (mainImage.url.isNotBlank() &&
+                        (mainImage.url.endsWith("jpeg", ignoreCase = true) ||
+                                mainImage.url.endsWith("jpg", ignoreCase = true) ||
+                                mainImage.url.endsWith("png", ignoreCase = true))) {
+                        mainImage
+                    } else {
+                        null
+                    }
+                } else {
+                    null
+                }
+            } else {
+                val errorBody: String = response.body()
+                throw IOException("API request failed with status ${'$'}{response.status}: ${'$'}errorBody")
+            }
+        } catch (e: Exception) {
+            throw NetworkDataSourceException("An unexpected error occurred during getMediaDetails for title '${'$'}title': ${'$'}{e.message}", e)
+        }
+    }
 }
