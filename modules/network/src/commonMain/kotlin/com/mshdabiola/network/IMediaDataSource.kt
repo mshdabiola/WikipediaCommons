@@ -13,4 +13,6 @@ interface IMediaDataSource {
         page: Int,
         limit: Int,
     ): List<MainImage>
+
+    suspend fun checkPageExists(title: String): Boolean
 }

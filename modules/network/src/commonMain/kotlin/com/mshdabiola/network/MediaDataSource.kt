@@ -3,6 +3,7 @@ package com.mshdabiola.network
 import com.mshdabiola.model.MainImage
 import com.mshdabiola.network.model.AllImageResponse
 import com.mshdabiola.network.model.AllSearchResponse
+import com.mshdabiola.network.model.PageExistenceResponse
 import com.mshdabiola.network.model.toMainImage
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -32,11 +33,6 @@ internal class MediaDataSource(
                     "iiprop" to listOf("user|url|mime|canonicaltitle|sha1"),
                     "iilimit" to listOf("6"),
                     "grnlimit" to listOf(limit.toString()),
-//                    "grncontinue" to
-//                            listOf(
-//                                continuation
-//                                    .ifBlank { "0.573993798555|0.57399474331|62056655|0" },
-//                            ),
                     "continue" to listOf("grncontinue||"),
                 )
             if (continuation.isNotBlank()) {
@@ -50,7 +46,6 @@ internal class MediaDataSource(
             }
             val response = client.get(getUrl(parameter))
 
-            // Check the response status and parse the body
             if (response.status.isSuccess()) {
                 val allImageResponse: AllImageResponse = response.body()
                 cont = allImageResponse.continueX.grncontinue
@@ -66,14 +61,11 @@ internal class MediaDataSource(
                     }
                     .map { it.toMainImage() }
             } else {
-                // Handle error responses (e.g., throw an exception, return a default value)
-                val errorBody: String = response.body() // Get the error message body
+                val errorBody: String = response.body()
                 throw IOException("API request failed with status ${response.status}: $errorBody")
             }
-        } catch (e: IOException) {
-            // Handle network errors or other exceptions during the request
-//            e.printStackTrace()
-            throw NetworkDataSourceException("An unexpected error occurred during media search: ${e.message}", e)
+        } catch (e: Exception) { // Catching generic Exception to include SerializationException
+            throw NetworkDataSourceException("An unexpected error occurred during getAllImages: ${e.message}", e)
         }
     }
 
@@ -102,7 +94,6 @@ internal class MediaDataSource(
                 )
             val response = client.get(getUrl(parameter + dynamicParameters))
 
-            // Check the response status and parse the body
             if (response.status.isSuccess()) {
                 val searchImages: AllSearchResponse = response.body()
                 return searchImages
@@ -117,14 +108,50 @@ internal class MediaDataSource(
                     }
                     .map { it.toMainImage() }
             } else {
-                // Handle error responses (e.g., throw an exception, return a default value)
                 val errorBody: String = response.body()
                 throw IOException("API request failed with status ${response.status}: $errorBody")
             }
-        } catch (e: IOException) {
-            // Handle network errors or other exceptions during the request
-//            e.printStackTrace()
+        } catch (e: Exception) { // Catching generic Exception
             throw NetworkDataSourceException("An unexpected error occurred during media search: ${e.message}", e)
+        }
+    }
+
+    override suspend fun checkPageExists(title: String): Boolean {
+        try {
+            val parameters = parametersOf(
+                "action" to listOf("query"),
+                "format" to listOf("json"),
+                "formatversion" to listOf("2"),
+                "titles" to listOf(title)
+            )
+            val response = client.get(getUrl(parameters))
+
+            if (response.status.isSuccess()) {
+                val pageExistenceResponse: PageExistenceResponse = response.body()
+                
+                val pageInfo = pageExistenceResponse.query?.pages?.firstOrNull()
+                
+                // A page exists if it's not marked as 'missing' or 'invalid', 
+                // and typically has a positive pageid.
+                // If pageInfo is null (e.g. invalid API response or malformed title query),
+                // or if it explicitly has 'missing' or 'invalid' flags, then it doesn't exist.
+                if (pageInfo == null || pageInfo.missing == true || pageInfo.invalid == true) {
+                    return false
+                }
+                // Some APIs might return a negative pageid for non-existent/invalid pages,
+                // or pageid might be null. A positive pageid confirms existence.
+                return pageInfo.pageid != null && pageInfo.pageid > 0
+            } else {
+                val errorBody: String = response.body()
+                // You might want to return false or throw a more specific error
+                // depending on how you want to handle API errors for this check.
+                // For now, rethrowing as an IOException similar to other methods.
+                throw IOException("API request failed with status ${response.status} while checking page existence: $errorBody")
+            }
+        } catch (e: Exception) { // Catching generic Exception to include SerializationException, IOException etc.
+            // Log or handle more specifically if needed.
+            // Consider returning false if an error occurs, or rethrowing.
+            throw NetworkDataSourceException("An unexpected error occurred while checking page existence for title '$title': ${e.message}", e)
         }
     }
 }
