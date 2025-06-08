@@ -21,44 +21,32 @@ internal class NotificationDataSource(
         limit: String?,
         continueToken: String?,
     ): AllNotificationsResponse {
-        try {
-            val response = client.get(baseUrl) {
-                url {
-                    // Common parameters for most MediaWiki API calls
-                    parameters.append("action", "query")
-                    parameters.append("format", "json")
-                    parameters.append("formatversion", "2")
-                    parameters.append("errorformat", "plaintext") // Consistent error handling
+        val response = client.get(baseUrl) {
+            url {
+                // Common parameters for most MediaWiki API calls
+                parameters.append("action", "query")
+                parameters.append("format", "json")
+                parameters.append("formatversion", "2")
+                parameters.append("errorformat", "plaintext") // Consistent error handling
 
-                    // Specific parameters for fetching notifications
-                    parameters.append("meta", "notifications")
-                    parameters.append("notformat", "model") // Requests structured notification data
+                // Specific parameters for fetching notifications
+                parameters.append("meta", "notifications")
+                parameters.append("notformat", "model") // Requests structured notification data
 
-                    // Optional parameters based on function arguments
-                    wikis?.takeIf { it.isNotBlank() }?.let { parameters.append("notwikis", it) }
-                    filter?.takeIf { it.isNotBlank() }?.let { parameters.append("notfilter", it) }
-                    limit?.takeIf { it.isNotBlank() }?.let { parameters.append("notlimit", it) }
-                    continueToken?.takeIf { it.isNotBlank() }
-                        ?.let { parameters.append("notcontinue", it) }
-                }
+                // Optional parameters based on function arguments
+                wikis?.takeIf { it.isNotBlank() }?.let { parameters.append("notwikis", it) }
+                filter?.takeIf { it.isNotBlank() }?.let { parameters.append("notfilter", it) }
+                limit?.takeIf { it.isNotBlank() }?.let { parameters.append("notlimit", it) }
+                continueToken?.takeIf { it.isNotBlank() }
+                    ?.let { parameters.append("notcontinue", it) }
             }
+        }
 
-            if (response.status.isSuccess()) {
-                return response.body<AllNotificationsResponse>()
-            } else {
-                val errorBody: String = response.body()
-                throw IOException("API request failed for getAllNotifications with status ${response.status}: $errorBody")
-            }
-        } catch (e: IOException) { // Catch specific Ktor/network exceptions first
-            throw NetworkDataSourceException(
-                "Network error during getAllNotifications: ${e.message}",
-                e,
-            )
-        } catch (e: Exception) { // Catch other exceptions like SerializationException
-            throw NetworkDataSourceException(
-                "An unexpected error occurred during getAllNotifications: ${e.message}",
-                e,
-            )
+        if (response.status.isSuccess()) {
+            return response.body<AllNotificationsResponse>()
+        } else {
+            val errorBody: String = response.body()
+            throw IOException("API request failed for getAllNotifications with status ${response.status}: $errorBody")
         }
     }
 
@@ -66,35 +54,23 @@ internal class NotificationDataSource(
         token: String,
         unreadList: String, // Comma or pipe separated list of notification IDs
     ): MarkReadApiResponse {
-        try {
-            // This request uses POST with form parameters as per @MarkRead.md's body.urlEncoded section.
-            // Query parameters for action, format etc., are part of the URL.
-            val response = client.submitForm(
-                url = "$baseUrl?action=echomarkread&format=json&formatversion=2&errorformat=plaintext",
-                formParameters = Parameters.build {
-                    append("token", token)
-                    append("unreadlist", unreadList)
-                    // The 'csrf_token' or a similar token is often required for state-changing operations.
-                    // The 'token' parameter here likely refers to that.
-                },
-            )
+        // This request uses POST with form parameters as per @MarkRead.md's body.urlEncoded section.
+        // Query parameters for action, format etc., are part of the URL.
+        val response = client.submitForm(
+            url = "$baseUrl?action=echomarkread&format=json&formatversion=2&errorformat=plaintext",
+            formParameters = Parameters.build {
+                append("token", token)
+                append("unreadlist", unreadList)
+                // The 'csrf_token' or a similar token is often required for state-changing operations.
+                // The 'token' parameter here likely refers to that.
+            },
+        )
 
-            if (response.status.isSuccess()) {
-                return response.body<MarkReadApiResponse>()
-            } else {
-                val errorBody: String = response.body()
-                throw IOException("API request failed for markNotificationsAsRead with status ${response.status}: $errorBody")
-            }
-        } catch (e: IOException) {
-            throw NetworkDataSourceException(
-                "Network error during markNotificationsAsRead: ${e.message}",
-                e,
-            )
-        } catch (e: Exception) {
-            throw NetworkDataSourceException(
-                "An unexpected error occurred during markNotificationsAsRead: ${e.message}",
-                e,
-            )
+        if (response.status.isSuccess()) {
+            return response.body<MarkReadApiResponse>()
+        } else {
+            val errorBody: String = response.body()
+            throw IOException("API request failed for markNotificationsAsRead with status ${response.status}: $errorBody")
         }
     }
 }
