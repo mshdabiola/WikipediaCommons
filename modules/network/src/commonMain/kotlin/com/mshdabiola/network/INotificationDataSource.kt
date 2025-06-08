@@ -9,10 +9,10 @@ interface INotificationDataSource {
      * Corresponds to @AllNoti.md
      */
     suspend fun getAllNotifications(
-        wikis: String?, // e.g., "wikidatawiki|commonswiki|enwiki"
-        filter: String?, // e.g., "!read" or "read"
-        limit: String?, // e.g., "max" or a number
-        continueToken: String?
+        wikis: String?,
+        filter: String?,
+        limit: String?,
+        continueToken: String?,
     ): AllNotificationsResponse
 
     /**
@@ -26,6 +26,6 @@ interface INotificationDataSource {
      */
     suspend fun markNotificationsAsRead(
         token: String,
-        unreadList: String // Comma or pipe separated list of notification IDs
+        unreadList: String,
     ): MarkReadApiResponse
 }

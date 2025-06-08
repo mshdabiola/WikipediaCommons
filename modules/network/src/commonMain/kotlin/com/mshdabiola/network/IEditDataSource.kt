@@ -12,7 +12,7 @@ interface IEditDataSource {
         title: String,
         summary: String,
         text: String,
-        token: String
+        token: String,
     ): EditResponseWrapper
 
     /**
@@ -27,7 +27,7 @@ interface IEditDataSource {
         contentModel: String,
         isMinorEdit: Boolean?,
         recreatePage: Boolean?,
-        token: String
+        token: String,
     ): EditResponseWrapper
 
     /**
@@ -38,7 +38,7 @@ interface IEditDataSource {
         title: String,
         summary: String,
         appendText: String,
-        token: String
+        token: String,
     ): EditResponseWrapper
 
     /**
@@ -49,7 +49,7 @@ interface IEditDataSource {
         title: String,
         summary: String,
         prependText: String,
-        token: String
+        token: String,
     ): EditResponseWrapper
 
     /**
@@ -57,24 +57,25 @@ interface IEditDataSource {
      * Corresponds to @NewSection.md
      */
     suspend fun postNewSection(
-        title: String, // Page title
+        title: String,
         summary: String,
-        sectionTitle: String, // Title for the new section
-        text: String, // Wikitext content of the new section
-        token: String
+        sectionTitle: String,
+        text: String,
+        token: String,
     ): EditResponseWrapper
 
     /**
      * Sets a label (e.g., caption) for a Wikidata entity or a MediaWiki page (like a File).
      * Corresponds to @PostCaption.md
-     * The 'title' parameter here usually refers to the entity ID (e.g., "Q42" or "M123") or a page title like "File:Example.jpg".
+     * The 'title' parameter here usually refers to the entity ID (e.g., "Q42" or "M123") or
+     * a page title like "File:Example.jpg".
      * The 'value' is the actual caption/label text.
      */
     suspend fun postCaption(
-        title: String, // Entity ID or page title (e.g. File: imagename.jpg for Commons)
-        language: String, // Language code for the caption (e.g., "en")
-        value: String, // The caption text
-        summary: String?, // Optional summary for the edit
-        token: String
+        title: String,
+        language: String,
+        value: String,
+        summary: String?,
+        token: String,
     ): SetLabelResponseWrapper
 }

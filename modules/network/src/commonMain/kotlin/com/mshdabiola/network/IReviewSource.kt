@@ -8,7 +8,8 @@ interface IReviewSource {
      * Corresponds to @RecentChange.md
      */
     suspend fun getRecentChanges(
-        category: String, // e.g., "Uploaded_with_Mobile/Android"
+        category: String,
+        // e.g., "Uploaded_with_Mobile/Android"
         limit: Int = 50,
         continuation: String? = null,
     ): RecentChangesResponse
@@ -17,17 +18,15 @@ interface IReviewSource {
      * Fetches the first revision details for a given file title.
      * Corresponds to @FirstRevisionOfFile.md
      */
-    suspend fun getFirstRevisionOfFile(
-        fileTitle: String, // e.g., "File:Example.jpg"
-    ): FirstRevisionResponse
+    suspend fun getFirstRevisionOfFile(fileTitle: String): FirstRevisionResponse
 
     /**
      * Fetches local and global usage for a given file title.
      * Corresponds to @GlobalUsage.md
      */
     suspend fun getFileUsage(
-        fileTitle: String, // e.g., "File:Example.jpg"
-        fuContinue: String? = null, // Continuation token for fileusage
-        guContinue: String? = null,  // Continuation token for globalusage
+        fileTitle: String,
+        fuContinue: String? = null,
+        guContinue: String? = null,
     ): FileUsageResponse
 }

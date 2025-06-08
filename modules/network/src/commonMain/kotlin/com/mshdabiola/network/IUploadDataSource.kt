@@ -2,7 +2,6 @@ package com.mshdabiola.network
 
 import UploadResponseWrapper
 
-// TODO: Define methods for upload operations here
 interface IUploadDataSource {
     /**
      * Uploads a file (or a chunk of it) to a temporary stash.
