@@ -7,6 +7,6 @@ import kotlinx.serialization.Serializable
 internal data class ApiSubCategoryResponse(
     val batchcomplete: Boolean? = null,
     @SerialName("continue")
-    val continueResponse: Continue? = null, // Reusing existing Continue.kt
-    val query: ApiSubCategoryQuery? = null
+    val continueResponse: Continue? = null,
+    val query: ApiSubCategoryQuery? = null,
 )

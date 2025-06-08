@@ -29,27 +29,27 @@ data class RecentChangePageInfo(
 // Common ContinueData, specific continue tokens might vary by generator/prop
 @Serializable
 data class ContinueData(
-    val gcmcontinue: String? = null, // For categorymembers generator
-    val rvcontinue: String? = null, // For revision queries
+    val gcmcontinue: String? = null,
+    val rvcontinue: String? = null,
     @SerialName("continue")
-    val continueValue: String? = null, // General continue parameter
+    val continueValue: String? = null,
 )
 
 @Serializable
 data class FirstRevisionResponse(
     val batchcomplete: Boolean? = null,
-    val query: QueryPages<PageWithRevisions>? = null, // QueryPages is reused
+    val query: QueryPages<PageWithRevisions>? = null,
 )
 
 @Serializable
 data class PageWithRevisions(
-    val pageid: Long? = null, // Can be null if page is missing
+    val pageid: Long? = null,
     val ns: Int? = null,
     val title: String? = null,
     val revisions: List<RevisionInfo>? = null,
-    val missing: String? = null, // Present (empty string) if page is missing
-    val invalid: String? = null,  // Present (empty string) if title is invalid
-    val invalidreason: String? = null, // Reason if title is invalid
+    val missing: String? = null,
+    val invalid: String? = null,
+    val invalidreason: String? = null,
 )
 
 @Serializable
@@ -57,37 +57,37 @@ data class RevisionInfo(
     val revid: Long,
     val parentid: Long = 0,
     val user: String,
-    val timestamp: String, // ISO 8601 format
+    val timestamp: String,
     // ids is also requested by rvprop=ids, revid is part of that.
 )
 
 @Serializable
 data class FileUsageResponse(
     val batchcomplete: Boolean? = null,
-    val query: QueryPages<PageWithUsageInfo>? = null, // QueryPages is reused
+    val query: QueryPages<PageWithUsageInfo>? = null,
     @SerialName("continue")
     val continueData: FileUsageContinueData? = null,
 )
 
 @Serializable
 data class FileUsageContinueData(
-    val fucontinue: String? = null, // For fileusage
-    val gucontinue: String? = null, // For globalusage
+    val fucontinue: String? = null,
+    val gucontinue: String? = null,
     @SerialName("continue")
     val generalContinue: String? = null,
 )
 
 @Serializable
 data class PageWithUsageInfo(
-    val pageid: Long? = null, // Can be null if page is missing
+    val pageid: Long? = null,
     val ns: Int? = null,
     val title: String? = null,
     val fileusage: List<FileUsageEntry>? = null,
     val globalusage: List<GlobalUsageEntry>? = null,
-    val missing: String? = null, // Present if page is missing
-    val invalid: String? = null,  // Present if title is invalid
-    val invalidreason: String? = null, // Reason if title is invalid
-    val imagerepository: String? = null, // "local" or "shared" (e.g. "commons")
+    val missing: String? = null,
+    val invalid: String? = null,
+    val invalidreason: String? = null,
+    val imagerepository: String? = null,
 )
 
 @Serializable

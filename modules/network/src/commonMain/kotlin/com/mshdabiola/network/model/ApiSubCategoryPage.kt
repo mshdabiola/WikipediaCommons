@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 internal data class ApiSubCategoryPage(
     val pageid: Long,
     val ns: Int,
-    val title: String
+    val title: String,
     // Add other fields from 'prop=info' if needed, e.g., touched, lastrevid
 )

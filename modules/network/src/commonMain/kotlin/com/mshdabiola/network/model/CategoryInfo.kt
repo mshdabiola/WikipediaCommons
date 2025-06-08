@@ -7,5 +7,5 @@ internal data class CategoryInfo(
     val sortkey: String? = null,
     @SerialName("*")
     val title: String? = null,
-    val hidden: Boolean? = null
+    val hidden: Boolean? = null,
 )

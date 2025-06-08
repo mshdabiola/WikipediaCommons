@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class PageCheckQuery(
     @SerialName("pages")
-    val pages: List<PageCheckPageInfo>? = null
+    val pages: List<PageCheckPageInfo>? = null,
 )

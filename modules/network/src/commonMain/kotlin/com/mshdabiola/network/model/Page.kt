@@ -15,6 +15,6 @@ internal data class Page(
     var pageid: Int = 0,
     @SerialName("title")
     var title: String = "",
-    @SerialName("categories") // Added this line
-    val categories: List<CategoryInfo>? = null // Added this line
+    @SerialName("categories")
+    val categories: List<CategoryInfo>? = null,
 )

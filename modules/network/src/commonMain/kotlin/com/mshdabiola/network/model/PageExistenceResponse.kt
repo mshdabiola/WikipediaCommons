@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 internal data class PageExistenceResponse(
     @SerialName("batchcomplete")
-    val batchcomplete: String? = null, // Can be an empty string if complete
+    val batchcomplete: String? = null,
     @SerialName("query")
-    val query: PageCheckQuery? = null
+    val query: PageCheckQuery? = null,
 )

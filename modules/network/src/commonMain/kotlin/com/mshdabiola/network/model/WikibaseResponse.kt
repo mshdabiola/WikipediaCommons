@@ -29,7 +29,7 @@ data class WikibaseHtmlContent(
 @Serializable
 data class WikibaseEditEntityResponse(
     val entity: WikibaseEntityInfo? = null,
-    val success: Int? = null, // Typically 1 on success
+    val success: Int? = null,
     val error: WikibaseApiError? = null,
 )
 
@@ -38,7 +38,7 @@ data class WikibaseEntityInfo(
     val type: String? = null,
     val id: String? = null,
     val lastrevid: Long? = null,
-    val title: String? = null, // For entities that are also pages, like MediaInfo
+    val title: String? = null,
 )
 
 @Serializable
@@ -58,8 +58,8 @@ data class FileEntityPageDetails(
     val contentmodel: String? = null,
     val pagelanguage: String? = null,
     val protection: List<ProtectionInfo>? = null,
-    val missing: String? = null, // Present (empty string) if page is missing
-    val invalid: String? = null, // Present (empty string) if title is invalid
+    val missing: String? = null,
+    val invalid: String? = null,
     val invalidreason: String? = null,
     // Note: The original .md for FileEntityById.md requests prop=info.
     // It doesn't request imageinfo specifically.
@@ -92,13 +92,13 @@ data class WikibaseLabelEntityInfo(
 data class LabelDetail(
     val language: String? = null,
     val value: String? = null,
-    val removed: String? = null, // Present if the label was removed
+    val removed: String? = null,
 )
 
 @Serializable
 data class WikibaseGetClaimsResponse(
-    val claims: Map<String, List<Claim>>? = null, // Property ID -> List of Claims
-    val success: Int? = null, // Typically 1 if request is processed, even if no claims
+    val claims: Map<String, List<Claim>>? = null,
+    val success: Int? = null,
     val error: WikibaseApiError? = null,
 )
 
@@ -106,8 +106,8 @@ data class WikibaseGetClaimsResponse(
 data class Claim(
     val id: String,
     val mainsnak: Snak,
-    val type: String, // "statement"
-    val rank: String, // "preferred", "normal", "deprecated"
+    val type: String,
+    val rank: String,
     val qualifiers: Map<String, List<Snak>>? = null,
     @SerialName("qualifiers-order")
     val qualifiersOrder: List<String>? = null,
@@ -119,7 +119,7 @@ data class Snak(
     val snaktype: String,
     val property: String,
     val hash: String? = null,
-    val datavalue: JsonElement? = null, // Use JsonElement for flexibility
+    val datavalue: JsonElement? = null,
     val datatype: String? = null,
 )
 

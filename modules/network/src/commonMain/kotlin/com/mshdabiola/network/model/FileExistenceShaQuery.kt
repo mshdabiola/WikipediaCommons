@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FileExistenceShaQuery(
-    @SerialName("allimages") val allimages: List<ShaImageInfo>
+    @SerialName("allimages") val allimages: List<ShaImageInfo>,
 )

@@ -6,5 +6,5 @@ internal data class ApiCategoryInfo(
     val size: Int? = null,
     val pages: Int? = null,
     val files: Int? = null,
-    val subcats: Int? = null
+    val subcats: Int? = null,
 )

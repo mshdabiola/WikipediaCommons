@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 internal data class ApiThumbnail(
     val source: String,
     val width: Int,
-    val height: Int
+    val height: Int,
 )

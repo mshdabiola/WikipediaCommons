@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class SubCategoryInfo(
     val pageid: Long,
     val ns: Int,
-    val title: String
+    val title: String,
 )
