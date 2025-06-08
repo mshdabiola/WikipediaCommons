@@ -16,16 +16,16 @@ import kotlinx.io.IOException
 
 internal class UploadDataSource(
     private val client: HttpClient,
-    private val baseUrl: String = "https://en.wikipedia.org/w/api.php" // Should be like https://commons.wikimedia.org/w/api.php
+    private val baseUrl: String = "https://en.wikipedia.org/w/api.php",
 ) : IUploadDataSource {
-
-    private val commonUploadParams = Parameters.build {
-        append("format", "json")
-        append("formatversion", "2")
-        append("errorformat", "plaintext") // As per .md files
-        append("action", "upload")
-        append("ignorewarnings", "1") // As per .md files
-    }
+    private val commonUploadParams =
+        Parameters.build {
+            append("format", "json")
+            append("formatversion", "2")
+            append("errorformat", "plaintext")
+            append("action", "upload")
+            append("ignorewarnings", "1")
+        }
 
     override suspend fun uploadFileToStash(
         token: String,
@@ -33,27 +33,40 @@ internal class UploadDataSource(
         fileData: ByteArray,
         fileSize: Long,
         offset: Long?,
-        fileKey: String?
+        fileKey: String?,
     ): UploadResponseWrapper {
-        val urlWithParams = URLBuilder(baseUrl).apply {
-            parameters.appendAll(commonUploadParams)
-            parameters.append("stash", "1")
-        }.buildString()
+        val urlWithParams =
+            URLBuilder(baseUrl).apply {
+                parameters.appendAll(commonUploadParams)
+                parameters.append("stash", "1")
+            }.buildString()
 
-        val response = client.submitFormWithBinaryData(
-            url = urlWithParams, // Corrected URL building
-            formData = formData {
-                append("token", token)
-                append("filename", filename)
-                append("filesize", fileSize.toString())
-                offset?.let { append("offset", it.toString()) }
-                fileKey?.let { append("filekey", it) }
-                append("filePart", fileData, Headers.build {
-                    append(HttpHeaders.ContentType, "application/octet-stream") // Or detect actual content type
-                    append(HttpHeaders.ContentDisposition, "filename=\"$filename\"")
-                })
-            }
-        )
+        val response =
+            client.submitFormWithBinaryData(
+                url = urlWithParams,
+                formData =
+                    formData {
+                        append("token", token)
+                        append("filename", filename)
+                        append("filesize", fileSize.toString())
+                        offset?.let { append("offset", it.toString()) }
+                        fileKey?.let { append("filekey", it) }
+                        append(
+                            "filePart",
+                            fileData,
+                            Headers.build {
+                                append(
+                                    HttpHeaders.ContentType,
+                                    "application/octet-stream",
+                                )
+                                append(
+                                    HttpHeaders.ContentDisposition,
+                                    "filename=\"$filename\"",
+                                )
+                            },
+                        )
+                    },
+            )
 
         if (response.status.isSuccess()) {
             return response.body()
@@ -68,25 +81,28 @@ internal class UploadDataSource(
         fileKey: String,
         filename: String,
         comment: String?,
-        text: String?
+        text: String?,
     ): UploadResponseWrapper {
         // This is a POST request with URL-encoded parameters
-        val response = client.post(baseUrl) {
-            url {
-                parameters.appendAll(commonUploadParams)
-                parameters.append("stash", "1") // As per UploadFromStash.md URL (keeps it stashed on warning)
-                                                // To publish directly (not stash on warning), omit stash or set to 0.
-                                                // But the .md has stash=1.
+        val response =
+            client.post(baseUrl) {
+                url {
+                    parameters.appendAll(commonUploadParams)
+                    parameters.append("stash", "1") // As per UploadFromStash.md URL (keeps it stashed on warning)
+                    // To publish directly (not stash on warning), omit stash or set to 0.
+                    // But the .md has stash=1.
+                }
+                setBody(
+                    Parameters.build {
+                        append("token", token)
+                        append("filekey", fileKey)
+                        append("filename", filename)
+                        comment?.let { append("comment", it) }
+                        text?.let { append("text", it) }
+                        // Other parameters from UploadFromStash.md are already in commonUploadParams or URL
+                    },
+                )
             }
-            setBody(Parameters.build {
-                append("token", token)
-                append("filekey", fileKey)
-                append("filename", filename)
-                comment?.let { append("comment", it) }
-                text?.let { append("text", it) }
-                // Other parameters from UploadFromStash.md are already in commonUploadParams or URL
-            })
-        }
 
         if (response.status.isSuccess()) {
             return response.body()

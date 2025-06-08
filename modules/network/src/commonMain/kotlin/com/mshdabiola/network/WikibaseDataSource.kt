@@ -14,9 +14,8 @@ import kotlinx.io.IOException
 
 internal class WikibaseDataSource(
     private val client: HttpClient,
-    private val wikibaseApiUrl: String = "https://www.wikidata.org/w/api.php", // Default to Wikidata
+    private val wikibaseApiUrl: String = "https://www.wikidata.org/w/api.php",
 ) : IWikibaseDataSource {
-
     private fun commonParamsBuilder(): Parameters {
         return Parameters.build {
             append("format", "json")
@@ -30,16 +29,18 @@ internal class WikibaseDataSource(
         token: String,
         data: String,
     ): WikibaseEditEntityResponse {
-        val response = client.submitForm(
-            url = wikibaseApiUrl,
-            formParameters = Parameters.build {
-                appendAll(commonParamsBuilder())
-                append("action", "wbeditentity")
-                append("id", id)
-                append("token", token)
-                append("data", data)
-            },
-        )
+        val response =
+            client.submitForm(
+                url = wikibaseApiUrl,
+                formParameters =
+                    Parameters.build {
+                        appendAll(commonParamsBuilder())
+                        append("action", "wbeditentity")
+                        append("id", id)
+                        append("token", token)
+                        append("data", data)
+                    },
+            )
         if (response.status.isSuccess()) {
             return response.body()
         } else {
@@ -53,17 +54,19 @@ internal class WikibaseDataSource(
         token: String,
         data: String,
     ): WikibaseEditEntityResponse {
-        val response = client.submitForm(
-            url = wikibaseApiUrl, // Assuming wikibaseApiUrl is set to Commons for this.
-            formParameters = Parameters.build {
-                appendAll(commonParamsBuilder())
-                append("action", "wbeditentity")
-                append("site", "commonswiki") // As per EditEntityByFilename.md
-                append("title", title)
-                append("token", token)
-                append("data", data)
-            },
-        )
+        val response =
+            client.submitForm(
+                url = wikibaseApiUrl,
+                formParameters =
+                    Parameters.build {
+                        appendAll(commonParamsBuilder())
+                        append("action", "wbeditentity")
+                        append("site", "commonswiki")
+                        append("title", title)
+                        append("token", token)
+                        append("data", data)
+                    },
+            )
         if (response.status.isSuccess()) {
             return response.body()
         } else {
@@ -72,17 +75,16 @@ internal class WikibaseDataSource(
         }
     }
 
-    override suspend fun getFileEntityInfoByTitle(
-        title: String,
-    ): WikibaseQueryFileEntityResponse {
-        val response = client.get(wikibaseApiUrl) {
-            url {
-                parameters.appendAll(commonParamsBuilder())
-                parameters.append("action", "query")
-                parameters.append("prop", "info") // As per FileEntityById.md
-                parameters.append("titles", title)
+    override suspend fun getFileEntityInfoByTitle(title: String): WikibaseQueryFileEntityResponse {
+        val response =
+            client.get(wikibaseApiUrl) {
+                url {
+                    parameters.appendAll(commonParamsBuilder())
+                    parameters.append("action", "query")
+                    parameters.append("prop", "info")
+                    parameters.append("titles", title)
+                }
             }
-        }
         if (response.status.isSuccess()) {
             return response.body()
         } else {
@@ -97,17 +99,19 @@ internal class WikibaseDataSource(
         language: String,
         value: String,
     ): WikibaseSetLabelResponse {
-        val response = client.submitForm(
-            url = wikibaseApiUrl,
-            formParameters = Parameters.build {
-                appendAll(commonParamsBuilder())
-                append("action", "wbsetlabel")
-                append("id", id)
-                append("token", token)
-                append("language", language)
-                append("value", value)
-            },
-        )
+        val response =
+            client.submitForm(
+                url = wikibaseApiUrl,
+                formParameters =
+                    Parameters.build {
+                        appendAll(commonParamsBuilder())
+                        append("action", "wbsetlabel")
+                        append("id", id)
+                        append("token", token)
+                        append("language", language)
+                        append("value", value)
+                    },
+            )
         if (response.status.isSuccess()) {
             return response.body()
         } else {
@@ -120,19 +124,23 @@ internal class WikibaseDataSource(
         entityId: String,
         propertyId: String,
     ): WikibaseGetClaimsResponse {
-        val response = client.get(wikibaseApiUrl) {
-            url {
-                parameters.appendAll(commonParamsBuilder())
-                parameters.append("action", "wbgetclaims")
-                parameters.append("entity", entityId)
-                parameters.append("property", propertyId)
+        val response =
+            client.get(wikibaseApiUrl) {
+                url {
+                    parameters.appendAll(commonParamsBuilder())
+                    parameters.append("action", "wbgetclaims")
+                    parameters.append("entity", entityId)
+                    parameters.append("property", propertyId)
+                }
             }
-        }
         if (response.status.isSuccess()) {
             return response.body()
         } else {
             val errorBody: String = response.body()
-            throw IOException("API error for getClaimsByProperty ($entityId, $propertyId): ${response.status} - $errorBody")
+            throw IOException(
+                "API error for getClaimsByProperty " +
+                    "($entityId, $propertyId): ${response.status} - $errorBody",
+            )
         }
     }
 
@@ -141,15 +149,16 @@ internal class WikibaseDataSource(
         token: String,
         data: String,
     ): WikibaseEditEntityResponse {
-        val response = client.get(wikibaseApiUrl) {
-            url {
-                parameters.appendAll(commonParamsBuilder())
-                parameters.append("action", "wbeditentity") // As per .md file
-                parameters.append("id", id)
-                parameters.append("token", token)
-                parameters.append("data", data)
+        val response =
+            client.get(wikibaseApiUrl) {
+                url {
+                    parameters.appendAll(commonParamsBuilder())
+                    parameters.append("action", "wbeditentity") // As per .md file
+                    parameters.append("id", id)
+                    parameters.append("token", token)
+                    parameters.append("data", data)
+                }
             }
-        }
         if (response.status.isSuccess()) {
             return response.body()
         } else {
