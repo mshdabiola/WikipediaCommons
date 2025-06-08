@@ -24,4 +24,25 @@ interface IMediaDataSource {
 
     suspend fun getMediaDetails(title: String): MainImage? // Added this line
 
+        suspend fun getMediaListFromGeoSearch(
+            latitude: Double,
+            longitude: Double,
+            limit: Int,
+            radius: Int,
+            continuation: String?, // Or ggscontinue: String?
+        ): List<MainImage> // Or your GeoSearchResult type
+    suspend fun getMedia(title: String): MainImage?
+    suspend fun getMediaSuppressErrors(title: String): MainImage?
+    suspend fun getMediaById(pageId: Long): MainImage?
+    suspend fun fetchImageForDepicted(
+        searchTerm: String,
+        limit: Int,
+        offset: Int
+    ): List<MainImage>
+
+    suspend fun getEntity(ids: String): WikiDataEntityResponse? // Or a more specific, domain-mapped type
+    suspend fun getWikiText(titles: String): String? // Or WikiTextRevision?
+
+
+
 }
