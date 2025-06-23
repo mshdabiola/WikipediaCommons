@@ -87,7 +87,7 @@ slf4jSimple = "2.0.17"
 lazy-pagination-compose = "1.7.0"
 androidx-paging = "3.3.6"
 sqlite = "2.5.1"
-kotlinxCollectionImmutable = "0.3.8"
+kotlinxCollectionImmutable = "0.4-wasm1"
 windowSizeClass = "0.5.0"
 
 screenshot = "0.0.1-alpha10"
