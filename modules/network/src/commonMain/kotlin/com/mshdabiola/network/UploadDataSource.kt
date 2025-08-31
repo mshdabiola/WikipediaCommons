@@ -1,0 +1,114 @@
+package com.mshdabiola.network
+
+import UploadResponseWrapper
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.forms.formData
+import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
+import io.ktor.http.Parameters
+import io.ktor.http.URLBuilder
+import io.ktor.http.isSuccess
+import kotlinx.io.IOException
+
+internal class UploadDataSource(
+    private val client: HttpClient,
+    private val baseUrl: String = "https://en.wikipedia.org/w/api.php",
+) : IUploadDataSource {
+    private val commonUploadParams =
+        Parameters.build {
+            append("format", "json")
+            append("formatversion", "2")
+            append("errorformat", "plaintext")
+            append("action", "upload")
+            append("ignorewarnings", "1")
+        }
+
+    override suspend fun uploadFileToStash(
+        token: String,
+        filename: String,
+        fileData: ByteArray,
+        fileSize: Long,
+        offset: Long?,
+        fileKey: String?,
+    ): UploadResponseWrapper {
+        val urlWithParams =
+            URLBuilder(baseUrl).apply {
+                parameters.appendAll(commonUploadParams)
+                parameters.append("stash", "1")
+            }.buildString()
+
+        val response =
+            client.submitFormWithBinaryData(
+                url = urlWithParams,
+                formData =
+                    formData {
+                        append("token", token)
+                        append("filename", filename)
+                        append("filesize", fileSize.toString())
+                        offset?.let { append("offset", it.toString()) }
+                        fileKey?.let { append("filekey", it) }
+                        append(
+                            "filePart",
+                            fileData,
+                            Headers.build {
+                                append(
+                                    HttpHeaders.ContentType,
+                                    "application/octet-stream",
+                                )
+                                append(
+                                    HttpHeaders.ContentDisposition,
+                                    "filename=\"$filename\"",
+                                )
+                            },
+                        )
+                    },
+            )
+
+        if (response.status.isSuccess()) {
+            return response.body()
+        } else {
+            val errorBody: String = response.body()
+            throw IOException("API request failed for uploadFileToStash with status ${response.status}: $errorBody")
+        }
+    }
+
+    override suspend fun uploadFromStash(
+        token: String,
+        fileKey: String,
+        filename: String,
+        comment: String?,
+        text: String?,
+    ): UploadResponseWrapper {
+        // This is a POST request with URL-encoded parameters
+        val response =
+            client.post(baseUrl) {
+                url {
+                    parameters.appendAll(commonUploadParams)
+                    parameters.append("stash", "1") // As per UploadFromStash.md URL (keeps it stashed on warning)
+                    // To publish directly (not stash on warning), omit stash or set to 0.
+                    // But the .md has stash=1.
+                }
+                setBody(
+                    Parameters.build {
+                        append("token", token)
+                        append("filekey", fileKey)
+                        append("filename", filename)
+                        comment?.let { append("comment", it) }
+                        text?.let { append("text", it) }
+                        // Other parameters from UploadFromStash.md are already in commonUploadParams or URL
+                    },
+                )
+            }
+
+        if (response.status.isSuccess()) {
+            return response.body()
+        } else {
+            val errorBody: String = response.body()
+            throw IOException("API request failed for uploadFromStash with status ${response.status}: $errorBody")
+        }
+    }
+}
